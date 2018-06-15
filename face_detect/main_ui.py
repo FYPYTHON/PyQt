@@ -88,8 +88,9 @@ class MyClient(QDialog):
 
 
 
-
+# 主程序
 if __name__ == '__main__':
+    print 'is going '
     app = QApplication(sys.argv)
     my = MyClient()
     my.show()

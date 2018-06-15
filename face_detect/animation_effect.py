@@ -12,12 +12,6 @@ def animation(number):
     img = cv2.imread(filename_temp)
     show = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return show
-        # cv2.namedWindow('Show Pictures')
-        # cv2.imshow('Show Pictures', img)
 
-
-        # number += 1
-    # if cv2.waitKey() == 27 & 0xff == ord("q"):
-    #     cv2.destroyAllWindows()
 if __name__ == '__main__':
     animation(1)
