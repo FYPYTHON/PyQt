@@ -1,0 +1,4 @@
+QMainWindow并没有setLayout()函数，因此不能使用setLayout()函数来设置layout，需要使用间接的方法。
+需要做的只是先定义一个QWidget对象，然后使用QMainWindow::setCentralWidget()函数来将该QWidget对象设置为Central Widget，
+然后使用该QWidget对象的setLayout()函数，就可以了，不过后续对象都要被添加到该QWidget对象下的layout中。
+QMainWindow为什么会有这样奇怪的特性呢，原因是这样的：QMainWindow类实际上有一个默认的layout，示意如下：
