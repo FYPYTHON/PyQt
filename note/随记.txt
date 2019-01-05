@@ -93,3 +93,5 @@ parse.add_argument('-a','--abc',help='a sourcedir',nargs='?')
 //这时参数的全名为abc，但是如果出现dest关键字，则全程为dest关键字定义的字段
 parse.add_argument('-a','--abc'，dest='mn',help='a sourcedir',nargs='?')
 //这时无论全名是mn，不再是abc
+
+
