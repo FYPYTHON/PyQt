@@ -51,3 +51,45 @@ v 调用vi编辑器；
 ! 命令 调用Shell，并执行命令； 
 q 退出more
 3）head / tail
+
+2019/1/5
+1）无法运行“rc.exe”
+https://www.cnblogs.com/chuijingjing/p/9159209.html
+2）Python argparse用法总结
+2a）
+parse.add_argument('pkg',help='help')
+//这是最基础的参数格式，如果是这样的格式，说明pkg是一个必须的参数，如果不加入这样的参数，则会报错
+import argparse    //导入命令行解析的库文件
+parse = argparse.ArgumentParser(description="test!!")  //为了别人执行代码的时候用--help看出来怎么使用这些代码
+2b）
+parse.add_argument('keyoukewu',help='keyoukewu'，nargs='?')  
+//如果不加上最后一个参数nargs则执行代码的时候必须加上这个参数															
+//如果有nargs说明这个参数可带可不带
+2c）
+parse.add_argument('-a','--abc',help='a sourcedir',nargs='?')
+print(args.abc)
+print(args.a) //是错误的
+//运行时使用python demo.py -a abc
+//或者使用python demo.py --abc abc(使用的是两个短横)
+//参数的前面可以添加‘-’，也可以添加‘--’。说明添加的参数可以用简写也可以用全称来标明。但是解析的时候必须用全称。
+2d）
+parse.add_argument('-a','--abc',help='a sourcedir',action='store_true')
+//这里的参数action的作用标明如果不写参数的话默认的print(args.a)的值是false，但是如果加上参数的话默认的print(args.a)的值
+//为true，其中运行的参数的值不需要加上。
+//如果很多的参数都加上了这些参数
+
+parser.add_option("-v", action="store_true", dest="verbose")  
+parser.add_option("-q", action="store_false", dest="verbose")  
+这样的话，当解析到 ‘-v’，options.verbose 将被赋予 True 值，反之，解析到 ‘-q’，会被赋予 False 值。
+
+parse.add_argument('-a','--abc',help='a sourcedir',action='store_true'，default=3)
+//这时如果加上default的关键字，如果加上参数的话为则参数的值为1，但如果不加则采用默认的3，不再是0
+//但是这时由于采用了action='store_true'的关键字，所以不再加上得关键字不能再跟着int的数字
+//例如：python demo.py -a (is not ture.)
+parse.add_argument('-a','--abc',help='a sourcedir',default=3)
+
+2e）
+parse.add_argument('-a','--abc',help='a sourcedir',nargs='?')
+//这时参数的全名为abc，但是如果出现dest关键字，则全程为dest关键字定义的字段
+parse.add_argument('-a','--abc'，dest='mn',help='a sourcedir',nargs='?')
+//这时无论全名是mn，不再是abc
