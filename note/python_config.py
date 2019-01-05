@@ -3,6 +3,13 @@ import collections
 import configparser
 import os.path
 HOME_DIR = os.path.dirname(__file__)
+"""
+[mysql]    --> node 
+host = 'localhost'  --> attr = value
+port = 8080
+ehco = True
+"""
+
 # 文件系统glusterfs、syslogng、elk的使用以及使用场景
 
 class BaseConfigParser(configparser.ConfigParser):
@@ -49,7 +56,13 @@ class BaseConfigParser(configparser.ConfigParser):
             super().set(section=section, option=option, value=value)
 
 
-def parse_config(name, attr, path=None):
+def parse_config(node, attr, path=None):
+    """
+    :param node: node to read
+    :param attr: attribute in node
+    :param path: file path
+    :return: attribute value
+    """
     conf = BaseConfigParser()
     if path:
         conf_path = path
@@ -57,7 +70,7 @@ def parse_config(name, attr, path=None):
         conf_path = os.path.join(HOME_DIR, 'config.ini')
     conf.read(conf_path)
     try:
-        str_val = conf.get(name, attr)
+        str_val = conf.get(node, attr)
     except Exception as e:
         print(e)
         str_val = None
