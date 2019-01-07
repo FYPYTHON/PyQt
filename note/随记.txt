@@ -94,4 +94,6 @@ parse.add_argument('-a','--abc',help='a sourcedir',nargs='?')
 parse.add_argument('-a','--abc'，dest='mn',help='a sourcedir',nargs='?')
 //这时无论全名是mn，不再是abc
 
-
+2019/1/7，周一
+1、HTTP协议1.1
+2、GlusterFS配置及使用。
