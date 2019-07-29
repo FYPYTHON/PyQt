@@ -3,3 +3,7 @@ awk -v RS=';'  'END {print --NR}'
 
 awk 'NR==1{print $1}' file
 # NR==1 定位在file的第一行   print $1 显示第一列内容
+
+xshell
+sz filename  #下载文件
+rz                #上传文件
