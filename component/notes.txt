@@ -4,3 +4,6 @@ https://helpcdn.aliyun.com/document_detail/27866.html?spm=a2c4g.11186623.4.1.1f8
 
 2、不使用代理
 http_proxy="" curl -XGET http://172.16.83.87:9200/
+
+3、git学习
+https://github.com/jwasham/coding-interview-university
