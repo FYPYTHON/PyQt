@@ -2,6 +2,11 @@ redis-cli
 redis-cli --raw   #避免中文乱码
 远程：redis-cli -h host -p port -a password
           redis-cli -h 127.0.0.1 -p 6379 -a "mypass
+设置密码：
+redis-cli -h 127.0.0.1 -p 6379
+修改redis目录下的conf文件 ：requirepass yourpassword
+config get requirepass //获取当前密码
+config set requirepass "yourpassword"//设置当前密码,服务重新启动后又会置为默认，即无密码；不建议此种方式
 
 查看所有key:
 keys *

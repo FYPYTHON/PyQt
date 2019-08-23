@@ -1,0 +1,37 @@
+->常常出现在python函数定义的函数名后面，为函数添加元数据,描述函数的返回类型
+
+通常的写法是：
+
+
+def attrs(self) -> _Attrs:
+    
+    pass
+
+这种写法通常是写在函数的函数名后面?
+
+
+def add(x, y) -> int:
+  
+    return x+y
+
+这里面，元数据表明了函数的返回值为int类型。
+-> _Attr则表明函数返回的是一个外部可访问的类的私有变量。
+
+@装饰器
+比如可以赋值为整数、字符串、boolean变量等。想要实现这样获取值、赋值，也不是不行，通过@property就可以实现:
+class Student(object):
+    @property
+    def get_score(self):
+         return self._score
+    @property
+    def set_score(self, value):
+        if not isinstance(value, int):
+            raise ValueError('score must be an integer!')
+        if value < 0 or value > 100:
+            raise ValueError('score must between 0 ~ 100!')
+        self._score = value
+
+s = Student()
+s.score = 90
+print(s.score) # 90
+s.score = '100' #报错

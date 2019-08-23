@@ -1,0 +1,9 @@
+id
+title
+content
+comment
+discuss
+likes
+author
+datetime
+status
