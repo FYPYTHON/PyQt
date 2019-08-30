@@ -1,2 +1,6 @@
 °üÀ¨c++ c python
 https://github.com/jwasham/practice-python.git
+
+
+python3 yaml
+pip install pyyaml
