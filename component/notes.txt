@@ -8,4 +8,18 @@ http_proxy="" curl -XGET http://172.16.83.87:9200/
 3、git学习
 https://github.com/jwasham/coding-interview-university
 
+<<<<<<< HEAD
 4、ftp server
+=======
+4、虚拟机配置
+TYPE=Ethernet
+BOOTPROTO=static
+ONBOOT=yes
+NM_CONTROLLED=no
+IPADDR=192.168.1.222
+NETMASK=255.255.255.0
+GATEWAY=192.168.1.1       # 路由器设置
+DNS1=8.8.8.8
+UUID=d719e826-0861-4c0e-b1b3-a7332396086e
+DEVICE=ens33
+>>>>>>> 4f27120fc42e545ccaa3e8d2405f5fa3aa4f87be
