@@ -21,3 +21,5 @@ GATEWAY=192.168.1.1       # 路由器设置
 DNS1=8.8.8.8
 UUID=d719e826-0861-4c0e-b1b3-a7332396086e
 DEVICE=ens33
+
+6、将/etc/yum.repos.d/epel.repo中的mirrorlist改为baseurl
