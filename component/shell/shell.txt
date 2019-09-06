@@ -3,3 +3,12 @@ awk -v RS=';'  'END {print --NR}'
 
 awk 'NR==1{print $1}' file
 # NR==1 定位在file的第一行   print $1 显示第一列内容
+
+查找目录下包含内容的文件
+grep -r "test"  /data/reports
+
+上次开机时间：
+date -d "$(awk -F. '{print $1}' /proc/uptime) second ago" +"%Y-%m-%d %H:%M:%S"
+
+rpm查看信息：
+rpm -qpi ****.rpm  | head
