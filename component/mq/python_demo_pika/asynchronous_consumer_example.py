@@ -431,7 +431,7 @@ class ReconnectingExampleConsumer(object):
 def main():
     HOST = '172.16.83.226'
     PORT = '5672'
-    USER = 'root'
+    USER = 'admin'
     PAWD = 'feiying'
     logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
     amqp_url = 'amqp://{}:{}@{}:{}/%2F'.format(USER, PAWD, HOST, PORT)

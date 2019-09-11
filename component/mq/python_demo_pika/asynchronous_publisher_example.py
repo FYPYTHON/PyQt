@@ -7,7 +7,7 @@ import json
 import pika
 HOST = '172.16.83.226'
 PORT = '5672'
-USER = 'root'
+USER = 'admin'
 PAWD = 'feiying'
 DEBUG = True
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '

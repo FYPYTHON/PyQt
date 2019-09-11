@@ -31,3 +31,6 @@ make install PREFIX=/opt/apps/ha/
 cp /usr/local/haproxy/sbin/haproxy /usr/sbin/
 
 haproxy -v
+
+4 5 6 7
+0 1 2 3

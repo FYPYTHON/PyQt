@@ -3,7 +3,7 @@ import pika
 import logging
 HOST = '172.16.83.226'
 PORT = '5672'
-USER = 'root'
+USER = 'admin'
 PAWD = 'feiying'
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
               '-35s %(lineno) -5d: %(message)s')

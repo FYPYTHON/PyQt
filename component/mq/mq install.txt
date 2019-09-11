@@ -52,7 +52,7 @@ sudo rabbitmqctl add_user admin passworld
 sudo rabbitmqctl set_user_tags admin administrator
 #tag（administrator，monitoring，policymaker，management）
 #设置用户权限(接受来自所有Host的所有操作)
-sudo rabbitmqctl  set_permissions -p "/" admin '.*' '.*' '.*' 
+sudo rabbitmqctl  set_permissions -p "/" admin '.*'  '.*'  '.*' 
 #查看用户权限
 sudo rabbitmqctl list_user_permissions admin
 
