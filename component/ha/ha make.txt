@@ -11,7 +11,10 @@ make linux test
 
 wget http://www.haproxy.org/download/2.0/src/haproxy-2.0.4.tar.gz
 
+
+
 #编译环境
+
 yum -y install gcc gcc-c++ glibc glibc-devel pcre pcre-devel openssl openssl-devel systemd-devel net-tools vim iotop bc zip unzip zlib-devel lrzsz tree screen lsof tcpdump wget ntpdate
 
 编译：
@@ -27,6 +30,10 @@ LUA_INC=/opt/apps/lua/src/ \
 LUA_LIB=/opt/apps/lua/src/ \
 PREFIX=/opt/apps/ha/
 make install PREFIX=/opt/apps/ha/
+
+mkdir -p /var/lib/haproxy
+mkdir -p /opt/apps/ha/shell
+
 运行目录
 cp /usr/local/haproxy/sbin/haproxy /usr/sbin/
 
