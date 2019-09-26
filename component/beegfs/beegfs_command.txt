@@ -1,0 +1,36 @@
+beegfs-ctl --removetarget 601    
+beegfs-ctl --removenode 6
+
+beegfs-ctl --listnodes --nodetype=meta --nicdetails
+beegfs-ctl --listnodes --nodetype=storage --nicdetails
+beegfs-ctl --listnodes --nodetype=client --nicdetails
+beegfs-net                #显示Client实际使用的连接
+beegfs-check-servers      #显示服务的连接性
+beegfs-df                 #显示存储和元数据目标的空闲空间和索引节点
+
+所有节点关闭防火墙和SELINUX
+   systemctl stop firewalld
+   systemctl disable firewalld
+   ifconfig virbr0 down
+   systemctl disable libvirtd.service
+   brctl delbr virbr0 
+   sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+
+节点管理：
+/opt/beegfs/sbin/beegfs-setup-mgmtd -p /data/beegfs/beegfs_mgmtd
+systemctl start beegfs-mgmtd
+
+systemctl start beegfs-meta
+
+systemctl start beegfs-storage
+
+systemctl start beegfs-helperd
+
+systemctl start beegfs-client
+
+systemctl start beegfs-admon
+
+/opt/beegfs/sbin/beegfs-setup-storage -p /opt/data/hd/hd1 -s 6 -i 601 -m bgfs06
+/opt/beegfs/sbin/beegfs-setup-storage -p /opt/data/hd/hd1 -s 4 -i 401 -m bgfs06
+
+多个beegfs/gluster ，systemctl top beegfs-client
