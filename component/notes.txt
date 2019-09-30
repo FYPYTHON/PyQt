@@ -23,3 +23,5 @@ UUID=d719e826-0861-4c0e-b1b3-a7332396086e
 DEVICE=ens33
 
 6、将/etc/yum.repos.d/epel.repo中的mirrorlist改为baseurl
+
+7、gfs: https://download.gluster.org/pub/gluster/glusterfs/LATEST/

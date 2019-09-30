@@ -2,7 +2,9 @@ node -v
 npm install -g vue-cli
 vue init webpack bms_web
 npm run dev
-
+npm config set registry https://registry.npm.taobao.org
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+"C:\Program Files\nodejs\node.exe" "C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js" install --scripts-prepend-node-path=auto
 
 used:
 1、Vue 实例还提供了一些有用的实例属性与方法。它们都有前缀 $，以便与用户定义的属性区分开来
