@@ -1,5 +1,6 @@
 beegfs-ctl --removetarget 601    
-beegfs-ctl --removenode 6
+beegfs-ctl --removenode --nodetype=storage 4
+beegfs-ctl --removestoragepool 2
 
 beegfs-ctl --listnodes --nodetype=meta --nicdetails
 beegfs-ctl --listnodes --nodetype=storage --nicdetails
@@ -7,7 +8,7 @@ beegfs-ctl --listnodes --nodetype=client --nicdetails
 beegfs-net                #显示Client实际使用的连接
 beegfs-check-servers      #显示服务的连接性
 beegfs-df                 #显示存储和元数据目标的空闲空间和索引节点
-
+beegfs-ctl --addstoragepool --desc=401 # 添加存储
 所有节点关闭防火墙和SELINUX
    systemctl stop firewalld
    systemctl disable firewalld
@@ -16,17 +17,29 @@ beegfs-df                 #显示存储和元数据目标的空闲空间和索引节点
    brctl delbr virbr0 
    sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 
+修改服务，元数据，存储，客户端等的connInterfacesFile= /etc/beegfs/network/beegfs-network-interface.conf
+
+启动web:
+java -jar /opt/beegfs/beegfs-admon-gui/beegfs-admon-gui.jar
+用户“Information”  (初始密码“Information”)只能查看统计信息，
+用户“Administrator”(初始密码“admin”)可以执行管理任务。
+
+
 节点管理：
 /opt/beegfs/sbin/beegfs-setup-mgmtd -p /data/beegfs/beegfs_mgmtd
 systemctl start beegfs-mgmtd
 
+/opt/beegfs/sbin/beegfs-setup-meta -p /data/beegfs/beegfs_meta -s 2 -m bgfs01
 systemctl start beegfs-meta
 
+/opt/beegfs/sbin/beegfs-setup-storage -p /mnt/md0/beegfs_storage -s 3 -i 301 -m bgfs01
 systemctl start beegfs-storage
 
-systemctl start beegfs-helperd
+/opt/beegfs/sbin/beegfs-setup-client -m bgfs01；
+systemctl start beegfs-helperd && systemctl start beegfs-client
 
-systemctl start beegfs-client
+vi /etc/beegfs/beegfs-admon.conf
+  sysMgmtdHost=bgfs01
 
 systemctl start beegfs-admon
 
