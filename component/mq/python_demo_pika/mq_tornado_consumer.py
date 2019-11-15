@@ -52,7 +52,7 @@ class ExampleConsumer(object):
         """
         LOGGER.info('Connecting to %s', self._url)
         from pika.adapters.tornado_connection import TornadoConnection
-        return TornadoConnection(pika.URLParameters(self._url),self.on_connection_open)
+        return TornadoConnection(pika.URLParameters(self._url), self.on_connection_open)
 
         # return adapters.tornado_connection.TornadoConnection(pika.URLParameters(self._url),
         #                                                      self.on_connection_open)
@@ -249,6 +249,7 @@ class ExampleConsumer(object):
         :param bytes body: The message body
 
         """
+        print(properties.headers)
         LOGGER.info('Received message # %s from %s: %s',
                     basic_deliver.delivery_tag, properties.app_id, body)
         self.acknowledge_message(basic_deliver.delivery_tag)
