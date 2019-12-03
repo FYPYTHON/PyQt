@@ -1,0 +1,111 @@
+./config no-asm -shared --prefix=/home/wgq/openssl
+Makefile:
+CC=aarch64-kedacom-linux-gnu-gcc
+CXX=            aarch64-kedacom-linux-gnu-c++
+删除-m64
+
+
+./Configure --target=aarch64-kedacom-linux-gnu --host=aarch64-kedacom-linux-gnu --build=x86_64-pc-linux-gnu --enable-ipv6 ac_cv_file__dev_ptmx=yes ac_cv_file__dev_ptc=yes CFLAGS=-fPIC --prefix=/opt/midware/python3 --enable-shared LD=aarch64-kedacom-linux-gnu-ld AR=aarch64-kedacom-linux-gnu-ar 
+
+opensssl:
+最后：
+./Configure --prefix=/home/wgq/openssl --cross-compile-prefix=aarch64-kedacom-linux-gnu-  no-asm shared linux-aarch64
+./Configure --prefix=/home/wgq/openssl --cross-compile-prefix=aarch64-kedacom-linux-gnu- no-asm shared linux-aarch64 CC=aarch64-kedacom-linux-gnu-gcc LD=aarch64-kedacom-linux-gnu-ld AR=aarch64-kedacom-linux-gnu-ar 
+./Configure --prefix=/home/wgq/openssl --cross-compile-prefix=aarch64-kedacom-linux-gnu- no-asm shared linux-aarch64 CC=aarch64-kedacom-linux-gnu-gcc LD=aarch64-kedacom-linux-gnu-ld AR=aarch64-kedacom-linux-gnu-ar --enable-shared
+
+
+python3:
+PATH=/opt/aarch64-kedacom-linux/bin:$PATH
+CFLAG_RUNTIME_LIBRARY_PATH="/opt/sysroot64/lib" LDFLAGS="-Wl,--rpath=/opt/sysroot64/lib -Wl,--dynamic-linker=/opt/sysroot64/lib/ld-linux-aarch64.so.1"
+./configure --target=aarch64-kedacom-linux-gnu --host=aarch64-kedacom-linux-gnu --build=x86_64-pc-linux-gnu --enable-ipv6 ac_cv_file__dev_ptmx=yes ac_cv_file__dev_ptc=yes CFLAGS=-fPIC --prefix=/opt/midware/python3 --enable-shared --with-openssl=/opt/aarch64-kedacom-linux
+
+
+export LD_LIBRARY_PATH=/opt/midware/python3/lib:/usr/local/openssl/lib
+LD_LIBRARY_PATH=/opt/sysroot64/lib:$LD_LIBRARY_PATH 
+
+\scp libpython3.5m.so 172.16.185.240:/opt/midware/
+
+2019-11-25:
+PATH=/opt/aarch64-kedacom-linux/bin:$PATH
+python3.5.2 configure:
+CFLAG_RUNTIME_LIBRARY_PATH="/opt/sysroot64/lib" LDFLAGS="-Wl,--rpath=/opt/sysroot64/lib -Wl,--dynamic-linker=/opt/sysroot64/lib/ld-linux-aarch64.so.1" ./configure --target=aarch64-kedacom-linux-gnu --host=aarch64-kedacom-linux-gnu --build=x86_64-pc-linux-gnu --enable-ipv6 ac_cv_file__dev_ptmx=yes ac_cv_file__dev_ptc=yes CFLAGS=-fPIC --prefix=/opt/midware/python3 --enable-shared --with-openssl=/home/wgq/openssl
+
+增加openssl路径：
+vi Module/Setup: 
+修改：
+SSL=/home/wgq/openssl
+_ssl _ssl.c \
+        -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+        -L$(SSL)/lib -lssl -lcrypto
+修改Makefile:
+python3改为/home/wgq/python_ori/bin/python3
+
+
+LD_LIBRARY_PATH=/opt/midware/python3/lib:/usr/local/openssl/lib
+LD_LIBRARY_PATH=/opt/sysroot64/lib:$LD_LIBRARY_PATH 
+
+交叉编译psutil:
+cd /home/wgq/mylib/psutil-5.6.7
+PATH=/opt/aarch64-kedacom-linux/bin:$PATH
+export CROSS_COMPILE=aarch64-kedacom-linux-gnu-
+
+export CC export CC="${CROSS_COMPILE}gcc"
+
+export LDSHARED="${CC} -shared"
+
+export LDFLAGS="-L/home/wgq/python_ori/lib"
+
+export CFLAGS="-I/home/wgq/python_ori/include/python3.5m"
+
+/home/wgq/python_ori/bin/python3 setup.py build
+/home/wgq/python_ori/bin/python3 setup.py install
+
+unzip psutil-5.6.7-py3.5-linux-x86_64.egg
+\scp -r dist/psutil-5.6.7-py3.5-linux-x86_64.egg 172.16.185.240:/opt/midware/python3/lib/python3.5/site-packages
+
+交叉编译uwsgi:
+cd /home/wgq/mylib/uwsgi-2.0.18
+PATH=/opt/aarch64-kedacom-linux/bin:$PATH
+export CROSS_COMPILE=aarch64-kedacom-linux-gnu-
+
+export CC export CC="${CROSS_COMPILE}gcc"
+
+export LDSHARED="${CC} -shared"
+
+export LDFLAGS="-L/home/wgq/python_ori/lib"
+
+export CFLAGS="-I/home/wgq/python_ori/include/python3.5m"
+export LD_LIBRARY_PATH=/opt/aarch64-kedacom-linux/lib
+
+
+#export LDFLAGS="-L/opt/aarch64-kedacom-linux/lib"
+
+export LDFLAGS="-Wl,--rpath=/home/wgq/python3/lib"
+export CFLAGS="-I/opt/aarch64-kedacom-linux/include/python3.5m"
+CFLAGS=/home/wgq/python3/include/python3.5m LD_LIBRARY_PATH=/home/wgq/python3/lib /home/wgq/python3/bin/python3 setup.py install --prefix=/home/wgq/python_ori
+/home/wgq/python_ori/bin/python3 setup.py build
+/home/wgq/python_ori/bin/python3 setup.py install --prefix=/home/wgq/python_ori
+2019/12/3
+CC=aarch64-kedacom-linux-gnu-gcc LD=aarch64-kedacom-linux-gnu-ld LD_LIBRARY_PATH=/home/wgq/python3/lib LDFLAGS="-Wl,--rpath=/home/wgq/python3/lib" /home/wgq/python3/bin/python3 setup.py install --prefix=/home/wgq/python3
+
+最终编译uwsgi:
+编译的方式很复杂， 先修改系统的xml2-config， 然后 CFLAGS="-I/tmp/openssl/include -I/opt/midware/python3/include/python3.5m -I/opt/aarch64-kedacom-linux/aarch64-kedacom-linux-gnu/sysroot/usr/include/" LDFLAGS="-L/tmp/openssl/lib -L/opt/midware/python3/lib -L/opt/aarch64-kedacom-linux/aarch64-kedacom-linux-gnu/sysroot/lib -Wl,-rpath=/opt/sysroot64/lib -Wl,-d
+ynamic-linker=/opt/sysroot64/lib/ld-linux-aarch64.so.1" CC=aarch64-kedacom-linux-gnu-gcc make， 最后手动连接
+aarch64-kedacom-linux-gnu-gcc -o uwsgi -L/tmp/openssl/lib -L/opt/midware/python3/lib -L/opt/aarch64-kedacom-linux/aarch64-kedacom-linux-gnu/sysroot/lib -Wl,-rpath=/opt/sysroot64/lib -Wl,-dynamic-linker=/opt/sysroot64/lib/ld-linux-aarch64.so.1  core/utils.o core/protocol.o core/socket.o core/logging.o core/master.o core/master_utils.o core
+/emperor.o core/notify.o core/mule.o core/subscription.o core/stats.o core/sendfile.o core/async.o core/master_checks.o core/fifo.o core/offload.o core/io.o core/static.o core/websockets.o core/spooler.o core/snmp.o core/exceptions.o core/config.o core/setup_utils.o core/clock.o core/init.o core/buffer.o core/reader.o core/writer.o core/a
+larm.o core/cron.o core/hooks.o core/plugins.o core/lock.o core/cache.o core/daemons.o core/errors.o core/hash.o core/master_events.o core/chunked.o core/queue.o core/event.o core/signal.o core/strings.o core/progress.o core/timebomb.o core/ini.o core/fsmon.o core/mount.o core/metrics.o core/plugins_builder.o core/sharedarea.o core/rpc.o 
+core/gateway.o core/loop.o core/cookie.o core/querystring.o core/rb_timers.o core/transformations.o core/uwsgi.o proto/base.o proto/uwsgi.o proto/http.o proto/fastcgi.o proto/scgi.o proto/puwsgi.o lib/linux_ns.o core/zlib.o core/regexp.o core/routing.o core/yaml.o core/ssl.o core/legion.o core/xmlconf.o core/dot_h.o core/config_py.o plugi
+ns/python/python_plugin.o plugins/python/pyutils.o plugins/python/pyloader.o plugins/python/wsgi_handlers.o plugins/python/wsgi_headers.o plugins/python/wsgi_subhandler.o plugins/python/web3_subhandler.o plugins/python/pump_subhandler.o plugins/python/gil.o plugins/python/uwsgi_pymodule.o plugins/python/profiler.o plugins/python/symimport
+er.o plugins/python/tracebacker.o plugins/python/raw.o plugins/gevent/gevent.o plugins/gevent/hooks.o plugins/ping/ping_plugin.o plugins/cache/cache.o plugins/nagios/nagios.o plugins/rrdtool/rrdtool.o plugins/carbon/carbon.o plugins/rpc/rpc_plugin.o plugins/corerouter/cr_common.o plugins/corerouter/cr_map.o plugins/corerouter/corerouter.o
+ plugins/fastrouter/fastrouter.o plugins/http/http.o plugins/http/keepalive.o plugins/http/https.o plugins/http/spdy3.o plugins/ugreen/ugreen.o plugins/signal/signal_plugin.o plugins/syslog/syslog_plugin.o plugins/rsyslog/rsyslog_plugin.o plugins/logsocket/logsocket_plugin.o plugins/router_uwsgi/router_uwsgi.o plugins/router_redirect/rout
+er_redirect.o plugins/router_basicauth/router_basicauth.o plugins/zergpool/zergpool.o plugins/redislog/redislog_plugin.o plugins/mongodblog/mongodblog_plugin.o plugins/router_rewrite/router_rewrite.o plugins/router_http/router_http.o plugins/logfile/logfile.o plugins/router_cache/router_cache.o plugins/rawrouter/rawrouter.o plugins/router
+_static/router_static.o plugins/sslrouter/sslrouter.o plugins/spooler/spooler_plugin.o plugins/cheaper_busyness/cheaper_busyness.o plugins/symcall/symcall_plugin.o plugins/transformation_tofile/tofile.o plugins/transformation_gzip/gzip.o plugins/transformation_chunked/chunked.o plugins/transformation_offload/offload.o plugins/router_memca
+ched/router_memcached.o plugins/router_redis/router_redis.o plugins/router_hash/router_hash.o plugins/router_expires/expires.o plugins/router_metrics/plugin.o plugins/transformation_template/tt.o plugins/stats_pusher_socket/plugin.o -lpthread -lm -rdynamic -ldl -lz -lpcre -luuid -L/opt/aarch64-kedacom-linux/aarch64-kedacom-linux-gnu/sysro
+ot/usr/lib64 -lxml2 -lz -lm -ldl -lcrypt -lpthread -ldl -lutil -lm /opt/midware/python3/lib/libpython3.5m.a /tmp/openssl/lib/libssl.a /tmp/openssl/lib/libcrypto.a
+
+
+
+
+
+
+
