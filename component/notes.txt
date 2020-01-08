@@ -25,3 +25,9 @@ DEVICE=ens33
 6、将/etc/yum.repos.d/epel.repo中的mirrorlist改为baseurl
 
 7、gfs: https://download.gluster.org/pub/gluster/glusterfs/LATEST/
+
+8、python protobuf
+https://github.com/protocolbuffers/protobuf/blob/master/python
+下载protoc编译工具：
+protoc --proto_path=src --python_out=src/main/python src/main/proto/simple.proto
+常用命令：protoc -I=(源文件的目录)  --python_out=（输出目录） ./待转化的文件（cmd）
