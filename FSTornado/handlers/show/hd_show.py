@@ -12,6 +12,7 @@ from handlers.basehd import BaseHandler
 from tornado.log import access_log as weblog
 from common.global_func import get_user_info
 import platform
+TXT_FIX = ['txt', 'log', 'py']
 
 
 class FsShowHandler(BaseHandler):
@@ -65,7 +66,7 @@ class FsShowHandler(BaseHandler):
         # print(suffix)
         ftype = None
         imgs = None
-        if suffix in ['txt']:
+        if suffix in TXT_FIX:
             ftype = "txt"
             # fdata = []
             fstr = ""
@@ -109,7 +110,7 @@ class FsShowHandler(BaseHandler):
         # width, height = (600, 600)
         ftype = None
         imgs = None
-        if suffix in ['txt']:
+        if suffix in TXT_FIX:
             ftype = "txt"
         elif suffix in ['jpg', 'png', 'gif', 'jpeg']:
             ftype = 'img'

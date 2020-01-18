@@ -2,7 +2,7 @@
 from handlers.adminhd import verifyCode
 from handlers.author import hd_login, hd_main
 from handlers.show import hd_show, hd_play
-from handlers.action import hd_fileload, hd_rename, hd_move
+from handlers.action import hd_fileload, hd_rename, hd_move, hd_create
 from tornado.web import StaticFileHandler
 url = [                            #
         # (r'/', signin_handler.SigninHandler),
@@ -20,4 +20,5 @@ url = [                            #
         (r'/download', hd_fileload.DownloadHandler),
         (r'/rename', hd_rename.FsRenameHandler),
         (r'/move', hd_move.FsMoveHandler),
+        (r'/createdir', hd_create.FsCreateHandler),
 ]

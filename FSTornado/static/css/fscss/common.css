@@ -9,10 +9,10 @@
 	max-width: 800px;
 }
 .fsdoc {
-	min-height: 400px;
-	min-width: 400px;
+	min-height: 600px;
+	min-width: 800px;
 	max-height: 800px;
-	max-width: : 800px;
+	max-width: : 1000px;
 }
 .hnavli {
 	margin-right: 20px;
@@ -21,8 +21,10 @@
 	margin-left: -20px;
 }
 textarea {
-	min-height: 600px;
-	min-width: 800px;
+	min-height: 580px;
+	min-width: 780px;
+	max-height: 780px;
+	max-width: : 980px;
 }
 video {
 	min-height: 400px;
