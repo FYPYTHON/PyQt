@@ -19,6 +19,8 @@ MAX_STREAMED_SIZE = 1024 * 1024 * 1024
 def check_path_exist():
     if not os.path.exists("/opt/data"):
         os.makedirs('/opt/data')
+    if not os.path.exists('/opt/log/fs'):
+        os.makedirs('/opt/log/fs')
 
 
 class Application(tornado.web.Application):
@@ -29,12 +31,12 @@ class Application(tornado.web.Application):
             static_path=(os.path.join(os.path.dirname(__file__), "static")),
             cookie_secret="f6d4f6de102f29b5cd37cd5eQtsdfsfdsdJ5/xJ89E=",
             session_secret="12f29b5c61c118ccd37cd5eQtsdfsfdsdJ5/xJ89E=",
-            session_timeout=600,
+            session_timeout=300,
             upload_path=os.path.join("/opt/data", "public"),
             top_path="/opt/data",
             login_url="/login",
             debug=False,
-            # autoescape=None,
+            autoescape=None,
         )
 
         handlers = urls.url
@@ -42,6 +44,12 @@ class Application(tornado.web.Application):
 
 
 if __name__ == "__main__":
+    import setproctitle
+    try:
+        setproctitle.setproctitle("tornadofs")     # set process name in linux environment
+    except:
+        pass
+    check_path_exist()
     # tornado.options.parse_command_line()
     app = Application()
     http_server = tornado.httpserver.HTTPServer(app, max_buffer_size=4 * MAX_STREAMED_SIZE)

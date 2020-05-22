@@ -1,0 +1,2 @@
+firewall-cmd --zone=public --add-port=123/tcp --permanen
+firewall-cmd --reload

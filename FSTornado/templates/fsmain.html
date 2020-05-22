@@ -17,6 +17,9 @@
 		<button class="btn dropdown-toggle" data-toggle="dropdown" style="margin-left: -7px;">
 			<span class="caret"></span>
 		</button>
+		{% if userinfo.userrole == 0 %}
+		<button class="btn"><a href="/manage?curpath={{curpath}}">管理</a></button>
+		{% end %}
 		<ul class="dropdown-menu">
 			<li><a>个人信息</a></li>
 			<li><a href="/fsmain">我的主页</a></li>

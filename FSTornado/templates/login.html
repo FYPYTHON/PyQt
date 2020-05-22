@@ -90,13 +90,21 @@
             var pwdRe = /^(\w){6,20}$/;
             var pwd = $("#password").val()
             // $("#msgSignin").html("账号或密码不正确").css("color","red");
+            var code = $("#inputCode").val();
+            // console.log(code);
+            if (code.length != 4 ){
+                // console.log("code errror");
+                $("#msgSignin").html("验证码长度不对").css("color", "red");
+                return 1;
+            }
             if(userRe.test(user)){
                 <!--$("#userCheck").html("✔").css("color","green");-->
                 if(pwdRe.test(pwd)){
-                    <!--$("#passowrdCheck").html("✔").css("color","green");-->
+                    <!--$("#passwordCheck").html("✔").css("color","green");-->
                     return 0;
                 }else{
-                    $("#passowrdCheck").html("密码格式不正确,6~20位数字字母下划线的组合").css("color","red");
+                    // console.log("password errror");
+                    $("#passwordCheck").html("密码格式不正确,6~20位数字字母下划线的组合").css("color","red");
                     return 1;
                 }
             }else{
@@ -114,14 +122,14 @@
                 <div class="form-group" style="margin-top:50px">
                     <label class="col-sm-4 control-label">账号:</label>
                     <div class="col-sm-7" >
-                        <input class="form-control inputcss" style="width:200px;float:left;" id="userAccount" name="userAccount" value="Tornado"/>
+                        <input class="form-control inputcss" style="width:200px;float:left;" id="userAccount" name="userAccount" value=""/>
                         <div class="" style="margin-left:100px;padding-top:6.5px;" id="userCheck"></div>
                     </div>
                 </div>
                 <div class="form-group" >
                     <label class="col-sm-4 control-label">密码:</label>
                     <div class="col-sm-7">
-                        <input class="form-control inputcss" style="width:200px;float:left;" id="password" type="password" name="password" value="dgj_039103"/>
+                        <input class="form-control inputcss" style="width:200px;float:left;" id="password" type="password" name="password" value=""/>
                         <div class="" style=" margin-left:10px;padding-top:6.5px;" id="passwordCheck"></div>
                     </div>
                 </div>

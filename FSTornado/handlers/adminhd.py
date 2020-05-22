@@ -6,7 +6,7 @@ from common.global_func import get_expires_datetime
 from method.generate_verify_image import generate_verify_image
 import base64
 import random
-from tornado.log import access_log as weblog
+from tornado.log import app_log as weblog
 
 
 class verifyCode(BaseHandler):

@@ -1,13 +1,15 @@
 # coding=utf-8
 from handlers.adminhd import verifyCode
-from handlers.author import hd_login, hd_main
+from handlers.author import hd_login, hd_main, hd_manage
 from handlers.show import hd_show, hd_play
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create
+from handlers.view import jijinhd as hd_jijin
 from tornado.web import StaticFileHandler
 url = [                            #
         # (r'/', signin_handler.SigninHandler),
         (r'/login', hd_login.LoginHandler),
         (r'/logout', hd_login.LogoutHandler),
+        (r'/manage', hd_manage.ManageHandler),
         (r'/fsmain', hd_main.FSMainHandler),
         # (r'/home', home_handler.HomeHandler),
         (r'/admin/verifyCode', verifyCode),
@@ -21,4 +23,7 @@ url = [                            #
         (r'/rename', hd_rename.FsRenameHandler),
         (r'/move', hd_move.FsMoveHandler),
         (r'/createdir', hd_create.FsCreateHandler),
+
+        # view
+        (r'/view', hd_jijin.JiJinHandler),
 ]

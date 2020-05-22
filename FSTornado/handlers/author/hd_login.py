@@ -42,12 +42,20 @@ class LoginHandler(BaseHandler):
         if user.loginname != userAccount or user.password != MD5(password):
             weblog.error("user password input:{}, ori:{}".format(user.password, MD5(password)))
             return self.write(json_dumps({"msg": USER_OR_PASSWORD_ERROR, "error_code": 1}))
-        if inputCode.upper() != self.get_secure_cookie("code").decode('utf-8').upper():
+
+        secure_code = self.get_secure_cookie('code').decode('utf-8').upper()
+        if inputCode.upper() == "APP":
+            if 'Mobile' in self.request.headers['User-Agent']:
+                weblog.info("mobile login : {}".format(self.request.headers['User-Agent']))
+                inputCode = secure_code
+            pass
+        if inputCode.upper() != secure_code:
             weblog.error("code you inut:{}, ori code:{}".format(inputCode.upper(),
                         self.get_secure_cookie("code").decode('utf-8').upper()))
             return self.write(json_dumps({"msg": VER_CODE_ERROR, "error_code": 1}))
 
-        self.set_secure_cookie(SESSION_ID, user.loginname, expires=get_expires_datetime(self), expires_days=1)
+        # self.set_secure_cookie(SESSION_ID, user.loginname, expires=get_expires_datetime(self), expires_days=1)
+        self.set_secure_cookie(SESSION_ID, user.loginname, expires=get_expires_datetime(self), expires_days=None)
         return self.write(json_dumps({"msg": "", "error_code": 0, "user": user}))
 
 

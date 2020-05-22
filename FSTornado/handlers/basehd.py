@@ -6,7 +6,7 @@ from tornado import gen
 import tornado.options
 from jinja2 import Environment, FileSystemLoader, TemplateNotFound
 # from tornado.web import authenticated
-from tornado.log import access_log as weblog
+from tornado.log import app_log as weblog
 from database.db_config import db_session
 from database.tbl_admin import TblAdmin
 from common.msg_def import SESSION_ID

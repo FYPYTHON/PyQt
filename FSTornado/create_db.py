@@ -48,7 +48,8 @@ def create_single_table():
     # from database import tbl_account
     # from database import tbl_version
     # from database import tbl_account
-    from database import tbl_browsing_history
+    # from database import tbl_browsing_history
+    from database import tbl_jijin
     from database import db_config
     print("create table....")
     db_config.ModelBase.metadata.create_all(db_config.engine)

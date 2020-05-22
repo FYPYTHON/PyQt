@@ -3,4 +3,4 @@
 ./shell/stop.sh
 ./shell/start.sh
 
-ps -ef | grep "python3.5"
+ps -ef | grep "tornadofs"

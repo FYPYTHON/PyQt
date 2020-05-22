@@ -1,4 +1,4 @@
-1¡¢ÏÂÔØ
+﻿1¡¢ÏÂÔØ
 https://mirrors.tuna.tsinghua.edu.cn/apache/kafka/2.4.0/
 kafka_2.13-2.4.0.tgz    
 tar -xzf kafka_2.12-2.4.0.tgz
@@ -18,13 +18,19 @@ topic name: test
 bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test
 show topic:
 bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+ads.h323 
+delete a topic:
+./bin/kafka-topics.sh --delete --bootstrap-server localhost:9092 --topic kptest
 >>test
+
+# 分区扩容
+./kafka-topics.sh --zookeeper 127.0.0.1:2181 -alter --partitions 4 --topic test
 
 4¡¢send messages
 > bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
 
 5¡¢start a consumer
-> bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+> bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ods.h323 --from-beginning
 
 6¡¢Setting up a multi-broker cluster
 > cp config/server.properties config/server-1.properties
@@ -64,4 +70,25 @@ echo -e "foo\nbar" > test.txt
 > bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
 
 > bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
+
+
+v59ab8
+
+抓所有src dst port为1719 1759 1720 1760的包
+抓收的包，目的端口是60100-62100。发的包，源端口为60100-62100
+问下，这个语句tcpdump怎么写的
+tcpdump -i any port 1719 or port 1759 or port 1720 or port 1760  or dst portrange 60100-62100 or src portrange 60100-62100 -i any -s 0 -G 1800 -Z root -n -B 102400 -w %Y_%m%d_%H%M_%S.pcap &
+
+tcpdump port 1719 or port 1759 or port 1720 or port 1760 or dst portrange 60100-62100 or src portrange 60100-62100 -i any -s 0 -G 1800 -Z root -n -B 102400 -w %Y_%m%d_%H%M_%S.pcap &
+这样应该没问题吧，上次说的还是有丢包情况
+
+kdfs 文件服务/  王国强/吴凯
+h323parse h323协议解析  王国强/王国强
+OpsReceiver   平台/终端媒体信息采集  王国强/谢金鑫
+
+
+ZOOKEEPER Will not attempt to authenticate using SASL (unknown error)
+
+
+删除zoo.cfg里面配置dataDir=日志存储路径中version-2，即可解决
 

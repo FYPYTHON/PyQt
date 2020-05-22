@@ -5,12 +5,14 @@ from database.tbl_account import TblAccount
 PAGESIZE = 5
 FIRST_PAGE = 1
 TIME_FORMAT = "%Y-%m-%d"
+DATE_FORMAT = "%Y-%m-%d"
 
 
 def get_expires_datetime(self):
-    expires_time = time.time() + self.settings.get('session_timeout', 600)
-    expires_datetime = datetime.fromtimestamp(expires_time)
-    return expires_datetime
+    expires_time = time.time() + int(self.settings.get('session_timeout', 300))
+    # expires_datetime = datetime.fromtimestamp(expires_time)
+    # print(expires_time)
+    return expires_time
 
 
 def get_datetime(stime):
@@ -27,7 +29,7 @@ def get_week_datetime(flag=0):
     """
     monday, sunday = date.today(), date.today()
     one_day = timedelta(days=1)
-    print(one_day)
+    # print(one_day)
     if flag != 0:
         deta_value = flag * 7
         deta_day = timedelta(days=deta_value)
@@ -50,9 +52,14 @@ def get_user_info(self):
     # current_user = self.current_user
     current_user = self.current_user.decode('gbk')
     # print(current_user)
-    user = self.mysqldb().query(TblAccount.id, TblAccount.nickname).filter(
+    user = self.mysqldb().query(TblAccount.id, TblAccount.nickname, TblAccount.userrole).filter(
         TblAccount.loginname == current_user).first()
     return user
+
+
+def get_user_all(self):
+    users = self.mysqldb().query(TblAccount).all()
+    return users
 
 
 def get_user_id(self):

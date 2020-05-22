@@ -3,7 +3,7 @@ import os
 import json
 from shutil import move
 from tornado.web import authenticated
-from tornado.log import access_log as weblog
+from tornado.log import app_log as weblog
 from handlers.basehd import BaseHandler
 from handlers.author.hd_main import FSMainHandler
 

@@ -3,21 +3,21 @@ logConfig = {
 
     'version': 1,
     'loggers': {
-      'root': {
-        'level': 'DEBUG',
-        'handlers': ['console']
-      },
-      'tornado': {
-        'level': 'DEBUG',
-        'handlers': ['console', 'log'],
-        'propagate': 'no'
-      },
+      # 'root': {
+      #   'level': 'DEBUG',
+      #   'handlers': ['console']
+      # },
+      # 'tornado': {
+      #   'level': 'DEBUG',
+      #   'handlers': ['access'],
+      #   'propagate': 'no'
+      # },
       'tornado.access': {
         'level': 'DEBUG',
         'handlers': ['access'],
         'propagate': 'no'
       },
-      'log': {
+      'tornado.application': {
         'level': 'INFO',
         'handlers': ['log'],
         'propagate': 'no'
@@ -33,16 +33,16 @@ logConfig = {
       }
     },
     'handlers': {
-      'console': {
-        'class': 'logging.StreamHandler',
-        'level': 'DEBUG',
-        'formatter': 'simple',
-        },
+      # 'console': {
+      #   'class': 'logging.StreamHandler',
+      #   'level': 'DEBUG',
+      #   'formatter': 'simple',
+      #   },
       'access': {
         'class': 'logging.handlers.TimedRotatingFileHandler',  # time
         'level': 'INFO',
         'formatter': 'simple',
-        'filename': '.access.log',
+        'filename': '/opt/log/fs/access.log',
         'when': 'midnight',
         'interval': 1,
         'backupCount': 0,    # u"备份数"
@@ -52,7 +52,7 @@ logConfig = {
         'class': 'logging.handlers.RotatingFileHandler',    # size
         'level': 'INFO',
         'formatter': 'timedRotating',
-        'filename': './log.log',
+        'filename': '/opt/log/fs/log.log',
         # 'when': 'midnight',
         # 'interval': 1,
         'backupCount': 0,    # 日志文件的保留个数

@@ -7,10 +7,9 @@ from io import StringIO, BytesIO
 import base64
 from tornado.web import authenticated
 from PIL import Image
-from urllib import parse
 import json
 from handlers.basehd import BaseHandler
-from tornado.log import app_log as weblog
+from tornado.log import access_log as weblog
 from common.global_func import get_user_info
 import platform
 TXT_FIX = ['txt', 'log', 'py']
@@ -53,8 +52,6 @@ class FsShowHandler(BaseHandler):
 
     @authenticated
     def get(self, filename):
-        filename = parse.unquote_plus(filename)
-        weblog.info("filename:{}".format(filename))
         realpath = os.path.join(self.settings.get('top_path'), filename)
         if "\\" in realpath:
             realpath = realpath.replace("\\", '/')
@@ -72,8 +69,8 @@ class FsShowHandler(BaseHandler):
         if suffix in TXT_FIX:
             ftype = "txt"
             # fdata = []
-            fstr = b""
-            with open(realpath, 'rb') as f:
+            fstr = ""
+            with open(realpath, 'r') as f:
                 for line in f:
                     # fdata.append(line)
                     fstr += line
@@ -93,12 +90,7 @@ class FsShowHandler(BaseHandler):
         if platform.system() == 'Windows':
             realpath = os.path.abspath(realpath)
         weblog.info("{} {} filename:".format(realpath, ftype, filename))
-        try:
-            return self.render("show.html", type=ftype, uri=filename, img=imgs, iwidth=width, iheight=height)
-        except Exception as e:
-            ftype = None
-            imgs = e
-            return self.render("show.html", type=ftype, uri=filename, img=imgs, iwidth=width, iheight=height)
+        return self.render("show.html", type=ftype, uri=filename, img=imgs, iwidth=width, iheight=height)
 
     @authenticated
     def post(self, filename):

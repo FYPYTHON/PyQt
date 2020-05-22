@@ -9,7 +9,7 @@ from tornado.web import authenticated
 from PIL import Image
 import json
 from handlers.basehd import BaseHandler
-from tornado.log import access_log as weblog
+from tornado.log import app_log as weblog
 from common.global_func import get_user_info
 import platform
 

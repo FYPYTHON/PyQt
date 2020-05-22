@@ -9,7 +9,7 @@ import tornado.httpclient
 from tornado.web import stream_request_body
 from tornado.concurrent import run_on_executor
 from concurrent.futures import ThreadPoolExecutor
-from tornado.log import access_log as weblog
+from tornado.log import app_log as weblog
 from handlers.basehd import BaseHandler
 from common.global_func import get_user_info
 

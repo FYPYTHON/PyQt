@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+<!--/project/list 二级目录有问题-->
+{% block title%}
+<title>Manage</title>
+{% end %}
+
+{% block js-css %}
+<script type="text/javascript" src='{{static_url("js/fs/jquery.form.js")}}' charset="UTF-8"></script>
+{% end %}
+
+{% block header %}
+	{% if userinfo is None %}
+		<button class="btn">登录</button>
+	{% else %}
+		<button class="btn">{{userinfo.nickname}}</button>
+		<button class="btn dropdown-toggle" data-toggle="dropdown" style="margin-left: -7px;">
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+			<li><a>个人信息</a></li>
+			<li><a href="/fsmain">我的主页</a></li>
+			<li class="divider"></li>
+			<li><a>设置</a></li>
+			<li><a href="/logout">退出</a></li>
+		</ul>
+	{% end %}
+{% end %}
+
+{% block to-home %}
+<div class="col-sm-2">
+	<a href="/fsmain?curpath={{curpath}}">返回主页</a>
+</div>
+{% end %}
+
+{% block content-body %}
+<div class="box-content">
+    <a href="/user/add"><i class="icon-pencil"></i>Add an user</a>
+    <hr>
+    <table class="table" id="mytable">
+      <thead>
+          <tr class="center">
+            <th>ID</th>
+            <th>loginname</th>
+            <th>nickname</th>
+            <th>User State</th>
+            <th>User Role</th>
+            <th>Register Time</th>
+          </tr>
+      </thead>
+      <tbody>
+      {% for user in users %}
+        <tr class="center">
+        <td>{{ user.id }}</td>
+        <td>{{ user.loginname }}</td>
+        <td>{{ user.nickname }}</td>
+        <td >{% if user.userstate == 0 %}normal{% else %}disable{% end %}</td>
+        <td >{% if user.userrole == 0 %}administrator{% else %}consumer{% end %}</td>
+        <td >{{ user.register_time }}</td>
+        <td >
+          <a class="btn btn-info" href="/user/edit/{{ user.id }}">
+            <i class="icon-edit icon-white"></i>
+            Edit
+          </a>
+          <a class="btn btn-danger" href="/user/delete/{{ user.id }}">
+            <i class="icon-trash icon-white"></i>
+            Delete
+          </a>
+        </td>
+        </tr>
+      {% end %}
+      </tbody>
+    </table>
+{% end %}
+
+{% block func %}
+<script type="text/javascript">
+</script>
+{% end %}

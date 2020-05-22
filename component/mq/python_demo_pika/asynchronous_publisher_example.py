@@ -5,10 +5,12 @@ import functools
 import logging
 import json
 import pika
-HOST = '172.16.83.226'
-PORT = '5672'
-USER = 'admin'
-PAWD = 'feiying'
+# HOST = '172.16.83.228'
+HOST = "10.67.18.100"
+PORT = '5872'
+# PORT = "5872"
+USER = 'dev'
+PAWD = 'dev'
 DEBUG = True
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
               '-35s %(lineno) -5d: %(message)s')
@@ -29,12 +31,14 @@ class ExamplePublisher(object):
     messages that have been sent and if they've been confirmed by RabbitMQ.
 
     """
-    EXCHANGE = 'v1'
+    EXCHANGE = 'ops.collector.ex'
     EXCHANGE_TYPE = 'topic'
-    PUBLISH_INTERVAL = 1
-    QUEUE = 'text'
-    ROUTING_KEY = 'example.text'
+    PUBLISH_INTERVAL = 3
+    QUEUE = 'ops.pb.q'
+    ROUTING_KEY = 'ops.mt.k'
     MESSAGE = ''
+    DURABLE = False
+    AUTO_DELETE = False
 
     def __init__(self, amqp_url):
         """Setup the example publisher object, passing in the URL we will use
@@ -173,6 +177,8 @@ class ExamplePublisher(object):
         self._channel.exchange_declare(
             exchange=exchange_name,
             exchange_type=self.EXCHANGE_TYPE,
+            durable=self.DURABLE,
+            auto_delete=self.AUTO_DELETE,
             callback=cb)
 
     def on_exchange_declareok(self, _unused_frame, userdata):
@@ -196,7 +202,11 @@ class ExamplePublisher(object):
         """
         LOGGER.info('Declaring queue %s', queue_name)
         self._channel.queue_declare(
-            queue=queue_name, callback=self.on_queue_declareok)
+            queue=queue_name, callback=self.on_queue_declareok
+            # , passive=False, durable=False
+            , durable=self.DURABLE
+            , auto_delete=self.AUTO_DELETE
+        )
 
     def on_queue_declareok(self, _unused_frame):
         """Method invoked by pika when the Queue.Declare RPC call made in
@@ -214,7 +224,8 @@ class ExamplePublisher(object):
             self.QUEUE,
             self.EXCHANGE,
             routing_key=self.ROUTING_KEY,
-            callback=self.on_bindok)
+            callback=self.on_bindok
+        )
 
     def on_bindok(self, _unused_frame):
         """This method is invoked by pika when it receives the Queue.BindOk
@@ -298,14 +309,20 @@ class ExamplePublisher(object):
         if self._channel is None or not self._channel.is_open:
             return
 
-        hdrs = {u'مفتاح': u' قيمة', u'键': u'值', u'キー': u'値'}
+        # hdrs = {u'مفتاح': u' قيمة', u'键': u'值', u'キー': u'値'}
+        import time
+        hdrs = {"timestamp_in_ms": int(time.time()), "platformid": "mooooooo-oooo-oooo-oooo-defaultplatf"}
         properties = pika.BasicProperties(
-            app_id='example-publisher',
-            content_type='application/json',
+            # app_id='example-publisher',
+            # content_type='application/json',
             headers=hdrs)
+        properties.delivery_mode = 2
 
         # message = u'مفتاح قيمة 键 值 キー 値'
-        message = u'test asynchronous publisher %s' % self._message_number
+        message = u'test python asynchronous publisher %s' % self._message_number
+        # message = message.encode()
+        # import json
+        # message = json.dumps(message)
         if DEBUG is False:
             message = input('msg>')
             if message == 'quit':

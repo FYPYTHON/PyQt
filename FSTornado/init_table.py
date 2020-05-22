@@ -16,11 +16,12 @@ def init_admin():
 def init_user():
     from database.tbl_account import TblAccount
     account = TblAccount()
-    account.username = "TestAccount"
-    account.password = MD5("111111")
-    account.email = "1490726887@qq.com"
+    account.loginname = "youth303"
+    account.nickname = u"青春"
+    account.password = MD5("303303")
+    account.email = ""
     account.userstate = 0
-    account.userrole = 0
+    account.userrole = 2
     db_session.add(account)
     db_session.commit()
     db_session.close()
@@ -50,13 +51,11 @@ if __name__ == "__main__":
     # init_admin()
     # init_user()
     # init_setting()
-    from database.tbl_discuss import TblDiscuss
+    from database.tbl_jijin import TblJijin
     from datetime import datetime
-    dis = TblDiscuss()
-    dis.discuss = u"sub discuss"
-    dis.author = 3
-    dis.status = 0
-    dis.original = 1
-    dis.topic_id = 1
+    dis = TblJijin()
+    dis.jid = "test2"
+    dis.jdate = '2020-05-05'
+    dis.jvalue = '2.13'
     db_session.add(dis)
     db_session.commit()

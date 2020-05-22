@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>View</title>
+    <script src="{{static_url('js/echarts.min.js')}}"></script>
+    <link rel="stylesheet" href="{{static_url('css/bootstrap.min.css')}}">
+    <script src="{{static_url('js/jquery.min.js')}}"></script>
+    <script src="{{static_url('js/bootstrap.min.js')}}"></script>
+</head>
+<body>
+    <div class="col-sm-12" style="margin-top: 50px;">
+        <div class="col-sm-4">
+            <div class="col-sm-12">
+                <label class="col-sm-5">选择类型：</label>
+                <select class="col-sm-4" id="curjid">
+                    {% for vd in jids %}
+                    <option>{{vd}}</option>
+                    {% end %}
+                </select>
+                <button onclick="getjijin()" style="margin-left: 2px;">确定</button>
+            </div>
+            <div class="col-sm-12" id="jijin" style="width: 600px;height:400px;"></div>
+        </div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4" style="">
+            <label class="col-sm-6">类型：</label>
+            <input class="col-sm-6" type="text" name="nid" value="" placeholder="10001">
+            <label class="col-sm-6">日期：</label>
+            <input class="col-sm-6" type="text" name="ndate" value="" placeholder="2020-05-04">
+            <label class="col-sm-6">数值：</label>
+            <input class="col-sm-6" type="text" name="nvalue" value="" placeholder="2.4015">
+            <label class="col-sm-6"></label>
+            <button onclick="addjijin()">添加</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('jijin'));
+        var option = {
+            title: {
+                text: 'date-value echart'
+            },
+            tooltip: {},
+            legend: {
+                data:['值']
+            },
+            xAxis: {
+                data: {{jdata['jdate']}}
+            },
+            yAxis: {
+                min: {{jdata['jmin']}},
+                max: {{jdata['jmax']}},
+            },
+
+            series: [{
+                name: '值',
+                type: 'line',
+                data: {{jdata['jvalue']}}
+            }]
+        };
+        myChart.setOption(option);
+        function addjijin(){
+            var nid = $("[name='nid']").val()
+            var ndate = $("[name='ndate']").val()
+            var nvalue = $("[name='nvalue']").val()
+            console.log(nid, ndate, nvalue);
+            $.ajax({
+                    type: "POST",
+                    url: "/view",
+                    dataType : "json",
+                    async: true,
+                    data: {"jid": nid,"jdate":ndate,"jvalue":nvalue},
+                    success: function (data){
+                        console.log(data.msg);
+                        if(data.error_code==0){
+                            // window.location.href = "/tableTest"
+                            // alert(data.msg);
+                            // $("#msgSignin").html("");
+                            console.log("/view?jid=" + nid);
+                            window.location.href = "/view?jid=" + nid;
+                            // localStorage.currentUser = data.user;
+                        }
+                        else{
+                            alert(data.msg);
+                            // $("#msgSignin").html(data.msg).css("color","red");
+                            <!--window.location.href = "/"-->
+                        }
+                    }
+            })
+        }
+        function getjijin(){
+            var nid = $("#curjid").val()
+            console.log(nid);
+            window.location.href = "/view?jid=" + nid;
+<!--            $.ajax({-->
+<!--                    type: "GET",-->
+<!--                    url: "/view",-->
+<!--                    dataType : "json",-->
+<!--                    async: true,-->
+<!--                    data: {"jid": nid},-->
+<!--                    success: function (data){-->
+<!--                        // console.log(data.msg);-->
+<!--                        if(data.error_code==0){-->
+<!--                             // window.location.href = "/view?jid=" + nid;-->
+<!--                        }-->
+<!--                        else{-->
+<!--                            alert(data.msg);-->
+<!--                            // $("#msgSignin").html(data.msg).css("color","red");-->
+<!--                            &lt;!&ndash;window.location.href = "/"&ndash;&gt;-->
+<!--                        }-->
+<!--                    }-->
+<!--            })-->
+        }
+    </script>
+</body>
+</html>
