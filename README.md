@@ -1,5 +1,5 @@
 # component study
-some node of component install and settings
+some note of component install and settings
 1、bgfs
 2、docker
 3、es/elk
