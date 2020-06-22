@@ -1,7 +1,7 @@
 # coding=utf-8
 import hashlib
 
-from database.db_config import db_session
+from database.db_config import db_session, engine
 from method.data_encode import MD5
 def init_admin():
     from database.tbl_admin import TblAdmin
@@ -45,12 +45,7 @@ def init_setting():
 
     db_session.commit()
 
-
-
-if __name__ == "__main__":
-    # init_admin()
-    # init_user()
-    # init_setting()
+def init_jijin():
     from database.tbl_jijin import TblJijin
     from datetime import datetime
     dis = TblJijin()
@@ -59,3 +54,14 @@ if __name__ == "__main__":
     dis.jvalue = '2.13'
     db_session.add(dis)
     db_session.commit()
+
+if __name__ == "__main__":
+    # init_admin()
+    # init_user()
+    # init_setting()
+    from database.tbl_account import TblAccount
+    engine.execute("ALTER TABLE tbl_account ADD token char(100);")
+    engine.execute("select * from tbl_account;")
+
+
+

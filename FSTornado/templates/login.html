@@ -7,6 +7,7 @@
     <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=no"/>-->
     <title>Login</title>
     <script type="text/javascript" src="{{static_url('js/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{static_url('js/fs/fs.js')}}"></script>
     <link rel="stylesheet" href="{{static_url('css/bootstrap.min.css')}}">
     <style type="text/css">
         html{
@@ -38,6 +39,7 @@
                    sign();
                 }
         }
+
 
         $("verifyCode").on('click',function () {
             alert("换一张");

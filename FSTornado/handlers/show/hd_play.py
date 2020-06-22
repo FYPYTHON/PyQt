@@ -9,14 +9,15 @@ from tornado.web import authenticated
 from tornado.web import StaticFileHandler
 from PIL import Image
 import json
-from handlers.basehd import BaseHandler
+from handlers.basehd import BaseHandler, check_authenticated
 from tornado.log import app_log as weblog
 from common.global_func import get_user_info
 import platform
 
 
 class FsPlayHandler(BaseHandler):
-    @authenticated
+    # @authenticated
+    @check_authenticated
     def get(self, filename):
         realpath = os.path.join(self.settings.get('top_path'), filename)
         weblog.info("{} play".format(filename))

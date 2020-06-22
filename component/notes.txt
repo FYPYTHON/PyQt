@@ -35,3 +35,7 @@ protoc --proto_path=src --python_out=src/main/python src/main/proto/simple.proto
 
 9、wireshark
 https://www.wireshark.org/download/src/all-versions/
+
+
+10、ps查看进程
+ps -eo pid,args,lstart | grep h323parse

@@ -5,61 +5,105 @@ created: 2020/05/06
 from tornado.web import authenticated
 from tornado.log import app_log as weblog
 from common.global_func import get_user_info, DATE_FORMAT
-from handlers.basehd import BaseHandler
+from common.common_base import DatetimeManage
+from handlers.basehd import BaseHandler, check_token, check_authenticated
 from database.tbl_jijin import TblJijin
 from datetime import datetime, timedelta
 from sqlalchemy import distinct
 import json
 
 
+def strtime_check(self, strtime):
+    try:
+        dtime = datetime.strptime(strtime, DATE_FORMAT)
+        return True
+    except Exception as e:
+        weblog.error("{}".format(e))
+        return False
+
+
+def get_gid(self):
+    gids = self.mysqldb().query(distinct(TblJijin.jid)).all()
+    idlist = []
+    for gid in gids:
+        idlist.append(gid[0])
+    return idlist
+
+
+def get_gid_all_data(self, jid):
+    two_weeks_before = datetime.now() + timedelta(days=-30)
+    str_date = two_weeks_before.strftime(DATE_FORMAT)
+    result = self.mysqldb().query(TblJijin.jdate, TblJijin.jvalue).filter(TblJijin.jid == jid
+                                                                          , TblJijin.jdate >= str_date).order_by(
+        TblJijin.jdate.asc()
+    ).all()
+    jdata = dict()
+    jdate = []
+    jvalue = []
+    for res in result:
+        jdate.append(res.jdate)
+        jvalue.append(res.jvalue)
+    jdata["jdate"] = jdate
+    jdata["jvalue"] = jvalue
+    jdata["jmax"] = max(jvalue) if jvalue else 0
+    jdata["jmin"] = min(jvalue) if jvalue else 0
+    return jdata
+
+
+def get_gid_range_data(self, jid, weeks_ago):
+    monday, sunday = DatetimeManage.get_current_week(weeks_ago, True)
+    result = self.mysqldb().query(TblJijin.jdate, TblJijin.jvalue).filter(TblJijin.jid == jid
+                                                                          , TblJijin.jdate >= monday
+                                                                          , TblJijin.jdate <= sunday).order_by(
+        TblJijin.jdate.asc()
+    ).all()
+    jdata = dict()
+    jdate = []
+    jvalue = []
+    for res in result:
+        jdate.append(res.jdate)
+        jvalue.append(res.jvalue)
+    jdata["jdate"] = jdate
+    jdata["jvalue"] = jvalue
+    jdata["jmax"] = max(jvalue) if jvalue else 0
+    jdata["jmin"] = min(jvalue) if jvalue else 0
+    jdata["monday"] = monday
+    jdata["sunday"] = sunday
+    return jdata
+
+
 class JiJinHandler(BaseHandler):
-    pass
 
     # @authenticated
+    @check_authenticated
     def get(self):
         gid = self.get_argument("jid", None)
         weblog.info("{} gid: {}".format(self._request_summary(), gid))
-        gids = self.get_gid()
+        gids = get_gid(self)
         if gid is None:
             if len(gids) > 0:
                 gid = gids[0]
             else:
                 gid = None
-        jdata = self.get_gid_all_data(gid)
-        return self.render("view.html", jdata=jdata, jids=gids)
+        jdata = get_gid_all_data(self, gid)
+        current_week_data = get_gid_range_data(self, gid, 0)
+        last_week_data = get_gid_range_data(self, gid, 1)
+        return self.render("view.html", jdata=jdata, jids=gids, jdata0=current_week_data, jdata1=last_week_data)
 
-    def get_gid_all_data(self, jid):
-        two_weeks_before = datetime.now() + timedelta(days=-14)
-        str_date = two_weeks_before.strftime(DATE_FORMAT)
-        result = self.mysqldb().query(TblJijin.jdate, TblJijin.jvalue).filter(TblJijin.jid == jid
-                                                                              ,TblJijin.jdate >= str_date).order_by(
-            TblJijin.jdate.asc()
-        ).all()
-        jdata = dict()
-        jdate = []
-        jvalue = []
-        for res in result:
-            jdate.append(res.jdate)
-            jvalue.append(res.jvalue)
-        jdata["jdate"] = jdate
-        jdata["jvalue"] = jvalue
-        jdata["jmax"] = max(jvalue)
-        jdata["jmin"] = min(jvalue)
-        return jdata
-
-    @authenticated
+    # @authenticated
+    @check_authenticated
     def post(self):
         jid = self.get_argument("jid")
         jdate = self.get_argument("jdate")
         jvalue = self.get_argument("jvalue")
-        if not self.strtime_check(jdate):
+        if not strtime_check(self, jdate):
             weblog.error("{} is error".format(jdate))
         isexit = self.mysqldb().query(TblJijin).filter(TblJijin.jid == jid, TblJijin.jdate == jdate).first()
         if isexit:
-            isexit.value = jvalue
+            isexit.jvalue = jvalue
             try:
                 self.mysqldb().commit()
-                return self.write(json.dumps({"msg": "{}数据已存在,已更新".format(jdate), "error_code": 1}))
+                return self.write(json.dumps({"msg": "{}数据已存在,已更新".format(jdate), "error_code": 0}))
             except Exception as e:
                 weblog.error("{}".format(e))
                 return self.write(json.dumps({"msg": "{}数据已存在,更新失败".format(jdate), "error_code": 1}))
@@ -75,21 +119,50 @@ class JiJinHandler(BaseHandler):
             weblog.error("{}".format(e))
             return self.write(json.dumps({"msg": "jdata添加失败", "error_code": 1}))
 
-    def strtime_check(self, strtime):
+
+class AppJiJinHandler(BaseHandler):
+    @check_token
+    def get(self):
+        gid = self.get_argument("jid", None)
+        weblog.info("{} gid: {}".format(self._request_summary(), gid))
+        gids = get_gid(self)
+        if gid is None:
+            if len(gids) > 0:
+                gid = gids[0]
+            else:
+                gid = None
+        jdata = get_gid_all_data(self, gid)
+        current_week_data = get_gid_range_data(self, gid, 0)
+        last_week_data = get_gid_range_data(self, gid, 1)
+        # return self.render("view.html", jdata=jdata, jids=gids)
+        return self.write(json.dumps({"error_code": 0, "msg": "ok", "jdata": jdata, "jids": gids, "jid": gid
+                                         , "jdata0": current_week_data, "jdata1": last_week_data}))
+
+    @check_token
+    def post(self):
+        jid = self.get_argument("jid")
+        jdate = self.get_argument("jdate")
+        jvalue = self.get_argument("jvalue")
+        weblog.info("{} {} {} {}".format(self._request_summary(), jid, jdate, jvalue))
+        if not strtime_check(self, jdate):
+            weblog.error("{} is error".format(jdate))
+        isexit = self.mysqldb().query(TblJijin).filter(TblJijin.jid == jid, TblJijin.jdate == jdate).first()
+        if isexit:
+            isexit.jvalue = jvalue
+            try:
+                self.mysqldb().commit()
+                return self.write(json.dumps({"msg": "{}数据已存在,已更新".format(jdate), "error_code": 0}))
+            except Exception as e:
+                weblog.error("{}".format(e))
+                return self.write(json.dumps({"msg": "{}数据已存在,更新失败".format(jdate), "error_code": 1}))
+        tbl_jijin = TblJijin()
+        tbl_jijin.jdate = jdate
+        tbl_jijin.jid = jid
+        tbl_jijin.jvalue = jvalue
         try:
-            dtime = datetime.strptime(strtime, DATE_FORMAT)
-            return True
+            self.mysqldb().add(tbl_jijin)
+            self.mysqldb().commit()
+            return self.write(json.dumps({"msg": "jdata添加成功", "error_code": 0}))
         except Exception as e:
             weblog.error("{}".format(e))
-            return False
-
-    def get_gid(self):
-        gids = self.mysqldb().query(distinct(TblJijin.jid)).all()
-        idlist = []
-        for gid in gids:
-            idlist.append(gid[0])
-        return idlist
-
-
-#  58.240.217.252 ==
-#  58.211.249.171 ==
+            return self.write(json.dumps({"msg": "jdata添加失败", "error_code": 1}))

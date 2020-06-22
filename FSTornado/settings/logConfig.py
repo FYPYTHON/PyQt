@@ -45,7 +45,7 @@ logConfig = {
         'filename': '/opt/log/fs/access.log',
         'when': 'midnight',
         'interval': 1,
-        'backupCount': 0,    # u"备份数"
+        'backupCount': 2,    # u"备份数"
         'encoding': 'utf8'
         },
       'log': {
@@ -55,7 +55,7 @@ logConfig = {
         'filename': '/opt/log/fs/log.log',
         # 'when': 'midnight',
         # 'interval': 1,
-        'backupCount': 0,    # 日志文件的保留个数
+        'backupCount': 2,    # 日志文件的保留个数
         'maxBytes': 50 * 1024 * 1024,  # 文件最大50M
         'encoding': 'gbk'
         }

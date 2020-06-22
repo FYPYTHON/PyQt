@@ -9,7 +9,7 @@ from tornado.web import authenticated
 from PIL import Image
 from urllib import parse
 import json
-from handlers.basehd import BaseHandler
+from handlers.basehd import BaseHandler, check_authenticated
 from tornado.log import app_log as weblog
 from common.global_func import get_user_info
 import platform
@@ -51,7 +51,8 @@ class FsShowHandler(BaseHandler):
         imgs = "data:image/{};base64,".format(suffix) + ims
         return imgs, i_width, i_height
 
-    @authenticated
+    # @authenticated
+    @check_authenticated
     def get(self, filename):
         filename = parse.unquote_plus(filename)
         weblog.info("filename:{}".format(filename))
@@ -100,7 +101,8 @@ class FsShowHandler(BaseHandler):
             imgs = e
             return self.render("show.html", type=ftype, uri=filename, img=imgs, iwidth=width, iheight=height)
 
-    @authenticated
+    # @authenticated
+    @check_authenticated
     def post(self, filename):
         action = self.get_argument("action", None)
         iwidth = int(self.get_argument("iwidth", "600"))

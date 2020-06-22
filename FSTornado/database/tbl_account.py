@@ -30,6 +30,7 @@ class TblAccount(ModelBase, table_base.TableBase):
     register_time = Column(DateTime, default=datetime.now())
     last_logintime = Column(DateTime, default=datetime.now())
     avatar_path = Column(String(100), comment=u"用户头像地址")
+    token = Column(String(100), comment=u"token")
 
     def __repr__(self):
-        return "%s<id=%s, username=%s,email=%s>" % (self.__class__.__name__, self.id, self.username, self.email)
+        return "%s<id=%s, loginname=%s,email=%s>" % (self.__class__.__name__, self.id, self.loginname, self.email)

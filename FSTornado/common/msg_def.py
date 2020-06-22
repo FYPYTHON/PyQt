@@ -4,6 +4,7 @@ USER_IS_NONE = u"用户不存在！"
 USER_IS_EXIST = u"用户已注册!"
 USER_OR_PASSWORD_ERROR = u"用户名或密码错误！"
 VER_CODE_ERROR = u"验证码不正确"
+VER_CODE_EXPER = u"验证码已过期，请重新刷新"
 
 USERNAME_IS_EMPTY = u"用户账号不能为空!"
 NICKNAME_IS_EMPTY = u"用户名不能为空!"
@@ -23,4 +24,6 @@ USER_DISABLE = 1
 
 SUCCESS = 0
 FAIL = 1
+TOKEN_OUT = 1
+
 

@@ -1,15 +1,23 @@
 # coding=utf-8
 import os
 import datetime
+import json
+from datetime import timedelta
+from urllib.parse import urlencode
 import tornado.web
 from tornado import gen
 import tornado.options
 from jinja2 import Environment, FileSystemLoader, TemplateNotFound
 # from tornado.web import authenticated
 from tornado.log import app_log as weblog
+from tornado.log import access_log as accesslog
+
+from common.global_func import get_expires_datetime
 from database.db_config import db_session
 from database.tbl_admin import TblAdmin
-from common.msg_def import SESSION_ID
+from common.msg_def import SESSION_ID, FAIL, TOKEN_OUT
+from database.tbl_account import TblAccount
+
 # import redis
 
 
@@ -89,10 +97,26 @@ class BaseHandler(tornado.web.RequestHandler):
         return db_session
 
     def on_finish(self):
+        if self.current_user and self.current_user != "system":
+            if isinstance(self.current_user, bytes):
+                loginname = self.current_user.decode('gbk')
+            else:
+                loginname = self.current_user
+        elif self.get_argument("loginname", None):
+            loginname = self.get_argument("loginname", None)
+        else:
+            loginname = None
+        # print(loginname, "cc")
+        ten_minute_ago = datetime.datetime.now() - timedelta(minutes=self.settings.get('token_timeout'))
+        user = self.mysqldb().query(TblAccount).filter(TblAccount.loginname == loginname
+                                                       , ten_minute_ago < TblAccount.last_logintime).first()
+        if user:
+            # print(user)
+            user.last_logintime = datetime.datetime.now()
+            self.mysqldb().commit()
         self.mysqldb().close()
 
     def get_current_user(self):
-
         if self.request.uri.startswith(self.get_login_url()) or self.request.uri.startswith('/admin/verifyCode'):
             return "system"
         user = self.get_secure_cookie(SESSION_ID)
@@ -129,3 +153,61 @@ class BaseHandler(tornado.web.RequestHandler):
             weblog.exception("BaseHandler:visit_history error")
             self.mysqldb().rollback()
 
+
+def check_authenticated(func):
+    def inner(self, *args, **kwargs):
+        user = self.get_current_user()
+        weblog.info("check_authenticated: user={}".format(user))
+        if not user:
+            url = self.get_login_url()
+            next_url = self.request.uri
+            url += "?" + urlencode(dict(next=next_url, msg=u"登录过期，请重新登录"))
+            return self.redirect(url)
+            # return self.write(json.dumps({"error_code": FAIL, "msg": u"登录过期，请重新登录"}))
+        else:
+            # if self.request.uri.startswith("/delete") and user != "Tornado" \
+            #         and self.request.uri.method.lower() == "delete":
+            #     return self.write(json.dumps({"error_code": FAIL, "msg": u"该操作没有权限"}))
+            self.set_secure_cookie(SESSION_ID, user.decode("gbk"), expires=get_expires_datetime(self), expires_days=None)
+            func(self, *args, **kwargs)
+    return inner
+
+
+def check_token(func):
+    def inner(self, *args, **kwargs):
+        token = self.get_argument("token", None)
+        loginname = self.get_argument("loginname", None)
+        check_status = False
+        # print(token, loginname)
+        if token and loginname:
+            user = self.mysqldb().query(TblAccount).filter_by(loginname=loginname).first()
+            if user:
+                real_token = user.token
+                if real_token == token:
+                    last_login_time = user.last_logintime
+                    ten_minute_ago = datetime.datetime.now() - timedelta(minutes=self.settings.get('token_timeout'))
+                    # accesslog.info("last login:{} {}".format(last_login_time, ten_minute_ago))
+                    if ten_minute_ago < last_login_time:
+                        check_status = True
+                    else:
+                        weblog.info("user:{} check out last:{}".format(loginname, last_login_time))
+                else:
+                    last_login_time = user.last_logintime
+                    ten_minute_ago = datetime.datetime.now() - timedelta(minutes=self.settings.get('token_timeout'))
+                    # accesslog.info("last login:{} {}".format(last_login_time, ten_minute_ago))
+                    if ten_minute_ago < last_login_time:
+                        accesslog.error("user: {} login at other machine, please check.".format(loginname))
+                        return self.write(json.dumps({"error_code": FAIL, "msg": u"账号在其他地方登录，"
+                                                     u"如不是本人操作，请修改密码!", "token": TOKEN_OUT}))
+            else:
+                accesslog.error("user: {} not find".format(loginname))
+        else:
+            accesslog.error("param loginname:{} token:{}".format(loginname, token))
+        if check_status:
+            # 执行post方法或get方法
+            func(self, *args, **kwargs)
+        else:
+            weblog.info("{} login time out, please login again".format(loginname))
+            return self.write(json.dumps({"error_code": FAIL, "msg": u"登录过期，请重新登录", "token": TOKEN_OUT}))
+
+    return inner

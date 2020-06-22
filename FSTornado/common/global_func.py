@@ -50,6 +50,8 @@ def get_pages(total_page):
 
 def get_user_info(self):
     # current_user = self.current_user
+    if self.current_user is None:
+        return None
     current_user = self.current_user.decode('gbk')
     # print(current_user)
     user = self.mysqldb().query(TblAccount.id, TblAccount.nickname, TblAccount.userrole).filter(

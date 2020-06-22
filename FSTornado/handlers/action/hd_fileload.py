@@ -11,7 +11,7 @@ from tornado.web import stream_request_body
 from tornado.concurrent import run_on_executor
 from concurrent.futures import ThreadPoolExecutor
 from tornado.log import app_log as weblog
-from handlers.basehd import BaseHandler
+from handlers.basehd import BaseHandler, check_token
 from common.global_func import get_user_info
 
 time1 = 10
@@ -67,7 +67,7 @@ class DownloadHandler(tornado.web.RequestHandler):
                     f.read(flen - current_read)
                 current_read += 4096
 
-        self.write(json.dumps({"msg": "success", "code": 0}))
+        # self.write(json.dumps({"msg": "success", "code": 0}))
 
     @tornado.gen.coroutine
     def post(self):
@@ -117,6 +117,9 @@ class UploadHandler(BaseHandler):
         for fmeta in files:
             fname = fmeta['filename']
             weblog.info("{} {}".format(filepath, fname))
+            real_file = os.path.join("/opt/data", filepath, fname)
+            if os.path.exists(real_file):
+                return self.write(json.dumps({"error_code": 1, "msg": u"{} 已存在".format(fname)}))
             with open(os.path.join("/opt/data", filepath, fname), 'wb') as up:  # os拼接文件保存路径，以字节码模式打开
                 up.write(fmeta['body'])  # 将文件写入到保存路径目录
 
@@ -126,5 +129,38 @@ class UploadHandler(BaseHandler):
                 # count += 1
 
 
+class AppUploadHandler(BaseHandler):
+    executor = ThreadPoolExecutor(4)
 
+    @check_token
+    def get(self):
+        userinfo = get_user_info(self)
+        curpath = self.get_argument("curpath")
+        weblog.info("upload curpath:{}".format(curpath))
+        # print(userinfo)
+        self.render("upload.html", userinfo=userinfo, curpath=curpath)
+        pass
 
+    @check_token
+    @tornado.gen.coroutine
+    def post(self):
+        # filename = self.get_argument('filename', None)
+        filepath = self.get_argument("curpath", None)
+        weblog.info("{}".format(self._request_summary()))
+        files = self.request.files['files']
+        # count = 0
+        for fmeta in files:
+            fname = fmeta['filename']
+            weblog.info("{} {}".format(filepath, fname))
+            real_file = os.path.join("/opt/data", filepath, fname)
+            if os.path.exists(real_file):
+                weblog.error(u"{} is exist".format(real_file))
+                return self.write(json.dumps({"error_code": 1, "msg": u"{} 已存在".format(fname)}))
+            with open(os.path.join("/opt/data", filepath, fname), 'wb') as up:  # os拼接文件保存路径，以字节码模式打开
+                up.write(fmeta['body'])  # 将文件写入到保存路径目录
+
+                # yield self.write(str(count) + u"、")
+                # yield self.write(json.dumps({"name": fname + u"上传成功" + "\n", "count": count}))  # 将上传好的路径返回
+                # yield self.write(fname + u"   上传成功<br />")
+                yield self.write(json.dumps({"msg": fname + u"   上传成功<br />"}))
+                # count += 1

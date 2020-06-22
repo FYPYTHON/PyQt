@@ -1,5 +1,5 @@
 # coding=utf-8
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from functools import wraps, reduce
 import json
 
@@ -14,6 +14,14 @@ def running_time(fn):
         print(fn.__name__, "used(s):", used_time)
         return res
     return process_fn
+
+
+def print_file_lineno():
+    import inspect
+    callerframerecord = inspect.stack()[1]
+    frame = callerframerecord[0]
+    info = inspect.getframeinfo(frame)
+    return info.filename,  info.lineno  # , info.function, info.code_context
 
 
 @running_time
@@ -131,6 +139,23 @@ class DatetimeManage(object):
             return datetime.strptime(st, fmt)
         except Exception as e:
             return None
+
+    @staticmethod
+    def get_current_week(weeks_ago=0, str_result=False):
+        """
+        get monday and sunday of current date
+        :param weeks_ago: int
+        :return:
+        """
+        monday, sunday = date.today() - timedelta(days=7*weeks_ago), date.today() - timedelta(days=7*weeks_ago)
+        one_day = timedelta(days=1)
+        while monday.weekday() != 0:
+            monday -= one_day
+        while sunday.weekday() != 6:
+            sunday += one_day
+        if str_result:
+            return monday.strftime("%Y-%m-%d"), sunday.strftime("%Y-%m-%d")
+        return monday, sunday
 
 @running_time
 def test():

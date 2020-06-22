@@ -6,7 +6,7 @@ from tornado.web import authenticated
 import time
 from datetime import datetime
 from database.tbl_account import TblAccount
-from handlers.basehd import BaseHandler
+from handlers.basehd import BaseHandler, check_authenticated
 from json import dumps as json_dumps
 from tornado.log import access_log as weblog
 from method.data_encode import MD5
@@ -16,7 +16,8 @@ from common.msg_def import SESSION_ID, USER_IS_NONE, USER_OR_PASSWORD_ERROR, VER
 
 
 class ManageHandler(BaseHandler):
-    @authenticated
+    # @authenticated
+    @check_authenticated
     def get(self):
         weblog.info("%s ,logout", self._request_summary())
         curpath = self.get_argument('curpath', None)
@@ -28,7 +29,8 @@ class ManageHandler(BaseHandler):
         userinfo = get_user_info(self)
         self.render("manage.html", users=userlist, userinfo=userinfo, curpath=curpath)
 
-    @authenticated
+    # @authenticated
+    @check_authenticated
     def post(self):
         loginname = self.get_argument("loginname", None)
         nickname = self.get_argument('nickname', None)

@@ -34,6 +34,10 @@
             <button onclick="addjijin()">添加</button>
         </div>
     </div>
+    <div class="col-sm-12" style="margin-top: 20px;">
+        <div class="col-sm-12" id="jijin1" style="width: 600px;height:400px;"></div>
+        <div class="col-sm-12" id="jijin0" style="width: 600px;height:400px;"></div>
+    </div>
     <script type="text/javascript">
         var myChart = echarts.init(document.getElementById('jijin'));
         var option = {
@@ -45,7 +49,11 @@
                 data:['值']
             },
             xAxis: {
-                data: {{jdata['jdate']}}
+                data: {{jdata['jdate']}},
+                axisLabel: {
+                interval:0,
+                rotate:40
+                },
             },
             yAxis: {
                 min: {{jdata['jmin']}},
@@ -59,6 +67,72 @@
             }]
         };
         myChart.setOption(option);
+
+        <!--   last week data     -->
+        var myChart1 = echarts.init(document.getElementById('jijin1'));
+
+        console.log('{{jdata1['sunday']}}');
+        var title1 ='last week ' + '{{jdata1['sunday']}}';
+        console.log(title1);
+        var option1 = {
+            title: {
+                text: 'last week data ' + '{{jdata1['monday']}}' + ' - ' + '{{jdata1['sunday']}}',
+            },
+            tooltip: {},
+            legend: {
+                data:['值']
+            },
+            xAxis: {
+                data: {{jdata1['jdate']}},
+                axisLabel: {
+                interval:0,
+                rotate:40
+                },
+            },
+            yAxis: {
+                min: {{jdata1['jmin']}},
+                max: {{jdata1['jmax']}},
+            },
+
+            series: [{
+                name: '值',
+                type: 'line',
+                data: {{jdata1['jvalue']}}
+            }]
+        };
+        myChart1.setOption(option1);
+
+        <!--   current week data     -->
+        var myChart0 = echarts.init(document.getElementById('jijin0'));
+        var option0 = {
+            title: {
+                text: 'current week data' + '{{jdata0['monday']}}' + ' - ' + '{{jdata0['sunday']}}',
+            },
+            tooltip: {},
+            legend: {
+                data:['值']
+            },
+            xAxis: {
+                data: {{jdata0['jdate']}},
+                axisLabel: {
+                    interval:0,
+                    rotate:40
+                },
+            },
+            yAxis: {
+                min: {{jdata0['jmin']}},
+                max: {{jdata0['jmax']}},
+            },
+
+            series: [{
+                name: '值',
+                type: 'line',
+                data: {{jdata0['jvalue']}}
+            }]
+        };
+        myChart0.setOption(option0);
+        <!--   end     -->
+
         function addjijin(){
             var nid = $("[name='nid']").val()
             var ndate = $("[name='ndate']").val()
@@ -73,17 +147,11 @@
                     success: function (data){
                         console.log(data.msg);
                         if(data.error_code==0){
-                            // window.location.href = "/tableTest"
-                            // alert(data.msg);
-                            // $("#msgSignin").html("");
                             console.log("/view?jid=" + nid);
                             window.location.href = "/view?jid=" + nid;
-                            // localStorage.currentUser = data.user;
                         }
                         else{
                             alert(data.msg);
-                            // $("#msgSignin").html(data.msg).css("color","red");
-                            <!--window.location.href = "/"-->
                         }
                     }
             })
@@ -92,24 +160,6 @@
             var nid = $("#curjid").val()
             console.log(nid);
             window.location.href = "/view?jid=" + nid;
-<!--            $.ajax({-->
-<!--                    type: "GET",-->
-<!--                    url: "/view",-->
-<!--                    dataType : "json",-->
-<!--                    async: true,-->
-<!--                    data: {"jid": nid},-->
-<!--                    success: function (data){-->
-<!--                        // console.log(data.msg);-->
-<!--                        if(data.error_code==0){-->
-<!--                             // window.location.href = "/view?jid=" + nid;-->
-<!--                        }-->
-<!--                        else{-->
-<!--                            alert(data.msg);-->
-<!--                            // $("#msgSignin").html(data.msg).css("color","red");-->
-<!--                            &lt;!&ndash;window.location.href = "/"&ndash;&gt;-->
-<!--                        }-->
-<!--                    }-->
-<!--            })-->
         }
     </script>
 </body>
