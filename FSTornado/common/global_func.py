@@ -52,7 +52,10 @@ def get_user_info(self):
     # current_user = self.current_user
     if self.current_user is None:
         return None
-    current_user = self.current_user.decode('gbk')
+    if isinstance(self.current_user, bytes):
+        current_user = self.current_user.decode('gbk')
+    else:
+        current_user = self.current_user
     # print(current_user)
     user = self.mysqldb().query(TblAccount.id, TblAccount.nickname, TblAccount.userrole).filter(
         TblAccount.loginname == current_user).first()

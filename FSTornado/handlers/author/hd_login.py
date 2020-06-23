@@ -24,16 +24,15 @@ class LogoutHandler(BaseHandler):
 class LoginHandler(BaseHandler):
 
     def get(self):
-        weblog.info("%s ,login.", self._request_summary())
+
         self.render("login.html")
 
     def post(self):
-        weblog.info("%s ,sign in.", self._request_summary())
+
         # weblog.info("tbl_admin:%s", self.localVariable)
         userAccount = self.get_argument("userAccount")
         password = self.get_argument("password")
         inputCode = self.get_argument("inputCode")
-        weblog.info("{},{},{}".format(userAccount, password, inputCode))
 
         user = self.mysqldb().query(TblAccount.loginname, TblAccount.password, TblAccount.nickname
                                     ).filter_by(loginname=userAccount).first()

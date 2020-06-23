@@ -7,11 +7,12 @@ import tornado.web
 import tornado.gen
 from tornado.web import authenticated
 import tornado.httpclient
+from urllib import parse
 from tornado.web import stream_request_body
 from tornado.concurrent import run_on_executor
 from concurrent.futures import ThreadPoolExecutor
 from tornado.log import app_log as weblog
-from handlers.basehd import BaseHandler, check_token
+from handlers.basehd import BaseHandler, check_token, check_authenticated
 from common.global_func import get_user_info
 
 time1 = 10
@@ -21,9 +22,21 @@ MAX_STREAMED_SIZE = 1024 * 1024 * 1024
 BASE_DIR = "/opt/data"
 
 
+def urldecode_path(path):
+    if isinstance(path, str):
+        if '+' in path:
+            return parse.unquote_plus(path)
+        else:
+            return parse.unquote(path)
+    else:
+        return path
+
+
 class DownloadHandler(tornado.web.RequestHandler):
     executor = ThreadPoolExecutor(4)
 
+    # @check_authenticated
+    # @authenticated
     @tornado.gen.coroutine
     def get(self):
         filename = self.get_argument('filename', None)
@@ -31,7 +44,7 @@ class DownloadHandler(tornado.web.RequestHandler):
         # fsize = int(self.get_argument('fsize', '0'))   # 客户端文件大小
         if filename is None:
             return self.write(json.dumps({'msg': 'file is none.', 'code': 1}))
-
+        filename = urldecode_path(filename)
         fpath = os.path.join(BASE_DIR, filename)
         if platform.system() == 'Windows':
             fpath = fpath.replace("\\", '/')
@@ -51,7 +64,8 @@ class DownloadHandler(tornado.web.RequestHandler):
             return self.write(json.dumps({'msg': 'error download file not exist.', 'code': 1}))
         fsize = os.path.getsize(fpath)
 
-        yield self.read_data(fpath, fsize)
+        # yield self.read_data(fpath, fsize)
+        yield self.send_data(fpath)
         self.finish()
 
 
@@ -69,12 +83,13 @@ class DownloadHandler(tornado.web.RequestHandler):
 
         # self.write(json.dumps({"msg": "success", "code": 0}))
 
+    # @check_authenticated
     @tornado.gen.coroutine
     def post(self):
         filename = self.get_argument('filename', None)
         # brange = int(self.get_argument('brange', '0'))
         fpath = os.path.join(BASE_DIR, filename)
-        print(fpath)
+        # print(fpath)
         if not os.path.exists(fpath):
             return self.write(json.dumps({'msg': 'error download', 'count': -1}))
         # print(brange)
@@ -101,12 +116,12 @@ class UploadHandler(BaseHandler):
     def get(self):
         userinfo = get_user_info(self)
         curpath = self.get_argument("curpath")
-        weblog.info("upload curpath:{}".format(curpath))
+
         # print(userinfo)
         self.render("upload.html", userinfo=userinfo, curpath=curpath)
         pass
 
-    @authenticated
+    @check_authenticated
     @tornado.gen.coroutine
     def post(self):
         # filename = self.get_argument('filename', None)
@@ -136,7 +151,7 @@ class AppUploadHandler(BaseHandler):
     def get(self):
         userinfo = get_user_info(self)
         curpath = self.get_argument("curpath")
-        weblog.info("upload curpath:{}".format(curpath))
+
         # print(userinfo)
         self.render("upload.html", userinfo=userinfo, curpath=curpath)
         pass
@@ -146,7 +161,7 @@ class AppUploadHandler(BaseHandler):
     def post(self):
         # filename = self.get_argument('filename', None)
         filepath = self.get_argument("curpath", None)
-        weblog.info("{}".format(self._request_summary()))
+
         files = self.request.files['files']
         # count = 0
         for fmeta in files:

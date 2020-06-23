@@ -6,7 +6,7 @@ from tornado.web import authenticated
 import time
 from datetime import datetime
 from database.tbl_account import TblAccount
-from handlers.basehd import BaseHandler, check_authenticated
+from handlers.basehd import BaseHandler, check_authenticated, check_token
 from json import dumps as json_dumps
 from tornado.log import access_log as weblog
 from method.data_encode import MD5
@@ -19,7 +19,6 @@ class ManageHandler(BaseHandler):
     # @authenticated
     @check_authenticated
     def get(self):
-        weblog.info("%s ,logout", self._request_summary())
         curpath = self.get_argument('curpath', None)
         if curpath is None:
             curpath = 'public'
@@ -57,3 +56,35 @@ class ManageHandler(BaseHandler):
                 weblog.error("{}".format(e))
         else:
             return self.write(json_dumps({"code": 1, "msg": u"添加失败"}))
+
+
+class RestartHandler(BaseHandler):
+    @check_token
+    def post(self):
+        cur_user = self.get_argument("loginname", None)
+        self.restart(cur_user)
+
+    @check_authenticated
+    def get(self):
+        if self.current_user:
+            cur_user = self.current_user.decode('gbk')
+        else:
+            cur_user = None
+
+        self.restart(cur_user)
+
+    def restart(self, cur_user):
+        user = self.mysqldb().query(TblAccount).filter(TblAccount.loginname == cur_user).first()
+        TO_RESTART = False
+        if user:
+            if user.userrole == 0:
+                TO_RESTART = True
+        if TO_RESTART:
+            import os
+            res = os.system("bash /opt/midware/FSTornado/shell/restart.sh")
+            if res == 0:
+                return self.write(json_dumps({"error_code": 0, "msg": u"服务已重启"}))
+            else:
+                return self.write(json_dumps({"error_code": 1, "msg": u"服务重启失败"}))
+        else:
+            return self.write(json_dumps({"error_code": 1, "msg": u"没有操作权限"}))

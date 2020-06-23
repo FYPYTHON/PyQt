@@ -11,7 +11,7 @@ from jinja2 import Environment, FileSystemLoader, TemplateNotFound
 # from tornado.web import authenticated
 from tornado.log import app_log as weblog
 from tornado.log import access_log as accesslog
-
+from urllib.parse import unquote
 from common.global_func import get_expires_datetime
 from database.db_config import db_session
 from database.tbl_admin import TblAdmin
@@ -26,6 +26,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def __init__(self, *argc, **argkw):
         # print("init...")
+        #
         # self.session = None
         # self.redis = redis.StrictRedis(host='localhost', port=6379, password='feiying')
         super(BaseHandler, self).__init__(*argc, **argkw)
@@ -47,6 +48,10 @@ class BaseHandler(tornado.web.RequestHandler):
         self.initLocalVariable()
         yield self.browsing_history()
         # super(BaseHandler, self).__init__(*argc, **argkw)
+
+    def prepare(self):
+        weblog.info("{} user:{}, args:{}".format(self._request_summary(), self.current_user,
+                                                 self.request.arguments))
 
     def get_template(self, name):
         """Return the jinja template object for a given name
@@ -123,7 +128,7 @@ class BaseHandler(tornado.web.RequestHandler):
         if user is None:
             return None
         else:
-            return user
+            return user.decode('gbk')
 
     def initLocalVariable(self):
         variables = self.mysqldb().query(TblAdmin).all()
@@ -157,7 +162,7 @@ class BaseHandler(tornado.web.RequestHandler):
 def check_authenticated(func):
     def inner(self, *args, **kwargs):
         user = self.get_current_user()
-        weblog.info("check_authenticated: user={}".format(user))
+        weblog.info("check_authenticated: user={} uri:{}".format(user, self.request.uri))
         if not user:
             url = self.get_login_url()
             next_url = self.request.uri
@@ -168,7 +173,7 @@ def check_authenticated(func):
             # if self.request.uri.startswith("/delete") and user != "Tornado" \
             #         and self.request.uri.method.lower() == "delete":
             #     return self.write(json.dumps({"error_code": FAIL, "msg": u"该操作没有权限"}))
-            self.set_secure_cookie(SESSION_ID, user.decode("gbk"), expires=get_expires_datetime(self), expires_days=None)
+            self.set_secure_cookie(SESSION_ID, user, expires=get_expires_datetime(self), expires_days=None)
             func(self, *args, **kwargs)
     return inner
 

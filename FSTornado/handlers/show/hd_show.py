@@ -55,7 +55,6 @@ class FsShowHandler(BaseHandler):
     @check_authenticated
     def get(self, filename):
         filename = parse.unquote_plus(filename)
-        weblog.info("filename:{}".format(filename))
         realpath = os.path.join(self.settings.get('top_path'), filename)
         if "\\" in realpath:
             realpath = realpath.replace("\\", '/')
@@ -107,7 +106,6 @@ class FsShowHandler(BaseHandler):
         action = self.get_argument("action", None)
         iwidth = int(self.get_argument("iwidth", "600"))
         iheight = int(self.get_argument("iheight", "600"))
-        weblog.info("{} {} {}".format(action, iwidth, iheight))
         realpath = os.path.join(self.settings.get('top_path'), filename)
         if "\\" in realpath:
             realpath = realpath.replace("\\", '/')

@@ -14,6 +14,10 @@
 	max-height: 800px;
 	max-width: : 1000px;
 }
+.filepath input{
+	min-width: 200px;
+	max-width: : 400px;
+}
 .hnavli {
 	margin-right: 20px;
 }

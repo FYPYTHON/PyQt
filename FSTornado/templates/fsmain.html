@@ -57,7 +57,7 @@
 {% end %}
 
 {% for file in files %}
-{% if file.split(".")[1] == "mp4" %}
+{% if file.split(".")[-1] == "mp4" %}
 <li class="col-md-11" style="list-style:none;"><input class="col-md-1" name="{{file}}" type="checkbox" value="{{file}}" /><a href="/play/{{curpath}}/{{file}}" target="_blank">{{file}}</a></li>
 {% else %}
 <li class="col-md-11" style="list-style:none;"><input class="col-md-1" name="{{file}}" type="checkbox" value="{{file}}" /><a href="/show/{{curpath}}/{{file}}" target="_blank">{{file}}</a></li>
@@ -110,15 +110,15 @@
 			</div>
 			<div class="modal-body">
 				<label for="oldname">当前文件或路径</label>
-				<input type="text" name="oldpath" class="" id="oldpath" readonly="true" value="">
+				<input type="text" name="oldpath" class="filepath" id="oldpath" readonly="true" value="">
 				<br />
 				<label for="newname">移动至路径</label>
-				<input type="text" name="newpath" class="" id="newpath"  value="" placeholder="新名称">
+				<input type="text" name="newpath" class="filepath" id="newpath"  value="" placeholder="新名称">
 				<br />
 				<ul id="ulmovepath">
 				</ul>	
-				<button onclick="getdir('super')">上一级</button>
-				<button onclick="getdir('subor')">下一级</button>
+				<button onclick="getdir('super')">显示上一级</button>
+				<button onclick="getdir('subor')">显示下一级</button>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
@@ -138,18 +138,18 @@
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
-			<h4 class="modal-title" id="myModalTitle">创建</h4>
+			<h4 class="modal-title" id="myModalTitle2">创建</h4>
 		</div>
 		<div class="modal-body">
 			<label for="createname">名称</label>
 			<input type="text" name="createname" class="" id="createname"  value="" placeholder="输入名称">
-			<label type="text" name="newsuffix" class="" id="newsuffix" readonly="true" value=""></label>
+			<label type="text" name="newsuffix" class="" id="newsuffix2" readonly="true" value=""></label>
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">
 				<span class="glyphicon glyphicon-remove" aria-hidden="true">关闭</span>
 			</button>
-			<button id="btn_rename" type="button" class="btn btn-primary" data-dismiss="modal" onclick="createdir()">
+			<button id="btn_rename2" type="button" class="btn btn-primary" data-dismiss="modal" onclick="createdir()">
 				<span class="glyphicon glyphicon-ok" aria-hidden="true">确认</span>
 			</button>
 		</div>
@@ -178,7 +178,7 @@ var fchecks = getCheckedlist();
 // console.log(fchecks);
 function download(filename){
 		$.ajax({
-	        type: "GET",
+	        type: "POST",
 	        url: "/download",
 	        dataType : "json",
 	        async: true,
@@ -197,17 +197,39 @@ function fsdownload(){
 	if (flist.length <= 0){
 		alert("请选择文件");
 		return 0;
-	}else{
+	}
+	else if (flist.length > 1){
+		alert("不支持多个文件");
+		return 0;
+	}
+	else {
+
+
 		for(var i = 0; i < flist.length; i++) {
+			//console.log(flist[i]);
+			// alert(flist[i]);
 	    	// download(flist[i]);
-	    	window.open("/download?filename=" + flist[i]); 
+	    	window.open("/download?filename=" + encodeURI(flist[i]));
+	    	// alert(encodeURI(flist[i]));
 	    	// window.location.href = "/download?filename=" + flist[i];
+
+	    	//var file = flist[i].split("/");
+	    	//var name = file[file.length - 1 ];
+	    	// alert(name);
+	    	//var a = document.createElement('a');
+			//a.setAttribute('href', "/download?filename=" + encodeURI(flist[i]));
+			//a.setAttribute('target', "_blank");
+			//a.setAttribute('download', name);
+			//a.click();
 		}
 	}
 }
 function getdir(action){
 	// curpath = "{{curpath}}";
 	newpath = $("#newpath").val();
+	oldpath = $("#oldpath").val();
+	console.log(newpath);
+	console.log(oldpath);
 	if (newpath == ""){
 		newpath = "{{curpath}}";
 	}
@@ -223,24 +245,59 @@ function getdir(action){
        			alert(data.msg);
        		}else{
        			var movepaths = data.movepaths;
-       			movepathul = $("#ulmovepath").html("")
+       			// movepathul = $("#ulmovepath").html("")
+       			$("#ulmovepath").html("暂无目录");
 				var newulhtml = ""
 				for(var i = 0; i < movepaths.length; i++) {
 					newulhtml += '<li style="list-style:none;">'+ movepaths[i] + '</li>';
 				}
-				$("#ulmovepath").html(newulhtml);
+				$("#ulmovepath").html(newulhtml).css("color", "black");
+				if (movepaths.length == 0){
+
+					$("#ulmovepath").html("暂无目录").css("color", "red");;
+				}
+				$("#newpath").val(data.newpath);
        		}
         }
     })
 }
 function move(){
-
+	curpath = "{{curpath}}";
+	oldpath = $("#oldpath").val();
+	newpath = $("#newpath").val();
+	$.ajax({
+        type: "POST",
+        url: "/move",
+        dataType : "json",
+        async: true,
+        data: {"oldpath": oldpath, "newpath": newpath},
+        success: function (data){
+        	// console.log(data.msg);
+       		if (data.code == 1){
+       			alert(data.msg);
+       		}else{
+				alert(data.msg);
+				window.location.href = "/fsmain?curpath={{curpath}}";
+       		}
+        }
+    })
 }
 function fsmove(){
 	console.log("move");
-	getdir("curpath");
+	var flist = getCheckedlist();
+	if (flist.length <= 0){
+		alert("请选择文件！");
+		return 0;
+	}else if (flist.length > 1){
+		alert("不能多选！")
+	}else{
+		var temp = flist[0];
+		// var pathnow = "{{curpath}}" + "/" + temp;
+		$("#oldpath").val(temp);
+		$("#newpath").val(temp);
+	}
+	// getdir("curpath");
 
-	$("#oldpath").val("{{curpath}}")
 
 	$("#moveModal").modal();
 }

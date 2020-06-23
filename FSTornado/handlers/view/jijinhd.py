@@ -78,7 +78,7 @@ class JiJinHandler(BaseHandler):
     @check_authenticated
     def get(self):
         gid = self.get_argument("jid", None)
-        weblog.info("{} gid: {}".format(self._request_summary(), gid))
+
         gids = get_gid(self)
         if gid is None:
             if len(gids) > 0:
@@ -124,7 +124,7 @@ class AppJiJinHandler(BaseHandler):
     @check_token
     def get(self):
         gid = self.get_argument("jid", None)
-        weblog.info("{} gid: {}".format(self._request_summary(), gid))
+
         gids = get_gid(self)
         if gid is None:
             if len(gids) > 0:
@@ -143,7 +143,7 @@ class AppJiJinHandler(BaseHandler):
         jid = self.get_argument("jid")
         jdate = self.get_argument("jdate")
         jvalue = self.get_argument("jvalue")
-        weblog.info("{} {} {} {}".format(self._request_summary(), jid, jdate, jvalue))
+
         if not strtime_check(self, jdate):
             weblog.error("{} is error".format(jdate))
         isexit = self.mysqldb().query(TblJijin).filter(TblJijin.jid == jid, TblJijin.jdate == jdate).first()

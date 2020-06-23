@@ -87,7 +87,7 @@ class AppJijinPredict(BaseHandler):
         jid = self.get_argument("jid", None)
         days = int(self.get_argument("days", "14"))
         pdate = self.get_argument("jdate", None)
-        weblog.info("{} {} {} {}".format(self._request_summary(), jid, days, pdate))
+
         if not strtime_check(self, pdate):
             return self.write(json.dumps({"error_code": 1, "msg": u"date日期格式错误"}))
         jdate, jvalue = get_gid_all_data(self, jid, days)
@@ -103,7 +103,11 @@ class AppJijinPredict(BaseHandler):
                 predict_index = jdate.index(pdate)
             else:
                 predict_index = -1
-            data = predict_jj(df, dataset, predict_index, 7)
+            try:
+                data = predict_jj(df, dataset, predict_index, 5)
+            except Exception as e:
+                weblog.error("{}".format(e))
+                return self.write(json.dumps({"error_code": 1, "msg": u"预测失败", "data": [], "jdate": jdate, "jvalue": jvalue}))
             weblog.info("ok")
             return self.write(json.dumps({"error_code": 0, "msg": "ok", "data": data, "jdate": jdate, "jvalue": jvalue}))
         else:

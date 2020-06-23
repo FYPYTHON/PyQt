@@ -24,6 +24,7 @@ url = [                            #
         (r'/rename', hd_rename.FsRenameHandler),
         (r'/move', hd_move.FsMoveHandler),
         (r'/createdir', hd_create.FsCreateHandler),
+        (r'/restart', hd_manage.RestartHandler),
 
         # view
         (r'/view', hd_jijin.JiJinHandler),

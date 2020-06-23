@@ -10,19 +10,20 @@ from tornado.web import stream_request_body
 from tornado.concurrent import run_on_executor
 from concurrent.futures import ThreadPoolExecutor
 from tornado.log import app_log as weblog
-from handlers.basehd import BaseHandler, check_token
+from handlers.basehd import BaseHandler, check_token, check_authenticated
 from common.global_func import get_user_info
 from tornado.log import app_log as weblog
 
 
 class FsRenameHandler(BaseHandler):
-    @authenticated
+    # @authenticated
+    @check_authenticated
     def post(self):
         oldname = self.get_argument("oldname", None)
         newname = self.get_argument("newname", None)
         curpath = self.get_argument("curpath", None)
 
-        weblog.info("{} {} {} ".format(oldname, newname, curpath))
+
         toppath = self.settings.get("top_path")
         real_oldname = os.path.join(toppath, curpath, oldname)
         real_newname = os.path.join(toppath, curpath, newname)

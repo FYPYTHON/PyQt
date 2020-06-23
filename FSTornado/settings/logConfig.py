@@ -29,7 +29,7 @@ logConfig = {
         'format': '[%(levelname)s] %(asctime)s %(filename)s %(lineno)s:%(message)s'
       },
       'timedRotating': {
-        'format': '[%(levelname)s] %(asctime)s %(filename)-12s %(message)s'
+        'format': '[%(levelname)s] %(asctime)s %(filename)s [%(lineno)s] - %(message)s'
       }
     },
     'handlers': {

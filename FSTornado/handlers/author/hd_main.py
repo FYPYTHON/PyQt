@@ -46,7 +46,6 @@ class FSMainHandler(BaseHandler):
         if action is not None and action != "APP":
             curpath = os.path.dirname(curpath)
         # print("curpath:", curpath)
-        weblog.info("%s ,main page. curpath: %s", self._request_summary(), curpath)
         userinfo = get_user_info(self)
         upload_path = self.settings.get('upload_path')
         if curpath is None or curpath == "" or curpath == "/":
@@ -77,7 +76,7 @@ class AppFSMainHandler(BaseHandler):
         if action is not None:
             curpath = os.path.dirname(curpath)
         # print("curpath:", curpath)
-        weblog.info("%s ,main page. curpath: %s", self._request_summary(), curpath)
+
         userinfo = get_user_info(self)
         upload_path = self.settings.get('upload_path')
         if curpath is None or curpath == "" or curpath == "/":
