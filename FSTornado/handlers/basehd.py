@@ -50,8 +50,9 @@ class BaseHandler(tornado.web.RequestHandler):
         # super(BaseHandler, self).__init__(*argc, **argkw)
 
     def prepare(self):
-        weblog.info("{} user:{}, args:{}".format(self._request_summary(), self.current_user,
-                                                 self.request.arguments))
+        remote_ip = self.request.headers.get("X-Real-Ip", "")
+        weblog.info("{} {}  remote_ip:{} user:{}, args:{}".format(self.request.method, self.request.uri, remote_ip,
+                                                                  self.current_user, self.request.arguments))
 
     def get_template(self, name):
         """Return the jinja template object for a given name

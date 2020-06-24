@@ -13,7 +13,7 @@ import warnings
 warnings.filterwarnings("ignore")
 from tornado.options import define, options
 
-define("port", default=9016, help="run on the given port", type=int)
+define("port", default=9080, help="run on the given port", type=int)
 logging.config.dictConfig(logConfig)
 MAX_STREAMED_SIZE = 1024 * 1024 * 1024
 
@@ -39,6 +39,7 @@ class Application(tornado.web.Application):
             login_url="/login",
             debug=False,
             autoescape=None,
+            xheaders=True,
         )
 
         handlers = urls.url
@@ -56,11 +57,11 @@ if __name__ == "__main__":
     app = Application()
     http_server = tornado.httpserver.HTTPServer(app, max_buffer_size=4 * MAX_STREAMED_SIZE)
     http_server.listen(options.port)
-    # http_server.start(2)
+    http_server.start(2)
     # app.listen(options.port)
     # from timedtask.timedget import printLineFileFunc
     # tornado.ioloop.PeriodicCallback(printLineFileFunc, 3000).start()    # ms
-    weblog.info("-- tornadofs server start .... ")
+    weblog.info("-- tornadofs server start .... pid:{} ".format(os.getpid()))
     tornado.ioloop.IOLoop.instance().start()
 
 
