@@ -2,7 +2,7 @@
 from handlers.adminhd import verifyCode
 from handlers.author import hd_login, hd_main, hd_manage
 from handlers.show import hd_show, hd_play
-from handlers.action import hd_fileload, hd_rename, hd_move, hd_create
+from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete
 from handlers.view import jijinhd as hd_jijin
 from handlers.view import hd_predict
 from tornado.web import StaticFileHandler
@@ -23,6 +23,7 @@ url = [                            #
         (r'/download', hd_fileload.DownloadHandler),
         (r'/rename', hd_rename.FsRenameHandler),
         (r'/move', hd_move.FsMoveHandler),
+        (r'/delete', hd_delete.FsDeleteHandler),
         (r'/createdir', hd_create.FsCreateHandler),
         (r'/restart', hd_manage.RestartHandler),
 

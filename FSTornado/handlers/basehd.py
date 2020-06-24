@@ -12,11 +12,12 @@ from jinja2 import Environment, FileSystemLoader, TemplateNotFound
 from tornado.log import app_log as weblog
 from tornado.log import access_log as accesslog
 from urllib.parse import unquote
-from common.global_func import get_expires_datetime
+from common.global_func import get_expires_datetime, get_user_info
 from database.db_config import db_session
 from database.tbl_admin import TblAdmin
 from common.msg_def import SESSION_ID, FAIL, TOKEN_OUT
 from database.tbl_account import TblAccount
+
 
 # import redis
 
@@ -31,13 +32,14 @@ class BaseHandler(tornado.web.RequestHandler):
         # self.redis = redis.StrictRedis(host='localhost', port=6379, password='feiying')
         super(BaseHandler, self).__init__(*argc, **argkw)
         # self.session = redis_session.Session(self.application.session_manager, self)
+        self.browsing_history()
         pass
 
     @gen.coroutine
     def initialize(self):
         pass
 
-    # def __init__(self, *argc, **argkw):
+        # def __init__(self, *argc, **argkw):
         """
         定义 handler 的 session, 注意，根据 HTTP 特点.
         每次访问都会初始化一个 Session 实例哦，这对于你后面的理解很重要
@@ -46,13 +48,14 @@ class BaseHandler(tornado.web.RequestHandler):
         # print("initalize...", self.session)
         self.localVariable = {}
         self.initLocalVariable()
-        yield self.browsing_history()
+        # yield self.browsing_history()
         # super(BaseHandler, self).__init__(*argc, **argkw)
 
     def prepare(self):
         remote_ip = self.request.headers.get("X-Real-Ip", "")
-        weblog.info("{} {}  remote_ip:{} user:{}, args:{}".format(self.request.method, self.request.uri, remote_ip,
-                                                                  self.current_user, self.request.arguments))
+        weblog.info("{} {} {}  remote_ip:{} user:{}, args:{}".format(os.getpid(), self.request.method,
+                                                                     self.request.uri, remote_ip,
+                                                                     self.current_user, self.request.arguments))
 
     def get_template(self, name):
         """Return the jinja template object for a given name
@@ -150,9 +153,9 @@ class BaseHandler(tornado.web.RequestHandler):
                 "INSERT INTO tbl_browsing_history (user_ip,user_account,request_method,"
                 "uri,status,browsing_date,browsing_time,user_agent) "
                 "VALUES(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\');"
-                %(self.request.remote_ip, login_name, self.request.uri,self.request.method,
-                  self.get_status(),datetime.datetime.now().strftime('%Y%m%d'),
-                  datetime.datetime.now().strftime('%H%M%S'), self.request.headers.get("User-Agent"))
+                % (self.request.remote_ip, login_name, self.request.uri, self.request.method,
+                   self.get_status(), datetime.datetime.now().strftime('%Y%m%d'),
+                   datetime.datetime.now().strftime('%H%M%S'), self.request.headers.get("User-Agent"))
             )
             self.mysqldb().commit()
         except:
@@ -163,7 +166,7 @@ class BaseHandler(tornado.web.RequestHandler):
 def check_authenticated(func):
     def inner(self, *args, **kwargs):
         user = self.get_current_user()
-        weblog.info("check_authenticated: user={} uri:{}".format(user, self.request.uri))
+        # weblog.info("check_authenticated: user={} uri:{}".format(user, self.request.uri))
         if not user:
             url = self.get_login_url()
             next_url = self.request.uri
@@ -176,6 +179,20 @@ def check_authenticated(func):
             #     return self.write(json.dumps({"error_code": FAIL, "msg": u"该操作没有权限"}))
             self.set_secure_cookie(SESSION_ID, user, expires=get_expires_datetime(self), expires_days=None)
             func(self, *args, **kwargs)
+
+    return inner
+
+
+def check_role(func):
+    def inner(self, *args, **kwargs):
+        user = get_user_info(self)
+        if user:
+            role = user.userrole
+            if role > 1:
+                return self.write(json.dumps({"error_code": FAIL, "msg": u"该操作没有权限"}))
+
+        func(self, *args, **kwargs)
+
     return inner
 
 
@@ -204,7 +221,8 @@ def check_token(func):
                     if ten_minute_ago < last_login_time:
                         accesslog.error("user: {} login at other machine, please check.".format(loginname))
                         return self.write(json.dumps({"error_code": FAIL, "msg": u"账号在其他地方登录，"
-                                                     u"如不是本人操作，请修改密码!", "token": TOKEN_OUT}))
+                                                                                 u"如不是本人操作，请修改密码!",
+                                                      "token": TOKEN_OUT}))
             else:
                 accesslog.error("user: {} not find".format(loginname))
         else:
