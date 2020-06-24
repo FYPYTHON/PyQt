@@ -35,7 +35,7 @@
 {% end %}
 
 {% block content-body %}
-<form id="upload_form" name="form" action="/upload" method="POST" enctype="multipart/form-data">
+<form id="upload_form" name="form" action="/upload" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
     <div id="main">
     	<label>上传路径：</label>
     	<input type="text" name="curpath" value="{{curpath}}">
@@ -54,6 +54,9 @@
         url: '/upload',                                                //设置提交的 url，可覆盖 action 属性
         type: 'POST',                                               //GET,POST
         beforeSubmit: function (formData, jqForm, options) {        //提交前的验证
+        	formData = $('#upload_form').serialize()
+        	formData = decodeURIComponent(formData,true);//一次转码
+        	formData = encodeURI(encodeURI(formData)); //两次转码
         	$('.upres').html("");
         },
         success: function (responseText, statusText) {              //提交成功后的操作

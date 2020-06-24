@@ -57,7 +57,7 @@ logConfig = {
         # 'interval': 1,
         'backupCount': 2,    # 日志文件的保留个数
         'maxBytes': 50 * 1024 * 1024,  # 文件最大50M
-        'encoding': 'gbk'
+        'encoding': 'utf-8'
         }
     }
 }

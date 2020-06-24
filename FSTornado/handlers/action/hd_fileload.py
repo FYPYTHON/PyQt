@@ -112,7 +112,8 @@ class DownloadHandler(tornado.web.RequestHandler):
 class UploadHandler(BaseHandler):
     executor = ThreadPoolExecutor(4)
 
-    @authenticated
+    # @authenticated
+    @check_authenticated
     def get(self):
         userinfo = get_user_info(self)
         curpath = self.get_argument("curpath")
@@ -126,17 +127,18 @@ class UploadHandler(BaseHandler):
     def post(self):
         # filename = self.get_argument('filename', None)
         filepath = self.get_argument("curpath", None)
-
+        urldecode_path(filepath)
         files = self.request.files['files']
         # count = 0
         for fmeta in files:
             fname = fmeta['filename']
+            weblog.info("%s" % fname)
             weblog.info("{} {}".format(filepath, fname))
             real_file = os.path.join("/opt/data", filepath, fname)
             if os.path.exists(real_file):
                 return self.write(json.dumps({"error_code": 1, "msg": u"{} 已存在".format(fname)}))
             with open(os.path.join("/opt/data", filepath, fname), 'wb') as up:  # os拼接文件保存路径，以字节码模式打开
-                up.write(fmeta['body'])  # 将文件写入到保存路径目录
+                up.write(fmeta['body'].decode('gbk').encode('utf-8'))  # 将文件写入到保存路径目录
 
                 # yield self.write(str(count) + u"、")
                 # yield self.write(json.dumps({"name": fname + u"上传成功" + "\n", "count": count}))  # 将上传好的路径返回
