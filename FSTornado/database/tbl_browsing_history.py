@@ -22,5 +22,5 @@ class TblBrowsingHistory(ModelBase, table_base.TableBase):
     user_agent = Column(String(200))        # 用户代理
 
     def __repr__(self):
-        return "%s<id=%s, ip=%s>" % (self.__class__.__name__, self.id, self.ip)
+        return "%s<user_account=%s, user_ip=%s>" % (self.__class__.__name__, self.user_account, self.user_ip)
 

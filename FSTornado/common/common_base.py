@@ -116,6 +116,7 @@ class JsonSerialize(object):
 class DatetimeManage(object):
     FMTDEFAULT = "%Y-%m-%d %H:%M:%S"
     FMTES = "%Y-%m-%dT%H:%M:%S"
+    NDATEF = "%Y%m%d"
 
     def __init__(self):
         pass
@@ -156,6 +157,11 @@ class DatetimeManage(object):
         if str_result:
             return monday.strftime("%Y-%m-%d"), sunday.strftime("%Y-%m-%d")
         return monday, sunday
+
+    @staticmethod
+    def get_days_ago(days):
+        days_ago = date.today() - timedelta(days=days)
+        return days_ago.strftime(DatetimeManage.NDATEF)
 
 @running_time
 def test():
