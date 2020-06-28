@@ -28,12 +28,14 @@ class LoginHandler(BaseHandler):
         self.render("login.html")
 
     def post(self):
-
-        # weblog.info("tbl_admin:%s", self.localVariable)
-        userAccount = self.get_argument("userAccount")
-        password = self.get_argument("password")
-        inputCode = self.get_argument("inputCode")
-
+        weblog.info("tbl_admin:%s", self.localVariable)
+        try:
+            userAccount = self.get_argument("userAccount", None)
+            password = self.get_argument("password", None)
+            inputCode = self.get_argument("inputCode", None)
+        except Exception as e:
+            return self.write(json_dumps({"msg": USER_IS_NONE, "error_code": 1}))
+        weblog.info("{} {} {}".format(userAccount, password, inputCode))
         user = self.mysqldb().query(TblAccount.loginname, TblAccount.password, TblAccount.nickname
                                     ).filter_by(loginname=userAccount).first()
         user_update = self.mysqldb().query(TblAccount).filter_by(loginname=userAccount).first()

@@ -9,7 +9,7 @@ from tornado.web import authenticated
 from tornado.web import StaticFileHandler
 from PIL import Image
 import json
-from handlers.basehd import BaseHandler, check_authenticated
+from handlers.basehd import BaseHandler, check_authenticated, check_token
 from tornado.log import app_log as weblog
 from common.global_func import get_user_info
 import platform
@@ -47,3 +47,30 @@ class FsPlayHandler(BaseHandler):
             realpath = os.path.abspath(realpath)
         weblog.info("{} {} filename:".format(realpath, ftype, filename))
         return self.render("show.html", type=ftype, uri=filename, img=imgs, iwidth=width, iheight=height)
+
+
+class AppPlayHandler(BaseHandler):
+
+    @check_token
+    def get(self, filename):
+        realpath = os.path.join(self.settings.get('top_path'), filename)
+        weblog.info("{} play".format(filename))
+        if "\\" in realpath:
+            realpath = realpath.replace("\\", '/')
+        if os.path.exists(realpath):
+            pass
+        else:
+            return self.write(json.dumps({"error_code": 1, "msg": u"视屏文件不存在"}))
+
+        suffix = realpath.split('.')[-1]
+
+        if suffix in ['mp4']:
+            return self.write(json.dumps({"vsrc": realpath, "error_code": 0}))
+        else:
+            return self.write(json.dumps({"error_code": 1, "msg": u"不是视屏文件"}))
+        # # print(ftype)
+        # if platform.system() == 'Windows':
+        #     realpath = os.path.abspath(realpath)
+        # weblog.info("{} {} filename:".format(realpath, ftype, filename))
+        # # return self.render("show.html", type=ftype, uri=filename, img=imgs, iwidth=width, iheight=height)
+        # return self.write(json.dumps({"img": imgs, "error_code": 0}))

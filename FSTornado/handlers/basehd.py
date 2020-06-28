@@ -32,7 +32,6 @@ class BaseHandler(tornado.web.RequestHandler):
         # self.redis = redis.StrictRedis(host='localhost', port=6379, password='feiying')
         super(BaseHandler, self).__init__(*argc, **argkw)
         # self.session = redis_session.Session(self.application.session_manager, self)
-        self.browsing_history()
         pass
 
     @gen.coroutine
@@ -52,6 +51,7 @@ class BaseHandler(tornado.web.RequestHandler):
         # super(BaseHandler, self).__init__(*argc, **argkw)
 
     def prepare(self):
+        self.browsing_history()
         remote_ip = self.request.headers.get("X-Real-Ip", "")
         weblog.info("{} {} {}  remote_ip:{} user:{}, args:{}".format(os.getpid(), self.request.method,
                                                                      self.request.uri, remote_ip,
@@ -148,12 +148,34 @@ class BaseHandler(tornado.web.RequestHandler):
             return
         if type(login_name) == bytes:
             login_name = bytes.decode(login_name)
+        remote_ip = self.request.headers.get("X-Real-Ip", "")
+        if remote_ip == "":
+            remote_ip = self.request.remote_ip
         try:
             self.mysqldb().execute(
                 "INSERT INTO tbl_browsing_history (user_ip,user_account,request_method,"
                 "uri,status,browsing_date,browsing_time,user_agent) "
                 "VALUES(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\');"
-                % (self.request.remote_ip, login_name, self.request.uri, self.request.method,
+                % (remote_ip, login_name, self.request.uri, self.request.method,
+                   self.get_status(), datetime.datetime.now().strftime('%Y%m%d'),
+                   datetime.datetime.now().strftime('%H%M%S'), self.request.headers.get("User-Agent"))
+            )
+            self.mysqldb().commit()
+        except:
+            weblog.exception("BaseHandler:visit_history error")
+            self.mysqldb().rollback()
+
+    def app_history(self):
+        login_name = self.get_query_argument("loginname", None)
+        remote_ip = self.request.headers.get("X-Real-Ip", "")
+        if remote_ip == "":
+            remote_ip = self.request.remote_ip
+        try:
+            self.mysqldb().execute(
+                "INSERT INTO tbl_browsing_history (user_ip,user_account,request_method,"
+                "uri,status,browsing_date,browsing_time,user_agent) "
+                "VALUES(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\');"
+                % (remote_ip, login_name, self.request.uri, self.request.method,
                    self.get_status(), datetime.datetime.now().strftime('%Y%m%d'),
                    datetime.datetime.now().strftime('%H%M%S'), self.request.headers.get("User-Agent"))
             )
@@ -229,6 +251,7 @@ def check_token(func):
             accesslog.error("param loginname:{} token:{}".format(loginname, token))
         if check_status:
             # 执行post方法或get方法
+            self.app_history()
             func(self, *args, **kwargs)
         else:
             weblog.info("{} login time out, please login again".format(loginname))

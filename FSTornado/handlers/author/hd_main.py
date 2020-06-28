@@ -84,4 +84,5 @@ class AppFSMainHandler(BaseHandler):
 
         dir_list, file_list = get_paths(os.path.join(self.settings.get('top_path'), curpath))
 
-        return self.write(json.dumps({"error_code": 0, "dirs": dir_list, "files": file_list, "userinfo": userinfo}))
+        return self.write(json.dumps({"error_code": 0, "dirs": dir_list, "files": file_list, "userinfo": userinfo
+                                      , "curpath": curpath}))

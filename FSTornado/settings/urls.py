@@ -36,4 +36,5 @@ url = [                            #
         (r'/app/rename', hd_rename.AppFsRenameHandler),
         (r'/app/view', hd_jijin.AppJiJinHandler),
         (r'/app/predict', hd_predict.AppJijinPredict),
+        (r'/app/play/(?P<filename>.*)', hd_play.AppPlayHandler),
 ]
