@@ -63,15 +63,21 @@ class AppPlayHandler(BaseHandler):
             return self.write(json.dumps({"error_code": 1, "msg": u"视屏文件不存在"}))
 
         suffix = realpath.split('.')[-1]
-        file_type = None
+
         if suffix in ['mp4']:
-            file_type = 'video'
-            return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": file_type}))
-        elif suffix in ['jpg', 'jpge', 'png']:
-            file_type = 'image'
-            return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": file_type}))
+            return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": "video"}))
+        elif suffix in ['jpg', 'jpeg', 'png']:
+            from PIL import Image
+            img = Image.open(realpath)
+            weblog.info("image size: {} {}".format(img.size, os.path.getsize(realpath)))
+            img.resize((108*2, 192*2), Image.ANTIALIAS)
+            output_buffer = BytesIO()
+            img.save(output_buffer, format='JPEG')
+            binary_data = output_buffer.getvalue()
+            base64_data = base64.b64encode(binary_data).decode()
+            return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": "image", "img": base64_data}))
         else:
-            return self.write(json.dumps({"error_code": 1, "msg": u"不是视屏/图片文件"}))
+            return self.write(json.dumps({"error_code": 1, "msg": u"不是视屏文件"}))
         # # print(ftype)
         # if platform.system() == 'Windows':
         #     realpath = os.path.abspath(realpath)

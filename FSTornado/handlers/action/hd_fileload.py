@@ -182,5 +182,5 @@ class AppUploadHandler(BaseHandler):
                 # yield self.write(str(count) + u"、")
                 # yield self.write(json.dumps({"name": fname + u"上传成功" + "\n", "count": count}))  # 将上传好的路径返回
                 # yield self.write(fname + u"   上传成功<br />")
-                yield self.write(json.dumps({"msg": fname + u"   上传成功<br />"}))
+                yield self.write(json.dumps({"msg": fname + u"   上传成功<br />", "error_code": 0}))
                 # count += 1

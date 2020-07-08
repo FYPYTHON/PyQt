@@ -39,3 +39,24 @@ class FsDeleteHandler(BaseHandler):
     @check_token
     def post(self):
         pass
+
+
+class AppFsDeleteHandler(BaseHandler):
+    @check_token
+    def post(self):
+        curpath = self.get_argument("curpath", None)
+        filename = self.get_argument("filename", None)  # super subor
+
+        real_file = os.path.join(self.settings.get("top_path"), curpath, filename)
+        if not os.path.exists(real_file):
+            msg = u"{}不存在".format(real_file)
+            return self.write(json.dumps({"error_code": 1, "msg": msg}))
+
+        try:
+            cmd = "rm -rf {}".format(real_file)
+            weblog.info("{}".format(cmd))
+            os.system(cmd)
+            return self.write(json.dumps({"error_code": 0, "msg": "文件已删除"}))
+        except Exception as e:
+            weblog.exception("{}".format(e))
+            return self.write(json.dumps({"error_code": 1, "msg": u"删除失败"}))

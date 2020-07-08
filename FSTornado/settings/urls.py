@@ -31,6 +31,8 @@ url = [                            #
         (r'/view', hd_jijin.JiJinHandler),
 
         # -------- APP -------
+        (r'/app/createdir', hd_create.AppFsCreateHandler),
+        (r'/app/delete', hd_delete.AppFsDeleteHandler),
         (r'/app/fsmain', hd_main.AppFSMainHandler),
         (r'/app/upload', hd_fileload.AppUploadHandler),
         (r'/app/rename', hd_rename.AppFsRenameHandler),
