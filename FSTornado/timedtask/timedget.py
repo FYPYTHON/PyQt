@@ -19,6 +19,10 @@ def clear_history(days):
     pass
 
 
+def person():
+    life = ""
+
+
 if __name__ == '__main__':
     clear_date = DatetimeManage.get_days_ago(1)
     print(clear_date)

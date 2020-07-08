@@ -63,11 +63,15 @@ class AppPlayHandler(BaseHandler):
             return self.write(json.dumps({"error_code": 1, "msg": u"视屏文件不存在"}))
 
         suffix = realpath.split('.')[-1]
-
+        file_type = None
         if suffix in ['mp4']:
-            return self.write(json.dumps({"vsrc": realpath, "error_code": 0}))
+            file_type = 'video'
+            return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": file_type}))
+        elif suffix in ['jpg', 'jpge', 'png']:
+            file_type = 'image'
+            return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": file_type}))
         else:
-            return self.write(json.dumps({"error_code": 1, "msg": u"不是视屏文件"}))
+            return self.write(json.dumps({"error_code": 1, "msg": u"不是视屏/图片文件"}))
         # # print(ftype)
         # if platform.system() == 'Windows':
         #     realpath = os.path.abspath(realpath)
