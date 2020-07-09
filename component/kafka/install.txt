@@ -71,24 +71,14 @@ echo -e "foo\nbar" > test.txt
 
 > bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
 
+---------------
+kafka.tools.DumpLogSegment:
+/opt/midware/kafka/bin/kafka-run-class.sh kafka.tools.DumpLogSegments --files 00000000000000916383.log
 
-v59ab8
-
-抓所有src dst port为1719 1759 1720 1760的包
-抓收的包，目的端口是60100-62100。发的包，源端口为60100-62100
-问下，这个语句tcpdump怎么写的
-tcpdump -i any port 1719 or port 1759 or port 1720 or port 1760  or dst portrange 60100-62100 or src portrange 60100-62100 -i any -s 0 -G 1800 -Z root -n -B 102400 -w %Y_%m%d_%H%M_%S.pcap &
-
-tcpdump port 1719 or port 1759 or port 1720 or port 1760 or dst portrange 60100-62100 or src portrange 60100-62100 -i any -s 0 -G 1800 -Z root -n -B 102400 -w %Y_%m%d_%H%M_%S.pcap &
-这样应该没问题吧，上次说的还是有丢包情况
-
-kdfs 文件服务/  王国强/吴凯
-h323parse h323协议解析  王国强/王国强
-OpsReceiver   平台/终端媒体信息采集  王国强/谢金鑫
+kafka 使用内存修改：
+kafka-server-start.sh   
+export KAFKA_HEAP_OPTS="-Xmx500m -Xms500m" 
 
 
-ZOOKEEPER Will not attempt to authenticate using SASL (unknown error)
 
-
-删除zoo.cfg里面配置dataDir=日志存储路径中version-2，即可解决
 
