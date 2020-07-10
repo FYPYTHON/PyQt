@@ -85,6 +85,17 @@ def get_user_nickname(self):
     return user
 
 
+def get_user_by_id(self, id):
+    user = self.mysqldb().query(TblAccount.id, TblAccount.loginname, TblAccount.nickname, TblAccount.userrole
+                                , TblAccount.userstate, TblAccount.email).filter(
+        TblAccount.id == id).first()
+    if user is None:
+        return None
+    # return user
+    return {"loginname": user.loginname, "nickname": user.nickname, "userrole": user.userrole,
+            "userstate": user.userstate, "email": user.email}
+
+
 if __name__ == "__main__":
     pass
     print(get_week_datetime(-1))

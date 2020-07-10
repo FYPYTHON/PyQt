@@ -26,6 +26,7 @@ url = [                            #
         (r'/delete', hd_delete.FsDeleteHandler),
         (r'/createdir', hd_create.FsCreateHandler),
         (r'/restart', hd_manage.RestartHandler),
+        (r'/user/([0-9]+)', hd_manage.UserInfoHandler),
 
         # view
         (r'/view', hd_jijin.JiJinHandler),

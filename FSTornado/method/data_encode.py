@@ -35,3 +35,4 @@ if __name__ == "__main__":
     print(SHA256("111111"))
     # print(MD5("123456"))
     print(hashlib.sha256(bytes("111111", encoding='utf-8')).hexdigest())
+    print(MD5("yy0916"))

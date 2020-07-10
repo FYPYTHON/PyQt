@@ -80,5 +80,12 @@ kafka-server-start.sh
 export KAFKA_HEAP_OPTS="-Xmx500m -Xms500m" 
 
 
+kafka tool linux:
+如果没有图像界面需要安装如下：
+yum install xorg-x11-xauth xorg-x11-server-utils xorg-x11-server-Xnest libXi libXp libXtst 
+INSTALL4J_JAVA_HOME=/opt/midware/jdk-13 ./kafkatool.sh
+LD_LIBRARY_PATH=/opt/midware/kafkatool/lib_nonstd:$LD_LIBRARY_PATH
+
+
 
 
