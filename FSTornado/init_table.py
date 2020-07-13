@@ -57,11 +57,11 @@ def init_jijin():
 
 if __name__ == "__main__":
     # init_admin()
-    # init_user()
+    init_user()
     # init_setting()
-    from database.tbl_account import TblAccount
-    engine.execute("ALTER TABLE tbl_account ADD token char(100);")
-    engine.execute("select * from tbl_account;")
+    #from database.tbl_account import TblAccount
+    #engine.execute("ALTER TABLE tbl_account ADD token char(100);")
+    #engine.execute("select * from tbl_account;")
 
 
 

@@ -131,8 +131,12 @@ class UploadHandler(BaseHandler):
         files = self.request.files['files']
         # count = 0
         for fmeta in files:
+            filesize = len(fmeta['body'])
+            if filesize > 523239424:
+                weblog.error("file size: {} gt 500M".format(filesize))
+                return self.write(json.dumps({"error_code": 1, "msg": u"文件大小超过500M"}))
             fname = fmeta['filename']
-            weblog.info("{} {}".format(filepath, fname))
+            weblog.info("{} {} {}M".format(filepath, fname, round(float(filesize * 1.0 / 1024 / 1024)), 2))
             real_file = os.path.join("/opt/data", filepath, fname)
             if os.path.exists(real_file):
                 return self.write(json.dumps({"error_code": 1, "msg": u"{} 已存在".format(fname)}))
@@ -170,12 +174,16 @@ class AppUploadHandler(BaseHandler):
         files = self.request.files['files']
         # count = 0
         for fmeta in files:
+            filesize = len(fmeta['body'])
+            if filesize > 523239424:
+                weblog.error("file size: {} gt 500M".format(filesize))
+                return self.write(json.dumps({"error_code": 1, "msg": u"文件大小超过500M"}))
             fname = fmeta['filename']
-            weblog.info("{} {}".format(filepath, fname))
+            weblog.info("{} {} {}M".format(filepath, fname, round(float(filesize * 1.0 / 1024 / 1024)), 2))
             real_file = os.path.join("/opt/data", filepath, fname)
             if os.path.exists(real_file):
                 weblog.error(u"{} is exist".format(real_file))
-                return self.write(json.dumps({"error_code": 1, "msg": u"{} 已存在".format(fname)}))
+                return self.write(json.dumps({"error_code": 1, "msg": u"上传失败，{} 已存在".format(fname)}))
             with open(os.path.join("/opt/data", filepath, fname), 'wb') as up:  # os拼接文件保存路径，以字节码模式打开
                 up.write(fmeta['body'])  # 将文件写入到保存路径目录
 

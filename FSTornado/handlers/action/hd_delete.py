@@ -16,6 +16,9 @@ class FsDeleteHandler(BaseHandler):
     def delete(self):
         curpath = self.get_argument("curpath", None)
         filelist = self.get_arguments("filelist[]", False)  # super subor
+        if curpath is not None and curpath.startswith("public/File"):
+            weblog.info("{} can not delete".format(curpath))
+            return self.write(json.dumps({"error_code": 1, "msg": u"该目录下的文件不能删除"}))
         # print(self.request.arguments)
         # print(self.get_query_arguments("filelist"))
         for i in range(len(filelist)):
@@ -47,7 +50,15 @@ class AppFsDeleteHandler(BaseHandler):
         curpath = self.get_argument("curpath", None)
         filename = self.get_argument("filename", None)  # super subor
 
-        real_file = os.path.join(self.settings.get("top_path"), curpath, filename)
+        if curpath is None:
+            return self.write(json.dumps({"error_code": 1, "msg": u"当前路径为空"}))
+        else:
+            real_file = os.path.join(self.settings.get("top_path"), curpath, filename)
+
+        if curpath is not None and curpath.startswith("public/File"):
+            weblog.info("{} can not delete".format(curpath))
+            return self.write(json.dumps({"error_code": 1, "msg": u"该目录下的文件不能删除"}))
+
         if not os.path.exists(real_file):
             msg = u"{}不存在".format(real_file)
             return self.write(json.dumps({"error_code": 1, "msg": msg}))
