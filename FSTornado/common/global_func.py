@@ -2,6 +2,8 @@
 import time
 from datetime import datetime, timedelta, date
 from database.tbl_account import TblAccount
+from database.tbl_browsing_history import TblBrowsingHistory
+
 PAGESIZE = 5
 FIRST_PAGE = 1
 TIME_FORMAT = "%Y-%m-%d"
@@ -65,6 +67,12 @@ def get_user_info(self):
 def get_user_all(self):
     users = self.mysqldb().query(TblAccount).all()
     return users
+
+
+def get_history_all(self):
+    historys = self.mysqldb().query(TblBrowsingHistory).order_by(TblBrowsingHistory.browsing_date.desc()
+                                                                 ,TblBrowsingHistory.browsing_time.desc()).all()
+    return historys
 
 
 def get_user_id(self):

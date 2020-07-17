@@ -1,8 +1,8 @@
 # coding=utf-8
-from handlers.adminhd import verifyCode
+from handlers.adminhd import verifyCode, AppVersionHandler, UserinfoHandler
 from handlers.author import hd_login, hd_main, hd_manage
-from handlers.show import hd_show, hd_play
-from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete
+from handlers.show import hd_show, hd_play, hd_history
+from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
 from handlers.view import jijinhd as hd_jijin
 from handlers.view import hd_predict
 from tornado.web import StaticFileHandler
@@ -27,6 +27,8 @@ url = [                            #
         (r'/createdir', hd_create.FsCreateHandler),
         (r'/restart', hd_manage.RestartHandler),
         (r'/user/([0-9]+)', hd_manage.UserInfoHandler),
+        (r'/avator', hd_avator.FsAvatorHandler),
+        (r'/history', hd_history.HistoryHandler),
 
         # view
         (r'/view', hd_jijin.JiJinHandler),
@@ -40,4 +42,7 @@ url = [                            #
         (r'/app/view', hd_jijin.AppJiJinHandler),
         (r'/app/predict', hd_predict.AppJijinPredict),
         (r'/app/play/(?P<filename>.*)', hd_play.AppPlayHandler),
+        (r'/appversion', AppVersionHandler),
+        (r'/appuserinfo', UserinfoHandler),
+
 ]

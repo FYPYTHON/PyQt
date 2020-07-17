@@ -148,6 +148,10 @@ class BaseHandler(tornado.web.RequestHandler):
             return
         if type(login_name) == bytes:
             login_name = bytes.decode(login_name)
+
+        if self.get_login_url() in self.request.uri:
+            login_name = self.get_argument("userAccount", "system")
+
         remote_ip = self.request.headers.get("X-Real-Ip", "")
         if remote_ip == "":
             remote_ip = self.request.remote_ip

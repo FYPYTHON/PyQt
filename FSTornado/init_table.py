@@ -6,10 +6,21 @@ from method.data_encode import MD5
 def init_admin():
     from database.tbl_admin import TblAdmin
     user = TblAdmin()
-    user.name = "__MAIL__"
-    user.value = "1490726887@qq.com"
+    user.name = "appversion"
+    user.value = "1.0"
     user.type = 1
     db_session.add(user)
+    db_session.commit()
+    db_session.close()
+
+def init_version():
+
+    from database.tbl_admin import TblAdmin
+    version = TblAdmin()
+    version.name = "appversion"
+    version.value = "1.0"
+    version.type = 1
+    db_session.add(version)
     db_session.commit()
     db_session.close()
 
@@ -57,8 +68,9 @@ def init_jijin():
 
 if __name__ == "__main__":
     # init_admin()
-    init_user()
+    # init_user()
     # init_setting()
+    init_version()
     #from database.tbl_account import TblAccount
     #engine.execute("ALTER TABLE tbl_account ADD token char(100);")
     #engine.execute("select * from tbl_account;")

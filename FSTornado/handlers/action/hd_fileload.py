@@ -32,7 +32,7 @@ def urldecode_path(path):
         return path
 
 
-class DownloadHandler(tornado.web.RequestHandler):
+class DownloadHandler(BaseHandler):
     executor = ThreadPoolExecutor(4)
 
     # @check_authenticated
