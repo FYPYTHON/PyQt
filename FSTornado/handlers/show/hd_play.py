@@ -7,6 +7,8 @@ from io import BytesIO
 import base64
 from PIL import Image
 import json
+
+from common.msg_def import IMAGE_SUFFIX
 from handlers.basehd import BaseHandler, check_authenticated, check_token
 from tornado.log import app_log as weblog
 from handlers.author.hd_main import get_paths
@@ -83,7 +85,7 @@ class AppPlayHandler(BaseHandler):
 
         if suffix in ['mp4']:
             return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": "video"}))
-        elif suffix in ['jpg', 'jpeg', 'png']:
+        elif suffix in IMAGE_SUFFIX:
             base64_data, beishu = get_img_base64(realpath, suffix)
             weblog.info("img base64: {}M len:{}".format(beishu, len(base64_data)))
             return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": "image", "img": base64_data}))
@@ -119,6 +121,8 @@ class AppPlayHandler(BaseHandler):
         nowfile = os.path.join(curpath, filelist[index])
         realfile = os.path.join(self.settings.get('top_path'), nowfile)
         suffix = realfile.split(".")[-1]
+        if suffix not in IMAGE_SUFFIX:
+            return self.write(json.dumps({"error_code": 1, "msg": u"不是图片文件"}))
         base64_data, beishu = get_img_base64(realfile, suffix)
 
         return self.write(json.dumps({"error_code": 0, "nowfile": nowfile, "msg": u"获取成功",

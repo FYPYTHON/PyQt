@@ -6,6 +6,7 @@ from tornado.web import authenticated
 import time
 from datetime import datetime
 from database.tbl_account import TblAccount
+from handlers.author.hd_main import get_disk_usage
 from handlers.basehd import BaseHandler, check_authenticated, check_token
 from json import dumps as json_dumps
 from tornado.log import access_log as weblog
@@ -25,7 +26,8 @@ class ManageHandler(BaseHandler):
         # self.redirect('/login')
         userlist = get_user_all(self)
         userinfo = get_user_info(self)
-        self.render("manage.html", users=userlist, userinfo=userinfo, curpath=curpath)
+        self.render("manage.html", users=userlist, userinfo=userinfo, curpath=curpath,
+                    useage=get_disk_usage(self, curpath))
 
     # @check_authenticated
     def post(self):

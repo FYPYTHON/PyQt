@@ -25,7 +25,7 @@ def get_token():
 
 
 # TOKEN = get_token()
-TOKEN = "9ac32aea3dc5e77cbd24744a3a0de8b0"
+TOKEN = "c41a846ede512e90be219d3f723da4a1"
 
 
 def post_ava():
@@ -84,7 +84,7 @@ def get_version():
 def put_version():
     url = 'http://139.224.231.14:9016/appversion'
 
-    parmas = {"loginname": "Tornado", "token": TOKEN, "version": "1.0"}
+    parmas = {"loginname": "Tornado", "token": TOKEN, "version": "1.0.2"}
     headers = {'User-Agent': "Mobile"}
     result = requests.put(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -93,6 +93,7 @@ def put_version():
     jres = eval(res)
     print(jres)
     return result.text
+
 
 def get_userinfo():
     url = 'http://139.224.231.14:9016/appuserinfo'
@@ -127,6 +128,7 @@ def img_resize():
     else:
         small_size = img.size
     small_size = (int(img.size[0]/1.1), int(img.size[0]/1.1))
+    small_size = (20, 20)
     img = img.resize(small_size, Image.ANTIALIAS)
     output_buffer = BytesIO()
     img.save(output_buffer, format=suffix)
@@ -142,6 +144,44 @@ def img_resize():
     img.save("E:\\test.jpg")
 
 
+def get_videoshortcut_base64(realpath, suffix):
+    realpath = "E:\\file\\Desktop\\test.mp4"
+    import cv2
+    cap = cv2.VideoCapture(realpath)
+    ret, frame = cap.read()
+    cap.release()
+    print(ret, frame)
+    print(type(frame))
+    from PIL import Image
+    from io import BytesIO
+    import os
+    import base64
+    img = Image.fromarray(frame)
+    if ret:
+        # cv2.imwrite("E:\\test1.jpg", frame)
+        img = img.resize((20, 20), Image.ANTIALIAS)
+        output_buffer = BytesIO()
+        img.save(output_buffer, format="jpeg")
+        print("image size: {} {}".format(img.size, os.path.getsize(realpath)))
+        binary_data = output_buffer.getvalue()
+        base64_data = base64.b64encode(binary_data).decode()
+        print("len:", len(base64_data))
+        img.save("E:\\test2.jpg")
+
+
+def get_fsmain():
+    url = 'http://139.224.231.14:9016/app/fsmain'
+
+    parmas = {"loginname": "Tornado", "token": TOKEN}
+    headers = {'User-Agent': "Mobile"}
+    result = requests.get(url, headers=headers, params=parmas)
+    # result = requests.post(url, headers=headers, files={"FILE": None})
+    # print(result.text)
+    res = result.content.decode('utf-8')
+    jres = eval(res)
+    print(jres)
+    return result.text
+
 if __name__ == "__main__":
     # get_token()
     # post_ava()
@@ -149,4 +189,6 @@ if __name__ == "__main__":
     # img_resize()
     # get_version()
     # put_version()
-    get_userinfo()
+    # get_userinfo()
+    # get_videoshortcut_base64(1, 2)
+    get_fsmain()

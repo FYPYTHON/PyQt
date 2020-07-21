@@ -141,11 +141,17 @@ class BaseHandler(tornado.web.RequestHandler):
                 self.localVariable[var.name] = var.value
 
     def browsing_history(self):
-        if self.request.method == 'GET':
+        # if self.request.method == 'GET':
+        #     return 0
+        # if self.request.uri == "/history":
+        #     return 0
+        useragent = self.request.headers.get("User-Agent")
+        if "Mobile" in useragent or "Android" in useragent:
             return 0
+
         login_name = self.get_current_user()
         if login_name is None:
-            return
+            login_name = "未登陆用户"
         if type(login_name) == bytes:
             login_name = bytes.decode(login_name)
 
@@ -162,7 +168,7 @@ class BaseHandler(tornado.web.RequestHandler):
                 "VALUES(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\');"
                 % (remote_ip, login_name, self.request.uri, self.request.method,
                    self.get_status(), datetime.datetime.now().strftime('%Y%m%d'),
-                   datetime.datetime.now().strftime('%H%M%S'), self.request.headers.get("User-Agent"))
+                   datetime.datetime.now().strftime('%H%M%S'), useragent)
             )
             self.mysqldb().commit()
         except:

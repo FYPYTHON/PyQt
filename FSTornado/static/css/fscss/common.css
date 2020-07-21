@@ -24,6 +24,11 @@
 .showli li {
 	margin-left: -20px;
 }
+.shortcut {
+	margin-top: 1px;
+	margin-bottom: 1px;
+
+}
 textarea {
 	min-height: 580px;
 	min-width: 780px;

@@ -3,10 +3,10 @@ logConfig = {
 
     'version': 1,
     'loggers': {
-      # 'root': {
-      #   'level': 'DEBUG',
-      #   'handlers': ['console']
-      # },
+      'root': {
+        'level': 'DEBUG',
+        'handlers': ['access']
+      },
       # 'tornado': {
       #   'level': 'DEBUG',
       #   'handlers': ['access'],

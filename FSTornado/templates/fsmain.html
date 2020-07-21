@@ -60,11 +60,25 @@
 <li class="col-md-11" style="list-style:none;"><input class="col-md-1" name="{{dir}}" type="checkbox" value="{{dir}}" /><a href="/fsmain?curpath={{curpath}}/{{dir}}">{{dir}}</a></li>
 {% end %}
 
-{% for file in files %}
+{% for i, file in enumerate(files) %}
 {% if file.split(".")[-1] == "mp4" %}
-<li class="col-md-11" style="list-style:none;"><input class="col-md-1" name="{{file}}" type="checkbox" value="{{file}}" /><a href="/play/{{curpath}}/{{file}}" target="_blank">{{file}}</a></li>
+<li class="col-md-11" style="list-style:none;">
+	<input class="col-md-1" name="{{file}}" type="checkbox" value="{{file}}" />
+	<img class="col-md-1 shortcut" id="shortcutvideo" src="{{shortcut_list[i]}}" alt="{{file}}">
+	<a href="/play/{{curpath}}/{{file}}" target="_blank">{{file}}</a></li>
+{% elif file.split(".")[-1] in ["jpg", "jpeg", "png"] %}
+
+<li class="col-md-11" style="list-style:none;">
+	<input class="col-md-1" name="{{file}}" type="checkbox" value="{{file}}" />
+	<img class="col-md-1 shortcut" id="shortcutimg" src="{{shortcut_list[i]}}" alt="">
+	<a href="/show/{{curpath}}/{{file}}" target="_blank">{{file}}</a>
+</li>
 {% else %}
-<li class="col-md-11" style="list-style:none;"><input class="col-md-1" name="{{file}}" type="checkbox" value="{{file}}" /><a href="/show/{{curpath}}/{{file}}" target="_blank">{{file}}</a></li>
+	<li class="col-md-11" style="list-style:none;">
+	<input class="col-md-1" name="{{file}}" type="checkbox" value="{{file}}" />
+
+	<a href="/show/{{curpath}}/{{file}}" target="_blank">{{file}}</a>
+</li>
 {% end %}
 {% end %}
 </ul>

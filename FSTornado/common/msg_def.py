@@ -26,4 +26,6 @@ SUCCESS = 0
 FAIL = 1
 TOKEN_OUT = 1
 
+IMAGE_SUFFIX = ["jpg", "jpeg", "png", "gif"]
+
 
