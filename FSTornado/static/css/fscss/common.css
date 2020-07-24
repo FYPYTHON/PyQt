@@ -25,9 +25,13 @@
 	margin-left: -20px;
 }
 .shortcut {
-	margin-top: 1px;
-	margin-bottom: 1px;
-
+	margin-top: 2px;
+	margin-bottom: 2px;
+	margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    max-width: 50px;
+    max-height: 50px;
 }
 textarea {
 	min-height: 580px;

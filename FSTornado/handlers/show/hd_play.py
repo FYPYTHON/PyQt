@@ -11,7 +11,7 @@ import json
 from common.msg_def import IMAGE_SUFFIX
 from handlers.basehd import BaseHandler, check_authenticated, check_token
 from tornado.log import app_log as weblog
-from handlers.author.hd_main import get_paths
+from handlers.author.hd_main import get_paths, get_paths_app
 import platform
 
 
@@ -110,7 +110,7 @@ class AppPlayHandler(BaseHandler):
         else:
             index = index - 1
 
-        filelist = get_paths(realpath)[1]
+        filelist = get_paths_app(realpath)[1]
         weblog.info("files length:{} curindex:{}".format(len(filelist), index))
         if index >= len(filelist) and action == "next":
             return self.write(json.dumps({"error_code": 1, "msg": u"最后一张"}))

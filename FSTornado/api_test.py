@@ -25,7 +25,7 @@ def get_token():
 
 
 # TOKEN = get_token()
-TOKEN = "c41a846ede512e90be219d3f723da4a1"
+TOKEN = "9c3f0102fe3223732df8f48119605eb6"
 
 
 def post_ava():
@@ -113,9 +113,16 @@ def img_resize():
     from PIL import Image
     import base64
     import os
-    realpath = "E:\\IMG_20190607_163529.jpg"
+    import time
+    t1 = time.time()
+    realpath = "E:\\IMG_20190503_123846.jpg"
+    # realpath = "D:\\workSpace\\rother\\yuyuan\\app\\src\\main\\res\\drawable\\filedialog_file.png"
     # realpath = "E:\\tk_color.png"
+    small_size = (30, 30)
     img = Image.open(realpath)
+    img.thumbnail(small_size)
+    t2 = time.time()
+    print("t2:", t2 - t1)
     suffix = realpath.split('.')[-1]
     if suffix == "jpg":
         suffix = "jpeg"
@@ -123,25 +130,33 @@ def img_resize():
     img_size = os.path.getsize(realpath)
     beishu = img_size / 1024 / 1024
     print("beisu", beishu)
+    t3 = time.time()
+    print("t3:", t3 - t2)
     if beishu >= 2:
         small_size = (int(img.size[0] / beishu), int(img.size[0] / beishu))
     else:
         small_size = img.size
     small_size = (int(img.size[0]/1.1), int(img.size[0]/1.1))
-    small_size = (20, 20)
-    img = img.resize(small_size, Image.ANTIALIAS)
+
+    # img = img.resize(small_size, Image.ANTIALIAS)
+    t4 = time.time()
+    print("t4:", t4 - t3)
     output_buffer = BytesIO()
     img.save(output_buffer, format=suffix)
+    print("temp:", time.time() - t4)
     print("image size: {} {}".format(img.size, os.path.getsize(realpath)))
     binary_data = output_buffer.getvalue()
     base64_data = base64.b64encode(binary_data).decode()
+    t5 = time.time()
+    print("t5:", t5 - t4)
+    # print(base64_data)
     # 821824 - 178244
-    import zlib
-    zipdata = zlib.compress(base64_data.encode())
-    print(len(base64_data), type(base64_data))
-    print("zip:", len(zipdata), len(zipdata) / len(base64_data))
+    # import zlib
+    # zipdata = zlib.compress(base64_data.encode())
+    # print(len(base64_data), type(base64_data))
+    # print("zip:", len(zipdata), len(zipdata) / len(base64_data))
 
-    img.save("E:\\test.jpg")
+    # img.save("E:\\test.jpg")
 
 
 def get_videoshortcut_base64(realpath, suffix):
@@ -182,7 +197,38 @@ def get_fsmain():
     print(jres)
     return result.text
 
+
+def post_value():
+    url = 'http://139.224.231.14:9016/app/view'
+    parmas = {"jid": "1717", "jdate": "2020-07-22", "jvalue": "3.6940", "token": TOKEN, "loginname": "Tornado"}
+    headers = {'User-Agent': "Mobile"}
+    result = requests.post(url, headers=headers, data=parmas)
+    # result = requests.post(url, headers=headers, files={"FILE": None})
+    # print(result.text)
+    res = result.content.decode('utf-8')
+    jres = eval(res)
+    if "msg" in jres.keys():
+        print(jres)
+    return result.text
+
+
+def get_value():
+    url = 'http://139.224.231.14:9016/app/view'
+    parmas = {"jid": "1717", "token": TOKEN, "loginname": "Tornado"}
+    headers = {'User-Agent': "Mobile"}
+    result = requests.get(url, headers=headers, params=parmas)
+    # result = requests.post(url, headers=headers, files={"FILE": None})
+    # print(result.text)
+    res = result.content.decode('utf-8')
+    jres = eval(res)
+    if "msg" in jres.keys():
+        print(jres)
+    return result.text
+
+
 if __name__ == "__main__":
+    import time
+    ts = time.time()
     # get_token()
     # post_ava()
     # post_next()
@@ -191,4 +237,7 @@ if __name__ == "__main__":
     # put_version()
     # get_userinfo()
     # get_videoshortcut_base64(1, 2)
-    get_fsmain()
+    # get_fsmain()
+    # post_value()
+    get_value()
+    print(time.time() - ts)

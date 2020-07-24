@@ -9,7 +9,7 @@ from tornado.web import authenticated
 from tornado.log import app_log as weblog
 from common.global_func import get_user_info, DATE_FORMAT
 from handlers.basehd import BaseHandler, check_token
-from handlers.view.jijinhd import strtime_check
+from handlers.view.hd_jijin import strtime_check
 from database.tbl_jijin import TblJijin
 from datetime import datetime, timedelta
 from pandas import DataFrame

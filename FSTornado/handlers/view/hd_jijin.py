@@ -6,6 +6,7 @@ from tornado.web import authenticated
 from tornado.log import app_log as weblog
 from common.global_func import get_user_info, DATE_FORMAT
 from common.common_base import DatetimeManage
+from common.msg_def import WEEK_DAY
 from handlers.basehd import BaseHandler, check_token, check_authenticated
 from database.tbl_jijin import TblJijin
 from datetime import datetime, timedelta
@@ -30,6 +31,17 @@ def get_gid(self):
     return idlist
 
 
+def get_date_week(jdate):
+    try:
+        dt = datetime.strptime(jdate, "%Y-%m-%d")
+        wk = dt.weekday()
+        date_week = "{} {}".format(jdate[5:], WEEK_DAY[wk])
+        return date_week
+    except Exception as e:
+        weblog.error("{}".format(e))
+        return jdate
+
+
 def get_gid_all_data(self, jid):
     two_weeks_before = datetime.now() + timedelta(days=-30)
     str_date = two_weeks_before.strftime(DATE_FORMAT)
@@ -41,7 +53,7 @@ def get_gid_all_data(self, jid):
     jdate = []
     jvalue = []
     for res in result:
-        jdate.append(res.jdate)
+        jdate.append(get_date_week(res.jdate))
         jvalue.append(res.jvalue)
     jdata["jdate"] = jdate
     jdata["jvalue"] = jvalue
@@ -61,7 +73,7 @@ def get_gid_range_data(self, jid, weeks_ago):
     jdate = []
     jvalue = []
     for res in result:
-        jdate.append(res.jdate)
+        jdate.append(get_date_week(res.jdate))
         jvalue.append(res.jvalue)
     jdata["jdate"] = jdate
     jdata["jvalue"] = jvalue

@@ -26,6 +26,7 @@ class BaseHandler(tornado.web.RequestHandler):
     localStore = {}
 
     def __init__(self, *argc, **argkw):
+        self.remote_ip = "127.0.0.1"
         # print("init...")
         #
         # self.session = None
@@ -53,6 +54,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def prepare(self):
         self.browsing_history()
         remote_ip = self.request.headers.get("X-Real-Ip", "")
+        self.remote_ip = remote_ip
         weblog.info("{} {} {}  remote_ip:{} user:{}, args:{}".format(os.getpid(), self.request.method,
                                                                      self.request.uri, remote_ip,
                                                                      self.current_user, self.request.arguments))
