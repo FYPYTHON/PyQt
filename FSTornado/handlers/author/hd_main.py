@@ -25,7 +25,8 @@ def get_disk_usage(self, path):
     use_info = disk_usage(path)
     total = round(use_info.total / 1024 / 1024 / 1024, 2)
     used = round(use_info.used / 1024 / 1024 / 1024, 2)
-    output = u"{} %, 已用{} / 共{} G".format(use_info.percent, used, total)
+    free = round(use_info.free / 1024 / 1024 / 1024, 2)
+    output = u"已用{} %, 可用{} / 共{} G".format(use_info.percent, free, total)
     return output
 
 

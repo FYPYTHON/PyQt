@@ -21,11 +21,24 @@ import platform
 
 
 class HistoryHandler(BaseHandler):
+    @check_authenticated
     def get(self):
         curpath = self.get_argument('curpath', None)
+        curpage = int(self.get_argument("page", "0"))
         if curpath is None:
             curpath = 'public'
-        historylist = get_history_all(self)
+        offset = curpage * 50
+        historylist = get_history_all(self, offset)
+        userinfo = get_user_info(self)
+        self.render("history.html", historys=historylist, userinfo=userinfo, curpath=curpath,
+                    useage=get_disk_usage(self, curpath))
+
+    @check_authenticated
+    def post(self):
+        curpage = int(self.get_argument("page", "0"))
+        curpath = self.get_argument('curpath', None)
+        offset = curpage * 50
+        historylist = get_history_all(self, offset)
         userinfo = get_user_info(self)
         self.render("history.html", historys=historylist, userinfo=userinfo, curpath=curpath,
                     useage=get_disk_usage(self, curpath))

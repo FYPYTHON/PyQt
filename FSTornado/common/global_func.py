@@ -69,9 +69,10 @@ def get_user_all(self):
     return users
 
 
-def get_history_all(self):
+def get_history_all(self, offset=0):
     historys = self.mysqldb().query(TblBrowsingHistory).order_by(TblBrowsingHistory.browsing_date.desc()
-                                                                 ,TblBrowsingHistory.browsing_time.desc()).all()
+                                                                 ,TblBrowsingHistory.browsing_time.desc()
+                                                                 ).offset(offset).limit(50).all()
     return historys
 
 

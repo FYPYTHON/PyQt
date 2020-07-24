@@ -48,7 +48,7 @@ class DownloadHandler(BaseHandler):
         fpath = os.path.join(BASE_DIR, filename)
         if platform.system() == 'Windows':
             fpath = fpath.replace("\\", '/')
-        weblog.info("download: {}".format(fpath))
+        # weblog.info("download: {}".format(fpath))
         # gsize = os.path.getsize(fpath)
         if not os.path.exists(fpath):
             return self.write(json.dumps({'msg': 'file not exist.', 'code': 1}))
