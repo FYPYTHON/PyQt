@@ -23,3 +23,6 @@ https://git-scm.com/book/zh/v1/自定义-Git-配置-Git
 查看网页上的：https://github.com/FYPYTHON/PyQt.git   与 git remote -v 是否一致。
 git remote set-url origin https://github.com/FYPYTHON/PyQt.git
 git push -u origin master -f
+
+5、清空缓存
+git rm -r --cached .
