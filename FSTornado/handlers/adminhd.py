@@ -21,7 +21,7 @@ class verifyCode(BaseHandler):
             # self.write(simplejson.dumps({'code': 0, 'img': stream.getvalue().encode('base64')}))
             # self.set_cookie("code", strs)
             self.set_secure_cookie("code", strs, expires=get_expires_datetime(self))
-            weblog.info("%s , imgage code:%s", self.request.uri + " " + self.remote_ip, strs)
+            # weblog.info("%s , imgage code:%s", self.request.uri + " " + self.remote_ip, strs)
             # img = mstream.getvalue().encode('base64')
             img = base64.b64encode(mstream.getvalue()).decode()
             return self.write(json_dumps({'code': strs, 'img': img}))

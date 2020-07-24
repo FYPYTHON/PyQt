@@ -131,12 +131,12 @@ def get_paths(file_path):
                 file_list.append(name)
                 # shortcut_list.append(all_name)
                 suffix = all_name.split(".")[-1]
-                if suffix in ["mp4"]:
-                    shortcut_list.append(get_videoshortcut_base64(all_name, "jpeg"))
-                elif suffix in IMAGE_SUFFIX:
-                    shortcut_list.append(get_imgshortcut_base64(all_name, suffix))
-                else:
-                    shortcut_list.append(None)
+                # if suffix in ["mp4"]:
+                #     shortcut_list.append(get_videoshortcut_base64(all_name, "jpeg"))
+                # elif suffix in IMAGE_SUFFIX:
+                #     shortcut_list.append(get_imgshortcut_base64(all_name, suffix))
+                # else:
+                #     shortcut_list.append(None)
         # print(time.time() - ts, all_name)
 
     dir_list.sort()

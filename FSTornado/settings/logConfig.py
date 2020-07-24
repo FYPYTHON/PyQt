@@ -26,10 +26,10 @@ logConfig = {
     'formatters': {
       'simple': {
         # 'format': '[%(levelname)s] %(name)s %(funcName)s %(asctime)s %(filename)s %(lineno)s:%(message)s'
-        'format': '[%(levelname)s] %(asctime)s %(filename)s %(lineno)s:%(message)s'
+        'format': '[%(levelname)s] %(asctime)s %(filename)15s %(lineno)s:%(message)s'
       },
       'timedRotating': {
-        'format': '[%(levelname)s] %(asctime)s %(filename)s [%(lineno)s] - %(message)s'
+        'format': '[%(levelname)s] %(asctime)s %(filename)15s [%(lineno)s] - %(message)s'
       }
     },
     'handlers': {

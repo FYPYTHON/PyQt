@@ -25,7 +25,7 @@ def get_token():
 
 
 # TOKEN = get_token()
-TOKEN = "9c3f0102fe3223732df8f48119605eb6"
+TOKEN = "3364ce3174decd1c1010f2bd516034aa"
 
 
 def post_ava():
@@ -200,7 +200,7 @@ def get_fsmain():
 
 def post_value():
     url = 'http://139.224.231.14:9016/app/view'
-    parmas = {"jid": "1717", "jdate": "2020-07-22", "jvalue": "3.6940", "token": TOKEN, "loginname": "Tornado"}
+    parmas = {"jid": "1717", "jdate": "2020-07-23", "jvalue": "3.7520", "token": TOKEN, "loginname": "Tornado"}
     headers = {'User-Agent': "Mobile"}
     result = requests.post(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -238,6 +238,6 @@ if __name__ == "__main__":
     # get_userinfo()
     # get_videoshortcut_base64(1, 2)
     # get_fsmain()
-    # post_value()
+    post_value()
     get_value()
     print(time.time() - ts)

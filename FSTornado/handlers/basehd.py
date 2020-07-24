@@ -56,7 +56,7 @@ class BaseHandler(tornado.web.RequestHandler):
         remote_ip = self.request.headers.get("X-Real-Ip", "")
         self.remote_ip = remote_ip
         weblog.info("{} {} {}  remote_ip:{} user:{}, args:{}".format(os.getpid(), self.request.method,
-                                                                     self.request.uri, remote_ip,
+                                                                     unquote(self.request.uri), remote_ip,
                                                                      self.current_user, self.request.arguments))
 
     def get_template(self, name):
@@ -205,7 +205,7 @@ def check_authenticated(func):
             url = self.get_login_url()
             next_url = self.request.uri
             url += "?" + urlencode(dict(next=next_url, msg=u"登录过期，请重新登录"))
-            return self.redirect(url)
+            return self.redirect(unquote(url))
             # return self.write(json.dumps({"error_code": FAIL, "msg": u"登录过期，请重新登录"}))
         else:
             # if self.request.uri.startswith("/delete") and user != "Tornado" \
