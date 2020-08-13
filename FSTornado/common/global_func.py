@@ -50,6 +50,11 @@ def get_pages(total_page):
     return pages
 
 
+def cal_page_from_total(total_items, item_per_page=50):
+    pages = total_items // item_per_page if total_items % item_per_page == 0 else total_items // item_per_page + 1
+    return pages
+
+
 def get_user_info(self):
     # current_user = self.current_user
     if self.current_user is None:
@@ -72,8 +77,10 @@ def get_user_all(self):
 def get_history_all(self, offset=0):
     historys = self.mysqldb().query(TblBrowsingHistory).order_by(TblBrowsingHistory.browsing_date.desc()
                                                                  ,TblBrowsingHistory.browsing_time.desc()
-                                                                 ).offset(offset).limit(50).all()
-    return historys
+                                                                 )
+    count = historys.count()
+    historys = historys.offset(offset).limit(50).all()
+    return historys, count
 
 
 def get_user_id(self):

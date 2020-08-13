@@ -9,7 +9,7 @@ class TblJijin(ModelBase, table_base.TableBase):
     __tablename__ = 'tbl_jijin'
 
     id = Column(Integer, unique=True, primary_key=True)
-    jid = Column(Integer, comment=u"jid")
+    jid = Column(String(10), comment=u"jid")
     jvalue = Column(String(10))
     jdate = Column(String(15), default=datetime.now().strftime("%Y-%m-%d"))
 

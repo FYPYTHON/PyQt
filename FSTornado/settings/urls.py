@@ -4,7 +4,7 @@ from handlers.author import hd_login, hd_main, hd_manage
 from handlers.show import hd_show, hd_play, hd_history
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
 from handlers.view import hd_jijin as hd_jijin
-from handlers.view import hd_predict
+# from handlers.view import hd_predict
 from tornado.web import StaticFileHandler
 url = [                            #
         # (r'/', signin_handler.SigninHandler),
@@ -40,7 +40,7 @@ url = [                            #
         (r'/app/upload', hd_fileload.AppUploadHandler),
         (r'/app/rename', hd_rename.AppFsRenameHandler),
         (r'/app/view', hd_jijin.AppJiJinHandler),
-        (r'/app/predict', hd_predict.AppJijinPredict),
+        # (r'/app/predict', hd_predict.AppJijinPredict),
         (r'/app/play/(?P<filename>.*)', hd_play.AppPlayHandler),
         (r'/appversion', AppVersionHandler),
         (r'/appuserinfo', UserinfoHandler),

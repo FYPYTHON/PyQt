@@ -69,7 +69,7 @@ class FsShowHandler(BaseHandler):
         # print(suffix)
         ftype = None
         imgs = None
-        if suffix in TXT_FIX:
+        if suffix.lower() in TXT_FIX:
             ftype = "txt"
             # fdata = []
             fstr = b""
@@ -80,11 +80,11 @@ class FsShowHandler(BaseHandler):
             # imgs = fdata
             imgs = fstr
             # print(fdata)
-        elif suffix in ['jpg', 'png', 'gif', 'jpeg']:
+        elif suffix.lower() in ['jpg', 'png', 'gif', 'jpeg']:
             ftype = 'img'
             imgs, width, height = self.imgtobase64(realpath, suffix)
             pass
-        elif suffix in ['mp4']:
+        elif suffix.lower() in ['mp4']:
             return self.render("play.html", type=ftype, uri=filename, vsrc=realpath, iwidth=width, iheight=height)
         else:
             pass

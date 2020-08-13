@@ -25,12 +25,12 @@ class TblAccount(ModelBase, table_base.TableBase):
     nickname = Column(String(20), default=u"Tornado", nullable=False)
     password = Column(String(100), nullable=False)
     email = Column(String(100), nullable=False)
-    userstate = Column(Integer, comment=u"0=正常，1=不可用")
-    userrole = Column(Integer, comment=u"0=超管，1=管理, 2=普通, 3=临时")
+    userstate = Column(Integer, comment=u"0=正常，1=不可用", default=1)
+    userrole = Column(Integer, comment=u"0=超管，1=管理, 2=普通, 3=临时", default=3)
     register_time = Column(DateTime, default=datetime.now())
     last_logintime = Column(DateTime, default=datetime.now())
-    avatar_path = Column(String(100), comment=u"用户头像地址")
-    token = Column(String(100), comment=u"token")
+    avatar_path = Column(String(100), comment=u"用户头像地址", default="")
+    token = Column(String(100), comment=u"token", default="")
 
     def __repr__(self):
         return "%s<id=%s, loginname=%s,email=%s>" % (self.__class__.__name__, self.id, self.loginname, self.email)

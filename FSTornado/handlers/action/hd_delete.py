@@ -16,7 +16,7 @@ class FsDeleteHandler(BaseHandler):
     def delete(self):
         curpath = self.get_argument("curpath", None)
         filelist = self.get_arguments("filelist[]", False)  # super subor
-        if curpath is not None and curpath.startswith("public/File"):
+        if curpath is not None and curpath.startswith("public/File") and self.get_current_user() != "Tornado":
             weblog.info("{} can not delete".format(curpath))
             return self.write(json.dumps({"error_code": 1, "msg": u"该目录下的文件不能删除"}))
         # print(self.request.arguments)

@@ -145,8 +145,9 @@ class BaseHandler(tornado.web.RequestHandler):
     def browsing_history(self):
         # if self.request.method == 'GET':
         #     return 0
-        # if self.request.uri == "/history":
-        #     return 0
+        if self.request.uri == "/history":
+            return 0
+
         useragent = self.request.headers.get("User-Agent")
         if "Mobile" in useragent or "Android" in useragent:
             return 0

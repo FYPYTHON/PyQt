@@ -22,11 +22,14 @@ def get_img_base64(realpath, suffix):
     img_size = os.path.getsize(realpath)
     weblog.info("image wh: {} size:{}".format(img.size, img_size))
     beishu = img_size / 1024 / 1024
+    sizebs = max(img.size) / 1000
+    beishu = beishu if beishu > sizebs else sizebs
     if beishu > 1:
-        small_size = (int(img.size[0] / beishu), int(img.size[0] / beishu))
+        small_size = (int(img.size[0] / beishu), int(img.size[1] / beishu))
     else:
         small_size = img.size
     img = img.resize(small_size, Image.ANTIALIAS)
+    weblog.info("resize:{}  rate:{}".format(img.size, beishu))
     output_buffer = BytesIO()
     img.save(output_buffer, format=suffix)
     binary_data = output_buffer.getvalue()
@@ -81,11 +84,11 @@ class AppPlayHandler(BaseHandler):
         else:
             return self.write(json.dumps({"error_code": 1, "msg": u"视屏/图片文件不存在"}))
 
-        suffix = realpath.split('.')[-1]
+        suffix = realpath.split('.')[-1].lower()
 
-        if suffix in ['mp4']:
+        if suffix.lower() in ['mp4']:
             return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": "video"}))
-        elif suffix in IMAGE_SUFFIX:
+        elif suffix.lower() in IMAGE_SUFFIX:
             base64_data, beishu = get_img_base64(realpath, suffix)
             weblog.info("img base64: {}M len:{}".format(beishu, len(base64_data)))
             return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": "image", "img": base64_data}))
@@ -120,7 +123,7 @@ class AppPlayHandler(BaseHandler):
 
         nowfile = os.path.join(curpath, filelist[index])
         realfile = os.path.join(self.settings.get('top_path'), nowfile)
-        suffix = realfile.split(".")[-1]
+        suffix = realfile.split(".")[-1].lower()
         if suffix not in IMAGE_SUFFIX:
             return self.write(json.dumps({"error_code": 1, "msg": u"不是图片文件"}))
         base64_data, beishu = get_img_base64(realfile, suffix)
