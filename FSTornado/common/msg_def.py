@@ -26,6 +26,8 @@ SUCCESS = 0
 FAIL = 1
 TOKEN_OUT = 1
 
+PAGESIZE = 10
+
 IMAGE_SUFFIX = ["jpg", "jpeg", "png", "gif"]
 WEEK_DAY = ["周一", "周二", "周三", "周四", "周五", "周六", "周日", ]
 

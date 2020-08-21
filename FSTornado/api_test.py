@@ -275,7 +275,7 @@ def get_userlist(url="139.224.231.14:9016"):
 
 def post_value(url):
     url = 'http://{}/app/view'.format(url)
-    parmas = {"jid": "1717", "jdate": "2020-08-10", "jvalue": "3.7110", "token": TOKEN, "loginname": "Tornado"}
+    parmas = {"jid": "1717", "jdate": "2020-08-14", "jvalue": "3.4790", "token": TOKEN, "loginname": "test123"}
     headers = {'User-Agent': "Mobile"}
     result = requests.post(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -300,12 +300,15 @@ def get_value(url):
 
 def post_dir(url="139.224.231.14:9016"):
     url = 'http://{}/app/dir'.format(url)
-    parmas = {"newname": "123.png", "curpath": "public/Extra","token": TOKEN, "loginname": "Tornado",
+    parmas = {"newname": "123.png", "curpath": "public/Extra","token": TOKEN, "loginname": "test123",
               "filename": "vv", "oldname": "1.txt"}
     headers = {'User-Agent': "Mobile"}
     # result = requests.post(url, headers=headers, data=parmas)
-    # result = requests.delete(url + "?filename=%s&curpath=%s" % (parmas.get('filename'), parmas.get("curpath")), headers=headers)
-    result = requests.put(url, headers=headers, data=parmas)
+    result = requests.delete(url + "?filename=%s&curpath=%s&token=%s&loginname=%s" % (parmas.get('filename'),
+                                                                          parmas.get("curpath"),
+                                                                          parmas.get("token"),
+                                                                        parmas.get("loginname")), headers=headers)
+    # result = requests.put(url, headers=headers, data=parmas)
     print(result.text)
     res = result.content.decode('utf-8')
     jres = eval(res)
@@ -334,7 +337,7 @@ def play(url):
 def view(url):
     url = 'http://{}/app/view'.format(url)
     parmas = {"curpath": "public/Extra", "token": TOKEN, "loginname": "test123",
-              "page": 1, "jid": "1717", "all": "all2"}
+              "page": 1, "jid": "1717", "all": "all"}
     # parmas = {}
     headers = {'User-Agent': "Mobile"}
     print(url)
@@ -449,10 +452,10 @@ def mutilpool(url):
     task_pool.wait()
 
 
-TOKEN = "5ba74eaaae2445a1cb0b08eb463b5266"
+TOKEN = "765718bc114aa5045871251fe88717f6"
 if __name__ == "__main__":
-    # url = "127.0.0.1:807"
-    url = "139.196.197.13:807"
+    url = "127.0.0.1:807"
+    # url = "139.196.197.13:807"
     # url = "139.224.231.14:9016"
     import time
     ts = time.time()
@@ -470,8 +473,8 @@ if __name__ == "__main__":
     # post_value(url)
     # get_value(url)
     # post_dir(url)
-    play(url)
-    # view(url)
+    # play(url)
+    view(url)
     # post_upload(url)
     # post_uploadlist(url)
     # get_download(url)
@@ -484,5 +487,5 @@ if __name__ == "__main__":
     # res = db().query(TblAccount.loginname, TblAccount.last_logintime, TblAccount.register_time).all()
     # for i in res:
     #     print(i)
-    mutilpool(url)
+    # mutilpool(url)
 

@@ -127,6 +127,14 @@ class BaseHandler(tornado.web.RequestHandler):
             self.mysqldb().commit()
         self.mysqldb().close()
 
+    @property
+    def top_path(self):
+        return self.settings.get('top_path')
+
+    @property
+    def upload_path(self):
+        return self.settings.get('upload_path')
+
     def get_current_user(self):
         if self.request.uri.startswith(self.get_login_url()) or self.request.uri.startswith('/admin/verifyCode'):
             return "system"

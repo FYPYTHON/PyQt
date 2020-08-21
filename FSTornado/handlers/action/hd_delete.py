@@ -31,7 +31,8 @@ class FsDeleteHandler(BaseHandler):
 
         file_str = " ".join(filelist)
         try:
-            cmd = "rm -rf {}".format(file_str)
+            # cmd = "rm -rf {}".format(file_str)
+            cmd = "mv {} /home/trash".format(file_str)
             weblog.info("{}".format(cmd))
             os.system(cmd)
             return self.write(json.dumps({"error_code": 0, "msg": "文件已删除"}))
@@ -64,7 +65,8 @@ class AppFsDeleteHandler(BaseHandler):
             return self.write(json.dumps({"error_code": 1, "msg": msg}))
 
         try:
-            cmd = "rm -rf {}".format(real_file)
+            # cmd = "rm -rf {}".format(real_file)
+            cmd = "mv {} /home/trash".format(real_file)
             weblog.info("{}".format(cmd))
             os.system(cmd)
             return self.write(json.dumps({"error_code": 0, "msg": "文件已删除"}))

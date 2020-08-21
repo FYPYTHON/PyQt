@@ -84,19 +84,32 @@
 
         <li class="col-md-11" style="list-style:none;">
             <input class="col-md-1" name="{{file}}" type="checkbox" value="{{file}}"/>
-            <img class="shortcut" id="shortcutimg" src="{{static_url('img/default_image.jpg')}}" alt="">
+<!--            <img class="shortcut" id="shortcutimg" src="{{static_url('img/default_image.jpg')}}" alt="{{file}}">-->
+            <img class="shortcut" id="shortcutimg" src="{{shortcut_list[i]}}" alt="{{file}}">
             <a href="/show/{{curpath}}/{{file}}" target="_blank">{{file}}</a>
         </li>
         {% else %}
         <li class="col-md-11" style="list-style:none;">
             <input class="col-md-1" name="{{file}}" type="checkbox" value="{{file}}"/>
-			<img class="col-md-1 shortcut" id="shortcutfile" src="{{static_url('img/filedialog_file.png')}}" alt="">
+			<img class="col-md-1 shortcut" id="shortcutfile" src="{{static_url('img/filedialog_file.png')}}" alt="{{file}}">
             <a href="/show/{{curpath}}/{{file}}" target="_blank">{{file}}</a>
         </li>
         {% end %}
         {% end %}
     </ul>
 
+</div>
+<!--page-->
+<div class="col-sm-12">
+      <div class="col-sm-8">
+
+      </div>
+      <div class="col-sm-4">
+        <!-- <button onclick="prevpage()">上一页</button> -->
+        <a href="/fsmain?curpath={{curpath}}&page={{page - 1}}">上一页</a>
+        <label>总页数：{{page}}/{{total}}</label>
+        <a href="/fsmain?curpath={{curpath}}&page={{page + 1}}">下一页</a>
+      </div>
 </div>
 <!-- modal div -->
 <div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">

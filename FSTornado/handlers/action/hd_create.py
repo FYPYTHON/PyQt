@@ -28,6 +28,9 @@ class FsCreateHandler(BaseHandler):
         if os.path.exists(real_newname):
             return self.write(json.dumps({"msg": "{} is exist".format(newname), "code": 1}))
 
+        if curpath == "private":
+            return self.write(json.dumps({"msg": "{} directory can not create new".format(newname), "code": 1}))
+
         try:
             # os.mkdir(real_newname)
             os.makedirs(real_newname)
@@ -35,7 +38,6 @@ class FsCreateHandler(BaseHandler):
         except Exception as e:
             weblog.exception(e)
             return self.write(json.dumps({"msg": "create dir error", "code": 1}))
-
 
 
 class AppFsCreateHandler(BaseHandler):
@@ -51,6 +53,9 @@ class AppFsCreateHandler(BaseHandler):
 
         if os.path.exists(real_newname):
             return self.write(json.dumps({"msg": u"目录已存在".format(newname), "error_code": 1}))
+
+        if curpath == "private":
+            return self.write(json.dumps({"msg": "当前目录下不能创建新目录".format(newname), "code": 1}))
 
         try:
             # os.mkdir(real_newname)

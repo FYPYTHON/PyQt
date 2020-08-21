@@ -20,11 +20,15 @@ define("port", default=9080, help="run on the given port", type=int)
 logging.config.dictConfig(logConfig)
 MAX_STREAMED_SIZE = 1024 * 1024 * 1024
 
+
 def check_path_exist():
     if not os.path.exists("/opt/data"):
-        os.makedirs('/opt/data')
+        os.makedirs('/opt/data/public')
+        os.makedirs('/opt/data/private')
     if not os.path.exists('/opt/log/fs'):
         os.makedirs('/opt/log/fs')
+    if not os.path.exists("/home/trash"):
+        os.makedirs('/home/trash')
 
 
 class Application(tornado.web.Application):
