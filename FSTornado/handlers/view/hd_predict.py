@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2020/6/19 9:55
-# @Author  : wangguoqiang@kedacom.com
+# @Author  : 1823218990@qq.com
 # @File    : hd_predict.py
 # @Software: PyCharm
 

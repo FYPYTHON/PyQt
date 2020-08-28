@@ -3,10 +3,15 @@ from handlers.adminhd import verifyCode, AppVersionHandler, UserinfoHandler
 from handlers.author import hd_login, hd_main, hd_manage
 from handlers.show import hd_show, hd_play, hd_history
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
+from handlers.study import hd_poetry
 from handlers.view import hd_jijin as hd_jijin
 # from handlers.view import hd_predict
 from tornado.web import StaticFileHandler
 url = [                            #
+        # vue.js get resource
+        # (r'^home/js/(?P<filename>.*\.js)$', myjs, name='myjs'),  # 与html中引入的href src一致
+        # (r'^home/css/(?P<filename>.*\.css)$', mycss, name='mycss'),
+        #
         # (r'/', signin_handler.SigninHandler),
         (r'/login', hd_login.LoginHandler),
         (r'/logout', hd_login.LogoutHandler),
@@ -32,6 +37,9 @@ url = [                            #
 
         # view
         (r'/view', hd_jijin.JiJinHandler),
+        (r'/study', hd_poetry.PoetryHandler),
+        (r'/poem', hd_poetry.PoemHandler),
+        (r'/poemlike', hd_poetry.PoemLikeHandler),
 
         # -------- APP -------
         (r'/app/createdir', hd_create.AppFsCreateHandler),
@@ -44,5 +52,6 @@ url = [                            #
         (r'/app/play/(?P<filename>.*)', hd_play.AppPlayHandler),
         (r'/appversion', AppVersionHandler),
         (r'/appuserinfo', UserinfoHandler),
+
 
 ]

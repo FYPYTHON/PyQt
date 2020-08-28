@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2020/7/13 16:53
-# @Author  : wangguoqiang@kedacom.com
+# @Author  : 1823218990@qq.com
 # @File    : hd_avator.py
 # @Software: PyCharm
 

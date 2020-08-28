@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2020/8/15 19:24
-# @Author  : wangguoqiang@kedacom.com
+# @Author  : 1823218990@qq.com
 # @File    : TcpClient.py
 # @Software: PyCharm
 # port 5060 test use socket to send sip packet

@@ -246,10 +246,10 @@ class AppFSMainHandler(BaseHandler):
                 shortcut_list = []
             else:
                 real_path = os.path.join(self.top_path, curpath)
-                dir_list, file_list, shortcut_list = get_paths(real_path)
+                dir_list, file_list, shortcut_list = get_paths_app(real_path)
         else:
             real_path = os.path.join(self.top_path, curpath)
-            dir_list, file_list, shortcut_list = get_paths(real_path)
+            dir_list, file_list, shortcut_list = get_paths_app(real_path)
 
         return self.write(json.dumps({"error_code": 0, "dirs": dir_list, "files": file_list,
                                       "curpath": curpath, "shortcut_list": shortcut_list,

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2020/8/15 19:36
-# @Author  : wangguoqiang@kedacom.com
+# @Author  : 1823218990@qq.com
 # @File    : TcpServer.py
 # @Software: PyCharm
 # port 5060 test use socket to receive sip msg

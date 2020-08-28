@@ -70,10 +70,17 @@ if __name__ == "__main__":
     # init_admin()
     # init_user()
     # init_setting()
-    init_version()
+    # init_version()
     #from database.tbl_account import TblAccount
     #engine.execute("ALTER TABLE tbl_account ADD token char(100);")
     #engine.execute("select * from tbl_account;")
+    from database.tbl_poetry import TblPoetry
+    res = db_session.query(TblPoetry.id, TblPoetry.agg).group_by(TblPoetry.agg).all()
+    for r in res:
+        print(r)
+
+
+
 
 
 

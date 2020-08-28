@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2020/8/16 11:02
-# @Author  : wangguoqiang@kedacom.com
+# @Author  : 1823218990@qq.com
 # @File    : UDPServer.py.py
 # @Software: PyCharm
 

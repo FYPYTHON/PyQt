@@ -68,6 +68,7 @@ if __name__ == "__main__":
     try:
         http_server.start(2)    # linux use mutli process
     except:
+        print("window app start...")
         pass
     # app.listen(options.port)
     # from timedtask.timedget import printLineFileFunc

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2020/7/13 17:19
-# @Author  : wangguoqiang@kedacom.com
+# @Author  : 1823218990@qq.com
 # @File    : api_test.py
 # @Software: PyCharm
 
@@ -436,6 +436,27 @@ def get_download(url):
         f.write(ctx)
     return ctx
 
+#
+def post_poem(url):
+    url = 'http://{}/study'.format(url)
+    headers = {"User-Agent": "Mobile"}
+    params = {"title":    u"登鹳雀楼",
+              "poet":     u"王之涣",
+              "content":  u"白日依山尽，黄河入海流。欲穷千里目，更上一层楼。",
+              "category": u"唐",
+              "agg":      u"唐诗三百首",
+              "describe": u"describe"}
+    # result = requests.get(url, headers=headers, params=params)
+    result = requests.post(url, headers=headers, data=params)
+    # print(result.text)
+    res = result.content.replace(b"null", b"None").decode('utf-8')
+    fmtprint(res)
+
+def get_poem(id):
+    a = requests.get("http://127.0.0.1:9080/poem?pid={}".format(id))
+    b = eval(a.content.decode())
+    return b
+
 def mutilpool(url):
     from threadpool import ThreadPool, makeRequests
 
@@ -454,7 +475,8 @@ def mutilpool(url):
 
 TOKEN = "765718bc114aa5045871251fe88717f6"
 if __name__ == "__main__":
-    url = "127.0.0.1:807"
+    # url = "127.0.0.1:807"
+    url = "127.0.0.1:9080"
     # url = "139.196.197.13:807"
     # url = "139.224.231.14:9016"
     import time
@@ -474,10 +496,11 @@ if __name__ == "__main__":
     # get_value(url)
     # post_dir(url)
     # play(url)
-    view(url)
+    # view(url)
     # post_upload(url)
     # post_uploadlist(url)
     # get_download(url)
+    post_poem(url)
     te = time.time()
     print(te - ts)
     # get_version_(url_remote)
