@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Decode</title>
+    <script type="text/javascript" src="{{static_url('js/jquery.min.js')}}"></script>
+</head>
+<body>
+<div>
+	<input name="destr" id="destr" />
+	<button onclick="mydecode()">解密</button>
+	<br/>
+	<label id="result" name="result"></label>
+</div>
+</body>
+
+<script type="text/javascript">
+	function mydecode(){
+		// console.log("mydecode");
+		$.ajax({
+			type: "Post",
+			url: "/decode",
+			data: {"destr": $("#destr").val()},
+			dataType : "json",
+			success: function (data) {
+				$("#result").html(data.decode);
+			}
+		});
+	}
+</script>
+</html>

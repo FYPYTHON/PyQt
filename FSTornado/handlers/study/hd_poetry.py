@@ -23,8 +23,8 @@ class PoetryHandler(BaseHandler):
             filelist = self.get_poems_list(agg)[0]
             agglist = self.get_agg_list()
             flen = int(ftype)
-            filelist = [['-1', 2, 3], ["-1", 2, 3], ["-1", 5, 6]]
-            agglist = [1, 2, 3]
+            # filelist = [['-1', 2, 3], ["-1", 2, 3], ["-1", 5, 6]]
+            # agglist = [1, 2, 3]
             return self.write(json.dumps({"filelist": filelist, "agglist": agglist, "error_code": 0}))
 
     def get_poems_list(self, agg):

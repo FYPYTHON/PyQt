@@ -70,7 +70,15 @@ label {
 	text-align: center;
 }
 .poemdescribe{
-	text-align: left;
+	/*text-align: left;*/
+	max-height: 400px;
+	/*overflow-x:auto; 
+    display: flex; */
+    overflow-y: scroll;
+}
+.poemdescribe li {
+	text-align: none;
+	margin-left: 1px;
 }
 .poemcontemt button {
 	text-align: left;

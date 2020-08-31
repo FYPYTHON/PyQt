@@ -1,5 +1,5 @@
 # coding=utf-8
-from handlers.adminhd import verifyCode, AppVersionHandler, UserinfoHandler
+from handlers.adminhd import verifyCode, AppVersionHandler, UserinfoHandler, StatusHandler, DecodeSelfHandler
 from handlers.author import hd_login, hd_main, hd_manage
 from handlers.show import hd_show, hd_play, hd_history
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
@@ -12,6 +12,8 @@ url = [                            #
         # (r'^home/js/(?P<filename>.*\.js)$', myjs, name='myjs'),  # 与html中引入的href src一致
         # (r'^home/css/(?P<filename>.*\.css)$', mycss, name='mycss'),
         #
+        (r'/status', StatusHandler),
+        (r'/decode', DecodeSelfHandler),
         # (r'/', signin_handler.SigninHandler),
         (r'/login', hd_login.LoginHandler),
         (r'/logout', hd_login.LogoutHandler),

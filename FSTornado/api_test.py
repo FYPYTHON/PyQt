@@ -7,20 +7,22 @@
 
 import requests
 
+jid = ["001717", "161810"]
+user = "admin1"
+pwd = "admin#_@0831"
+
 
 def get_token(url):
     url = 'http://{}/login'.format(url)
     headers = {'User-Agent': "Mobile"}
-    parmas = {"loginname": "test123","userAccount": "Tornado", "password": "123123", "inputCode": "APP"}
+    parmas = {"loginname": user, "userAccount": user, "password": pwd, "inputCode": "APP"}
     result = requests.post(url, data=parmas, headers=headers)
     # result = requests.post(url, headers=headers, files={"FILE": None})
     # print(result.text)
-    print(result.content)
+    # print(result.content)
     res = result.content.decode('utf-8')
     jres = eval(res)
     fmtprint(jres)
-    if "token" in jres.keys():
-        return jres.get("token")
     return result.text
 
 
@@ -275,7 +277,8 @@ def get_userlist(url="139.224.231.14:9016"):
 
 def post_value(url):
     url = 'http://{}/app/view'.format(url)
-    parmas = {"jid": "1717", "jdate": "2020-08-14", "jvalue": "3.4790", "token": TOKEN, "loginname": "test123"}
+
+    parmas = {"jid": jid[1], "jdate": "2020-08-03", "jvalue": "3.6830", "token": TOKEN, "loginname": "test123"}
     headers = {'User-Agent': "Mobile"}
     result = requests.post(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -287,7 +290,8 @@ def post_value(url):
 
 def get_value(url):
     url = 'http://{}/app/view'.format(url)
-    parmas = {"jid": "1717", "token": TOKEN, "loginname": "Tornado", "all": "all"}
+
+    parmas = {"jid": jid[1], "token": TOKEN, "loginname": user, "all": "all"}
     headers = {'User-Agent': "Mobile"}
     result = requests.get(url, headers=headers, params=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -473,7 +477,7 @@ def mutilpool(url):
     task_pool.wait()
 
 
-TOKEN = "765718bc114aa5045871251fe88717f6"
+TOKEN = "a4561a1e506ea980a772edf72db9cfc8"
 if __name__ == "__main__":
     # url = "127.0.0.1:807"
     url = "127.0.0.1:9080"
@@ -493,14 +497,14 @@ if __name__ == "__main__":
     # get_users(url)
     # get_userlist(url)
     # post_value(url)
-    # get_value(url)
+    get_value(url)
     # post_dir(url)
     # play(url)
     # view(url)
     # post_upload(url)
     # post_uploadlist(url)
     # get_download(url)
-    post_poem(url)
+    # post_poem(url)
     te = time.time()
     print(te - ts)
     # get_version_(url_remote)

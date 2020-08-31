@@ -72,7 +72,8 @@ if __name__ == "__main__":
         pass
     # app.listen(options.port)
     # from timedtask.timedget import printLineFileFunc
-    tornado.ioloop.PeriodicCallback(lambda: clear_history(app.settings.get("days_clear")), 1000 * 60 * 60 * 12).start()    # ms
+    tornado.ioloop.PeriodicCallback(lambda: clear_history(app.settings.get("days_clear")),
+                                    1000 * 60 * 60 * 12).start()  # ms
     weblog.info("-- tornadofs server start .... pid:{} ".format(os.getpid()))
     tornado.ioloop.IOLoop.instance().start()
 

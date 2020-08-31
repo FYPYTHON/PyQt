@@ -200,11 +200,13 @@ let poemContent = {
 	        <div class="col-sm-12 myseperator"></div>
 		</div>
 		<div class="col-sm-2"></div>
-		<div class="col-sm-12 poemcontemt">
-			<button class="col-sm-2 btn btn-info" @click="show_describe()">{{btnname}}</button>
+		<div class="col-sm-12 myseperator"></div>
+		<button class="col-sm-2 btn btn-info" @click="show_describe()">{{btnname}}</button>
+		<div class="col-sm-12 poemdescribe">
+			
 	        <div class="col-sm-12 myseperator"></div>
-	        <ul class="col-sm-12 list-unstyled poemdescribe" v-show=isdetail v-for="detail in poem['describe']">
-	            <li>{{detail}}</li>
+	        <ul class="col-sm-12 list-unstyled" v-show=isdetail v-for="detail in poem['describe']">
+	            <li><p>{{detail}}</p></li>
 	        </ul>
         </div>
 	</div>

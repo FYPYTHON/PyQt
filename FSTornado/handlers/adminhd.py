@@ -1,14 +1,15 @@
 # coding=utf-8
 from database.tbl_account import TblAccount
 from database.tbl_admin import TblAdmin
-from handlers.basehd import BaseHandler, check_token
+from handlers.basehd import BaseHandler, check_token, check_authenticated
 from json import dumps as json_dumps
 from common.global_func import get_expires_datetime
 from method.generate_verify_image import generate_verify_image
+from method.my_decode import self_decode
 import base64
 import random
 from tornado.log import app_log as weblog
-
+import tornado.web
 
 class verifyCode(BaseHandler):
     def get(self):
@@ -28,6 +29,30 @@ class verifyCode(BaseHandler):
         except:
             weblog.exception("verify image code error")
             return
+
+
+class StatusHandler(tornado.web.RequestHandler):
+    def get(self):
+        return self.write(json_dumps({"status": 0}))
+
+
+class DecodeSelfHandler(BaseHandler):
+    @check_authenticated
+    def get(self):
+        return self.render("decode.html")
+
+    @check_authenticated
+    def post(self):
+        destr = self.get_argument("destr", "")
+        bstr = destr.encode('utf-8')
+        # print(bstr)
+        try:
+            result = self_decode(bstr)
+        except Exception as e:
+            weblog.error("{}".format(e))
+            result = u"解密失败"
+        return self.write(json_dumps({"decode": result}))
+
 
 
 class AppVersionHandler(BaseHandler):

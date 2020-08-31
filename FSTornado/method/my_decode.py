@@ -64,9 +64,9 @@ def self_encode(ori_str):
     result = ''
     for i in ori_str:
         temp = func_x(int(ord(i)))
-        print(i, temp)
+        # print(i, temp)
         result += chr(int(temp))
-    print(result)
+    # print(result)
     return b64encode(result.encode())
 
 
@@ -95,8 +95,10 @@ if __name__ == "__main__":
 
     # sn = ord_encode("123456789az_")
     # print(sn)
-    s_a = self_encode("123456789az_")
-    print(s_a)
+    s_a = self_encode("1234")
+    print(s_a.decode('utf-8'))
     s_b = self_decode(s_a)
 
     print(s_b)
+
+    self_decode(b'1234')
