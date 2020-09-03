@@ -87,11 +87,15 @@ if __name__ == "__main__":
     for r in res:
         print(r)
 
-    title = db_session.query(TblAlticle.id, TblAlticle.title).filter(TblAlticle.title == u"生命泉").first()
+    # title = db_session.query(TblAlticle.id, TblAlticle.title).filter(TblAlticle.title == u"生命泉").first()
     # print(title)
 
-    te = db_session.query(TblPoetry.content, TblPoetry.id).filter(TblPoetry.content.like(u"%!%")).first()
-    print(te)
+    # te = db_session.query(TblPoetry.content, TblPoetry.id).filter(TblPoetry.content.like(u"北国风光%")).all()
+    te = db_session.query(TblPoetry).filter(TblPoetry.content.like(u"北国风光%")).all()
+    print(len(te))
+    for t in te:
+        print(t.tojson())
+        print(len(t.content))
 
 
 

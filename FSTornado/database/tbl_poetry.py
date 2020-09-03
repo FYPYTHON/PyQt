@@ -40,7 +40,7 @@ class TblPoetry(ModelBase, table_base.TableBase):
             content = content.replace("！", "\n！")
 
         content = content.strip('\n').split("\n")
-        content = [c for c in content if c != ""]
+        content = [c.strip(" ") for c in content if c != ""]
 
         describe = self.describe.split("\n")
         describe = [d if len(d) < 8 else "\t" + d for d in describe]
