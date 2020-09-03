@@ -85,6 +85,10 @@ label {
 	border:none;
 }
 
+.alticlecontent {
+	margin-top: 5px;
+}
+
 /* modal*/
 .mymodal{ 
     background-color: #fff; 

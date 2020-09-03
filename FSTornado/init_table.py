@@ -71,13 +71,27 @@ if __name__ == "__main__":
     # init_user()
     # init_setting()
     # init_version()
+    from sqlalchemy import func
     #from database.tbl_account import TblAccount
     #engine.execute("ALTER TABLE tbl_account ADD token char(100);")
     #engine.execute("select * from tbl_account;")
     from database.tbl_poetry import TblPoetry
-    res = db_session.query(TblPoetry.id, TblPoetry.agg).group_by(TblPoetry.agg).all()
+    from database.tbl_alticle import TblAlticle
+
+    res = db_session.query(func.count(TblAlticle.id), TblAlticle.agg).group_by(TblAlticle.agg).all()
+    print(len(res), 'agg')
+    for r in sorted(res):
+        print(r)
+    res = db_session.query(func.count(TblAlticle.id), TblAlticle.category).group_by(TblAlticle.category).all()
+    print(len(res), "category")
     for r in res:
         print(r)
+
+    title = db_session.query(TblAlticle.id, TblAlticle.title).filter(TblAlticle.title == u"生命泉").first()
+    # print(title)
+
+    te = db_session.query(TblPoetry.content, TblPoetry.id).filter(TblPoetry.content.like(u"%!%")).first()
+    print(te)
 
 
 

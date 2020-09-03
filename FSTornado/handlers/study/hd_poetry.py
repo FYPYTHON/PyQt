@@ -165,6 +165,11 @@ class PoemHandler(BaseHandler):
 
 
 class PoemLikeHandler(BaseHandler):
+    """
+    looking_for = needle.replace('_', '__')\
+                        .replace('*', '%')\
+                        .replace('?', '_')
+    """
     def get(self):
         key = self.get_argument("key", None)
         keys = self.get_arguments("keys", strip=True)

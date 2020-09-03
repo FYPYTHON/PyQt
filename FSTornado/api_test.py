@@ -22,12 +22,13 @@ def get_token(url):
     # print(result.content)
     res = result.content.decode('utf-8')
     jres = eval(res)
-    fmtprint(jres)
+    # fmtprint(jres)
+    if "token" in jres:
+        return jres.get("token")
     return result.text
 
 
-# TOKEN = get_token()
-
+# TOKEN = get_token(url="127.0.0.1:9080")
 
 
 def fmtprint(jres):
@@ -278,7 +279,7 @@ def get_userlist(url="139.224.231.14:9016"):
 def post_value(url):
     url = 'http://{}/app/view'.format(url)
 
-    parmas = {"jid": jid[1], "jdate": "2020-08-03", "jvalue": "3.6830", "token": TOKEN, "loginname": "test123"}
+    parmas = {"jid": jid[1], "jdate": "2020-08-31", "jvalue": "3.7390", "token": TOKEN, "loginname": user}
     headers = {'User-Agent': "Mobile"}
     result = requests.post(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -456,8 +457,15 @@ def post_poem(url):
     res = result.content.replace(b"null", b"None").decode('utf-8')
     fmtprint(res)
 
+
 def get_poem(id):
     a = requests.get("http://127.0.0.1:9080/poem?pid={}".format(id))
+    b = eval(a.content.decode())
+    return b
+
+
+def get_alticle(id):
+    a = requests.get("http://127.0.0.1:9080/alticle?pid={}".format(id))
     b = eval(a.content.decode())
     return b
 
@@ -477,14 +485,18 @@ def mutilpool(url):
     task_pool.wait()
 
 
-TOKEN = "a4561a1e506ea980a772edf72db9cfc8"
+# url = "127.0.0.1:807"
+url = "127.0.0.1:9080"
+# url = "139.196.197.13:807"
+# url = "139.224.231.14:9016"
+# TOKEN = "a4561a1e506ea980a772edf72db9cfc8"
+TOKEN = get_token(url)
+
 if __name__ == "__main__":
-    # url = "127.0.0.1:807"
-    url = "127.0.0.1:9080"
-    # url = "139.196.197.13:807"
-    # url = "139.224.231.14:9016"
+
     import time
     ts = time.time()
+
     # get_token(url)
     # post_ava()
     # post_next()

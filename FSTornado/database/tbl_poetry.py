@@ -34,6 +34,11 @@ class TblPoetry(ModelBase, table_base.TableBase):
         if "）" in content or "（" in content:
             content = content.replace("）", "）\n")
             content = content.replace("（", "\n（")
+        if "？" in content:
+            content = content.replace("？", "\n？")
+        if "！" in content:
+            content = content.replace("！", "\n！")
+
         content = content.strip('\n').split("\n")
         content = [c for c in content if c != ""]
 

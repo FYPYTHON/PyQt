@@ -2,10 +2,13 @@
 // 解决兼容问题 
 let store = {
     conenteId:'search',
+    bodyId: 'bodyContent',
     poem: {},
+    alticle: {},
     poemlike: [],
     aggdefault: "唐诗三百首",
     agglist:[],
+    categorylist:[],
     filelist: {
         data: [],
         type: 0,
@@ -26,6 +29,26 @@ let store = {
                     var all_file_directory = data.filelist;
                     store.filelist.data = all_file_directory;
                     store.agglist = data.agglist;
+                }
+            })
+        },
+        getFileCategoryList: function(agg, category, ftype){
+            $.ajax({
+                url: '/alticles',
+                async : false,
+                type: 'GET',
+                data: {
+                    agg: agg,
+                    category: category,
+                    type: ftype
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var all_file_directory = data.filelist;
+                    store.filelist.data = all_file_directory;
+                    store.agglist = data.agglist;
+                    store.categorylist = data.categorylist;
                 }
             })
         },
@@ -76,6 +99,26 @@ let store = {
                         alert(data.msg);
                     } else {
                     	store.poem = data.poem;
+                    }
+                }
+            })
+        },
+        getAlticleSync(pid, sync){
+        	$.getJSON({
+                url: '/alticle',
+                async : sync,
+                type: 'GET',
+                data: {
+                    pid: pid,
+                },
+                dataType: 'json',
+                success: function (data) {
+                	var result = parseInt(data.error_code);
+                	if(result != 0){
+                		store.alticle = data.alticle;
+                        alert(data.msg);
+                    } else {
+                    	store.alticle = data.alticle;
                     }
                 }
             })
@@ -272,8 +315,8 @@ let navBar = {
     <nav class="navbar navbar-default">
         <div class="container-fluid">
               <ul class="nav navbar-nav">
-                <li class="active">{{home}}</li>
-                <li>{{about}}</li>               
+                <li class="active" @click="poemBody">{{home}}</li>
+                <li @click="alticleBody">{{about}}</li>               
               </ul>
         </div>
     </nav>
@@ -283,6 +326,19 @@ let navBar = {
             home:'Home',
             about:'About'
         }
+    },
+    methods:{
+    	poemBody(){
+    		console.log(this.home);
+    		store.bodyId = "bodyContent";
+    		this.$emit("bodyChange");
+    	},
+    	alticleBody(){
+    		console.log(this.about);
+    		store.bodyId = "alticleContent";
+    		this.$emit("bodyChange");
+    	},
+
     }
 }
 
@@ -372,17 +428,31 @@ let app = {
         <div class="container-fluid">`+
             // <leftMenu></leftMenu>
             // <rightContent></rightContent>
-            `<bodyContent></bodyContent>
+            // `<bodyContent v-bind:is="bodyCmt"></bodyContent>
+            `<bodyselect v-bind:is="bodyCmt"></bodyselect>
         </div>
     </div>
     `,
+    data(){
+    	return {
+    		// bodyCmt: store.bodyId,
+    		bodyCmt: 'alticleContent',
+    	}
+    },
     components:{
         'nav-bar':navBar,
         'main-content':mainContent,
         // 'leftMenu':leftMenu,
         // 'rightContent':rightContent,
         'bodyContent':bodyContent,
-    }
+        'alticleContent': alticleBody,
+    },
+    methods: {
+    	bodyChange(){
+    		console.log("bodyChange...");
+    		this.bodyCmt = store.bodyId;
+    	},
+    },
 }
 
 let root = new Vue({
