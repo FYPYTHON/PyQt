@@ -88,7 +88,9 @@ label {
 .alticlecontent {
 	margin-top: 5px;
 }
-
+.liselected {
+    background: #D3D3D3;
+}
 /* modal*/
 .mymodal{ 
     background-color: #fff; 

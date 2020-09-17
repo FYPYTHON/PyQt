@@ -116,6 +116,7 @@ class JsonSerialize(object):
 class DatetimeManage(object):
     FMTDEFAULT = "%Y-%m-%d %H:%M:%S"
     FMTES = "%Y-%m-%dT%H:%M:%S"
+    FDATE = "%Y-%m-%d"
     NDATEF = "%Y%m%d"
 
     def __init__(self):

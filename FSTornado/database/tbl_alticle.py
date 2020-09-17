@@ -38,6 +38,7 @@ class TblAlticle(ModelBase, table_base.TableBase):
                 "title": self.title,
                 "content": content,
                 "describe": describe,
+                "id": self.id
                 }
 
     def initjson(self, params):

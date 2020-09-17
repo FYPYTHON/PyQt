@@ -112,6 +112,16 @@ def get_user_by_id(self, id):
             "userstate": user.userstate, "email": user.email}
 
 
+def get_action_tbl(self, TblAlticle, pid, action):
+    alticle_now = self.mysqldb().query(TblAlticle).filter(TblAlticle.id == pid).first()
+    alticle = self.mysqldb().query(TblAlticle).filter(TblAlticle.category == alticle_now.category
+                                                      , TblAlticle.agg == alticle_now.agg)
+    if action == "next":
+        alticle = alticle.filter(TblAlticle.id > pid).limit(1).first()
+    else:
+        alticle = alticle.filter(TblAlticle.id < pid).order_by(TblAlticle.id.desc()).limit(1).first()
+    return alticle
+
 if __name__ == "__main__":
     pass
     print(get_week_datetime(-1))

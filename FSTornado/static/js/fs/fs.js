@@ -11,6 +11,12 @@ function getUrl(){
     }
     return theRequest;
 };
+function getCookie(name) {
+    console.log(document.cookie);
+    // var reg = "(^| )"+name+"=([^;]*)(;|$)";
+    var r = document.cookie.match("\\b"+name+"=([^:; ]*)\\b");
+    return r ? r[1] : "undefined";
+};
 $(document).ready(function () {
     var Request = new Object();
     Request = getUrl();

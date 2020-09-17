@@ -77,25 +77,34 @@ if __name__ == "__main__":
     #engine.execute("select * from tbl_account;")
     from database.tbl_poetry import TblPoetry
     from database.tbl_alticle import TblAlticle
-
-    res = db_session.query(func.count(TblAlticle.id), TblAlticle.agg).group_by(TblAlticle.agg).all()
-    print(len(res), 'agg')
-    for r in sorted(res):
-        print(r)
-    res = db_session.query(func.count(TblAlticle.id), TblAlticle.category).group_by(TblAlticle.category).all()
-    print(len(res), "category")
-    for r in res:
-        print(r)
+    #
+    # res = db_session.query(func.count(TblAlticle.id), TblAlticle.agg).group_by(TblAlticle.agg).all()
+    # print(len(res), 'agg')
+    # for r in sorted(res):
+    #     print(r)
+    # res = db_session.query(func.count(TblAlticle.id), TblAlticle.category).group_by(TblAlticle.category).all()
+    # print(len(res), "category")
+    # for r in res:
+    #     print(r)
 
     # title = db_session.query(TblAlticle.id, TblAlticle.title).filter(TblAlticle.title == u"生命泉").first()
     # print(title)
 
     # te = db_session.query(TblPoetry.content, TblPoetry.id).filter(TblPoetry.content.like(u"北国风光%")).all()
-    te = db_session.query(TblPoetry).filter(TblPoetry.content.like(u"北国风光%")).all()
-    print(len(te))
-    for t in te:
-        print(t.tojson())
-        print(len(t.content))
+    # te = db_session.query(TblPoetry).filter(TblPoetry.content.like(u"北国风光%")).all()
+    # print(len(te))
+    # for t in te:
+    #     print(t.tojson())
+    #     print(len(t.content))
+
+    from database.tbl_jijin import TblJijin
+    tj = db_session.query(TblJijin).filter(TblJijin.jid == "")
+    for t in tj.all():
+        print(t.id)
+    # te = tj.delete()
+    # db_session.commit()
+
+
 
 
 

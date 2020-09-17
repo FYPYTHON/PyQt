@@ -33,3 +33,5 @@ def get_other():
 if __name__ == '__main__':
     # get_jijin_by_id("001717")
     get_other()
+    #1 3.2730 - 3.3117
+    #0 3.2715 - 3.3450

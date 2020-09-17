@@ -110,6 +110,8 @@ class JiJinHandler(BaseHandler):
         jvalue = self.get_argument("jvalue")
         if not strtime_check(self, jdate):
             weblog.error("{} is error".format(jdate))
+        if jid == "" or jid is None:
+            return self.write(json.dumps({"msg": "参数错误", "error_code": 1}))
         isexit = self.mysqldb().query(TblJijin).filter(TblJijin.jid == jid, TblJijin.jdate == jdate).first()
         if isexit:
             isexit.jvalue = jvalue

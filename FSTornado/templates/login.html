@@ -50,6 +50,7 @@
 			$.ajax({
 				type: "Post",
 				url: "/admin/verifyCode",
+				data:{"_xsrf": getCookie("_xsrf")},
 				dataType : "json",
 				success: function (data) {
 					$("#imgVerifyCode").attr("src", "data:image/gif;base64," + data.img);

@@ -31,6 +31,13 @@ class verifyCode(BaseHandler):
             return
 
 
+class XSRFTokenHandler(tornado.web.RequestHandler):
+    """专门用来设置_xsrf Cookie的接口"""
+    def get(self):
+        self.xsrf_token
+        self.write("Ok")
+
+
 class StatusHandler(tornado.web.RequestHandler):
     def get(self):
         return self.write(json_dumps({"status": 0}))
@@ -54,15 +61,27 @@ class DecodeSelfHandler(BaseHandler):
         return self.write(json_dumps({"decode": result}))
 
 
-
 class AppVersionHandler(BaseHandler):
+    """
+    1.0.1
+    文件上传
+    1.0.2
+    图片左右滑动切换
+    增加个人信息
+    1.0.3
+    增加文件上传图片缩略图
+
+    1.1
+    增加导航界面
+    增加古诗词界面
+    """
     @check_token
     def get(self):
         version_info = self.mysqldb().query(TblAdmin.name, TblAdmin.value).filter(TblAdmin.name == "appversion").first()
         if version_info is None:
             return self.write(json_dumps({"error_code": 1, "msg": u"暂无版本信息", "version": "unknown"}))
         else:
-            return self.write(json_dumps({"error_code": 0, "version": version_info.value}))
+            return self.write(json_dumps({"error_code": 0, "version": version_info.value, "msg": self.__doc__}))
 
     @check_token
     def put(self):

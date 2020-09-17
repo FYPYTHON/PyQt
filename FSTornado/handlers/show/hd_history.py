@@ -43,7 +43,7 @@ class HistoryHandler(BaseHandler):
         curpath = self.get_argument('curpath', None)
         offset = curpage * 50
         historylist, count = get_history_all(self, offset)
-        print(len(historylist))
+        # print(len(historylist))
         userinfo = get_user_info(self)
         self.render("history.html", historys=historylist, userinfo=userinfo, curpath=curpath,
                     useage=get_disk_usage(self, curpath), page=curpage, total=count)

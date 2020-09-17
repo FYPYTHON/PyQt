@@ -62,7 +62,7 @@ let alticleContent = {
 		
 	},
 	methods:{
-		poemChange(){
+		alticleChange(){
 			// console.log("recv");
 			this.alticle = store.alticle;
 		},
@@ -92,7 +92,7 @@ let alticleBody = {
             	</select>
             </div>
             <ul class="list-unstyled" v-for="item in filelist">
-	            <li :id=item[0] @click="show_detail(item[0])">{{item[1]}} {{item[2]}}</li>
+	            <li :class="{liselected:selectIndex==item[0]}" :id=item[0] @click="show_detail(item[0])">{{item[1]}} {{item[2]}}</li>
 	        </ul>
         </div>
         <div class="col-sm-8 mycontent myborder" id="compID">
@@ -108,6 +108,7 @@ let alticleBody = {
     `,
     data: function() {
         return {
+        	selectIndex: 0,
         	aggname: "中华上下五千年",
         	categoryname: "文章",
         	agglist: store.agglist,
@@ -118,11 +119,16 @@ let alticleBody = {
     },
     
     created: function(){
-    	console.log("alticle created");
+    	// console.log("alticle created");
     	store.actions.getFileCategoryList(this.aggname, this.categoryname, 10);
     	this.filelist = store.filelist.data;
     	this.agglist = store.agglist;
     	this.categorylist = store.categorylist;
+    	if (this.filelist.length > 0) {
+    		this.selectIndex = this.filelist[0][0];
+    	}
+    	this.initSelectIndex();
+    	
     	// this.aggname = store.aggdefault;
     	// console.log(this.filelist);
     },
@@ -135,15 +141,21 @@ let alticleBody = {
             store.filelist.data = []
         },
         show_detail(pid){
+        	this.selectIndex = pid;
+        	store.actions.getAlticleSync(pid, false);
+        	this.$refs.myalticle.alticleChange();
 
-        	store.actions.getPoemSync(pid, false);
-        	this.$refs.myalticle.poemChange();
-
+        },
+        initSelectIndex(){
+        	if (this.filelist.length > 0) {
+        		console.log("selectIndex change...");
+	    		this.selectIndex = this.filelist[0][0];
+	    	}
         },
         selectAgg(e){
         	// console.log(e);
         	// console.log(e.target.selectedIndex) // 选择项的index索引
-            console.log(e.target.value) // 选择项的value
+            // console.log(e.target.value) // 选择项的value
             this.aggname = e.target.value;
             store.actions.getFileCategoryList(this.aggname, "", 10);
     		// this.filelist = store.filelist.data;
@@ -152,6 +164,8 @@ let alticleBody = {
     		this.categoryname = this.categorylist[0];
     		this.agglist = store.agglist;
     		this.filelist = store.filelist.data;
+    		this.initSelectIndex();
+
         },
         selectCategory(e){
         	// console.log(e);
@@ -161,6 +175,7 @@ let alticleBody = {
             store.actions.getFileCategoryList(this.aggname, this.categoryname, 10);
             this.categorylist = store.categorylist;
     		this.filelist = store.filelist.data;
+    		this.initSelectIndex();
         }
     }
 }

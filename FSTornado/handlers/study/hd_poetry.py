@@ -4,7 +4,7 @@
 # @Author  : 1823218990@qq.com
 # @File    : poetryhd.py
 # @Software: PyCharm
-
+from common.global_func import get_action_tbl
 from handlers.basehd import BaseHandler, check_token, check_authenticated
 from tornado.log import app_log as weblog
 from handlers.author.hd_main import get_paths
@@ -44,6 +44,7 @@ class PoetryHandler(BaseHandler):
             agg.append(item.agg)
         return agg
 
+    @check_token
     async def post(self):
         poet = self.get_argument("poet", None)
         title = self.get_argument("title", None)
@@ -68,8 +69,6 @@ class PoetryHandler(BaseHandler):
             else:
                 return self.write(json.dumps({"error_code": 1, "msg": u"已存在: {} {}".format(poet, title)}))
 
-
-
         poemtry = TblPoetry()
         poemtry.title = title
         poemtry.poet = poet
@@ -85,6 +84,7 @@ class PoetryHandler(BaseHandler):
             weblog.error("{}".format(e))
             return self.write(json.dumps({"error_code": 1, "msg": u"添加失败"}))
 
+    @check_token
     def delete(self):
         poe_id = int(self.get_argument("pid", "-1"))
         if poe_id is None:
@@ -98,6 +98,7 @@ class PoetryHandler(BaseHandler):
             weblog.error("{}".format(e))
             return self.write(json.dumps({"error_code": 1, "msg": u"删除失败"}))
 
+    @check_token
     def put(self):
         poet = self.get_argument("poet", None)
         title = self.get_argument("title", None)
@@ -138,6 +139,7 @@ class PoemHandler(BaseHandler):
         else:
             return self.write(json.dumps({"poem": poem.tojson(), "error_code": 0}))
 
+    @check_token
     def put(self):
         pid = int(self.get_argument("pid", "-1"))
         content = self.get_argument("content", None)
@@ -163,11 +165,30 @@ class PoemHandler(BaseHandler):
             weblog.error("{}".format(e))
             return self.write(json.dumps({"error_code": 1, "msg": u"更新失败"}))
 
+    @check_token
+    def post(self):
+        pid = int(self.get_argument("pid", "-1"))
+        action = self.get_argument("action", None)
+
+        if action is None:
+            return self.write(json.dumps({"error_code": 1, "msg": u"参数错误", "poem": ""}))
+
+        poem = get_action_tbl(self, TblPoetry, pid, action)
+
+        if poem is None:
+            if poem == "next":
+                return self.write(json.dumps({"error_code": 1, "msg": u"最后一篇", "poem": ""}))
+            else:
+                return self.write(json.dumps({"error_code": 1, "msg": u"第一篇", "poem": ""}))
+        else:
+            return self.write(json.dumps({"poem": poem.tojson(), "error_code": 0}))
+
 
 class PoemLikeHandler(BaseHandler):
     """
     like  %key%
     """
+    @check_authenticated
     def get(self):
         key = self.get_argument("key", None)
         keys = self.get_arguments("keys", strip=True)

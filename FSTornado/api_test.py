@@ -97,9 +97,9 @@ def post_next():
 
 
 def get_version(url):
-    url = 'http://{}/app/version'.format(url)
+    url = 'http://{}/appversion'.format(url)
 
-    parmas = {"loginname": "Tornado", "token": TOKEN}
+    parmas = {"loginname": user, "token": TOKEN}
     headers = {'User-Agent': "Mobile"}
     result = requests.get(url, headers=headers, params=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -118,24 +118,23 @@ def get_version_(url):
     result = requests.get(url, headers=headers, params=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
     print(result.text)
-    res = result.content.replace(b"null",b"None").decode('utf-8')
+    res = result.content.replace(b"null", b"None").decode('utf-8')
     jres = eval(res)
     fmtprint(jres)
     return result.text
 
 
+def put_version(url):
+    url = 'http://{}/appversion'.format(url)
 
-def put_version():
-    url = 'http://139.224.231.14:9016/appversion'
-
-    parmas = {"loginname": "Tornado", "token": TOKEN, "version": "1.0.2"}
+    parmas = {"loginname": user, "token": TOKEN, "version": "1.1.1"}
     headers = {'User-Agent': "Mobile"}
     result = requests.put(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
     # print(result.text)
     res = result.content.decode('utf-8')
     jres = eval(res)
-    print(jres)
+    fmtprint(jres)
     return result.text
 
 
@@ -279,7 +278,7 @@ def get_userlist(url="139.224.231.14:9016"):
 def post_value(url):
     url = 'http://{}/app/view'.format(url)
 
-    parmas = {"jid": jid[1], "jdate": "2020-08-31", "jvalue": "3.7390", "token": TOKEN, "loginname": user}
+    parmas = {"jid": jid[0], "jdate": "2020-09-11", "jvalue": "3.3140", "token": TOKEN, "loginname": user}
     headers = {'User-Agent': "Mobile"}
     result = requests.post(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -420,6 +419,18 @@ def post_uploadlist(url):
     return result.text
 
 
+def get_dbinfo(url):
+    url = 'http://{}/app/dbinfo'.format(url)
+    parmas = {"token": TOKEN, "loginname": user}
+
+    headers = {'User-Agent': "Mobile"}
+    result = requests.get(url, headers=headers, params=parmas)
+
+    res = result.content.replace(b"null", b"None").decode('utf-8')
+    jres = eval(res)
+    fmtprint(jres)
+    return result.text
+
 def get_download(url):
     from urllib import parse
     url = 'http://{}/download'.format(url)
@@ -469,6 +480,15 @@ def get_alticle(id):
     b = eval(a.content.decode())
     return b
 
+
+def get_next(id):
+    params = {"pid": id, "action": "previous"}
+    a = requests.post("http://127.0.0.1:9080/alticle", data=params)
+    b = eval(a.content.decode())
+    return b
+
+
+
 def mutilpool(url):
     from threadpool import ThreadPool, makeRequests
 
@@ -487,10 +507,48 @@ def mutilpool(url):
 
 # url = "127.0.0.1:807"
 url = "127.0.0.1:9080"
-# url = "139.196.197.13:807"
+# url = "139.196.197.13:9016"
 # url = "139.224.231.14:9016"
 # TOKEN = "a4561a1e506ea980a772edf72db9cfc8"
 TOKEN = get_token(url)
+
+
+# int hexCharToInt(char c)
+# {
+#         if (c >= '0' && c <= '9') return (c - '0');
+#         if (c >= 'A' && c <= 'F') return (c - 'A' + 10);
+#         if (c >= 'a' && c <= 'f') return (c - 'a' + 10);
+#         return 0;
+# }
+# char* hexstringToBytes(string s)
+# {
+#         int sz = s.length();
+#         char *ret = new char[sz/2];
+#         for (int i=0 ; i <sz ; i+=2) {
+#             ret[i/2] = (char) ((hexCharToInt(s.at(i)) << 4)
+#                                 | hexCharToInt(s.at(i+1)));
+#         }
+#         return ret;
+# }
+
+def hexstringToBytes(s):
+    sz = len(s)
+    ret = []
+    for i in range(0, sz, 2):
+        v = hexToInt(s[i]) << 4 | hexToInt(s[i+1])
+        print(i, v)
+        ret.append(v)
+    return ret
+
+
+def hexToInt(c):
+    if ord('0') <= ord(c) <= ord('9'):
+        return ord(c) - ord('0')
+    if ord('A') <= ord(c) <= ord('F'):
+        return ord(c) - ord('A') + 10
+    if ord('a') <= ord(c) <= ord('f'):
+        return ord(c) - ord('a') + 10
+    return 0
 
 if __name__ == "__main__":
 
@@ -501,15 +559,20 @@ if __name__ == "__main__":
     # post_ava()
     # post_next()
     # img_resize()
-    # get_version(url_remote)
-    # put_version()
+
+    # version
+    # put_version(url)
+    # get_version(url)
     # get_userinfo()
     # get_videoshortcut_base64(1, 2)
     # get_fsmain(url_remote)
     # get_users(url)
     # get_userlist(url)
+
+    # jijin data
     # post_value(url)
     get_value(url)
+
     # post_dir(url)
     # play(url)
     # view(url)
@@ -517,6 +580,8 @@ if __name__ == "__main__":
     # post_uploadlist(url)
     # get_download(url)
     # post_poem(url)
+
+    # get_dbinfo(url)
     te = time.time()
     print(te - ts)
     # get_version_(url_remote)

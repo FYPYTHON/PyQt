@@ -365,7 +365,7 @@ let bodyContent = {
             	</select>
             </div>
             <ul class="list-unstyled" v-for="item in filelist">
-	            <li :id=item[0] @click="show_detail(item[0])">{{item[1]}} {{item[2]}}</li>
+	            <li :class="{liselected:selectIndex==item[0]}" :id=item[0] @click="show_detail(item[0])">{{item[1]}} {{item[2]}}</li>
 	        </ul>
         </div>
         <div class="col-sm-8 mycontent myborder" id="compID">
@@ -377,6 +377,7 @@ let bodyContent = {
     `,
     data: function() {
         return {
+        	selectIndex: 0,
         	aggname: store.aggdefault,
         	agglist: store.agglist,
             compID: store.conenteId,
@@ -388,6 +389,9 @@ let bodyContent = {
     	store.actions.getFileList(store.aggdefault, 10);
     	this.filelist = store.filelist.data;
     	this.agglist = store.agglist;
+    	if (this.filelist.length > 0) {
+    		this.selectIndex = this.filelist[0][0];
+    	}
     	// this.aggname = store.aggdefault;
     	// console.log(this.filelist);
     },

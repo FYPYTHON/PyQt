@@ -1,7 +1,7 @@
 # coding=utf-8
 from handlers.adminhd import verifyCode, AppVersionHandler, UserinfoHandler, StatusHandler, DecodeSelfHandler
 from handlers.author import hd_login, hd_main, hd_manage
-from handlers.show import hd_show, hd_play, hd_history
+from handlers.show import hd_show, hd_play, hd_history, hd_dbinfo
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
 from handlers.study import hd_poetry, hd_alticle
 from handlers.view import hd_jijin as hd_jijin
@@ -46,6 +46,7 @@ url = [                            #
         (r'/poemlike', hd_poetry.PoemLikeHandler),
 
         # -------- APP -------
+        (r'/app/dbinfo', hd_dbinfo.DbinfoHandler),
         (r'/app/createdir', hd_create.AppFsCreateHandler),
         (r'/app/delete', hd_delete.AppFsDeleteHandler),
         (r'/app/fsmain', hd_main.AppFSMainHandler),

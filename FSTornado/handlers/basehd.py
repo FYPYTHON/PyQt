@@ -33,6 +33,7 @@ class BaseHandler(tornado.web.RequestHandler):
         # self.redis = redis.StrictRedis(host='localhost', port=6379, password='feiying')
         super(BaseHandler, self).__init__(*argc, **argkw)
         # self.session = redis_session.Session(self.application.session_manager, self)
+        # print(self.request.uri, self.request.arguments)
         pass
 
     @gen.coroutine
@@ -52,6 +53,7 @@ class BaseHandler(tornado.web.RequestHandler):
         # super(BaseHandler, self).__init__(*argc, **argkw)
 
     def prepare(self):
+        self.xsrf_token
         self.browsing_history()
         remote_ip = self.request.headers.get("X-Real-Ip", "")
         self.remote_ip = remote_ip

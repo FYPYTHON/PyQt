@@ -12,6 +12,7 @@ from settings.logConfig import logConfig
 import warnings
 
 from timedtask.timedget import clear_history
+from timedtask.getjijindata import gene_jijin_data
 
 warnings.filterwarnings("ignore")
 from tornado.options import define, options
@@ -48,6 +49,7 @@ class Application(tornado.web.Application):
             debug=False,
             autoescape=None,
             xheaders=True,
+            # xsrf_cookies=True,
         )
 
         handlers = urls.url
@@ -61,10 +63,12 @@ if __name__ == "__main__":
     except:
         pass
     check_path_exist()
+    # gene_jijin_data()
     # tornado.options.parse_command_line()
     app = Application()
     http_server = tornado.httpserver.HTTPServer(app, max_buffer_size=4 * MAX_STREAMED_SIZE)
     http_server.listen(options.port)
+    # http_server.bind(options.port)
     try:
         http_server.start(2)    # linux use mutli process
     except:
@@ -74,6 +78,9 @@ if __name__ == "__main__":
     # from timedtask.timedget import printLineFileFunc
     tornado.ioloop.PeriodicCallback(lambda: clear_history(app.settings.get("days_clear")),
                                     1000 * 60 * 60 * 12).start()  # ms
+    # timed task
+    # tornado.ioloop.PeriodicCallback(lambda: gene_jijin_data(),
+    #                                 1000 * 5).start()  # ms
     weblog.info("-- tornadofs server start .... pid:{} ".format(os.getpid()))
     tornado.ioloop.IOLoop.instance().start()
 
