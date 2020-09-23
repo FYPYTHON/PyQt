@@ -148,9 +148,10 @@ class AppJiJinHandler(BaseHandler):
         jdata = get_gid_all_data(self, gid)
         current_week_data = get_gid_range_data(self, gid, 0)
         last_week_data = get_gid_range_data(self, gid, 1)
+        last_twoweek_data = get_gid_range_data(self, gid, 2)
         # return self.render("view.html", jdata=jdata, jids=gids)
         return self.write(json.dumps({"error_code": 0, "msg": "ok", "jdata": jdata, "jids": gids, "jid": gid
-                                         , "jdata0": current_week_data, "jdata1": last_week_data}))
+                                , "jdata0": current_week_data, "jdata1": last_week_data, "jdata2": last_twoweek_data}))
 
     @check_token
     def post(self):

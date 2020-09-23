@@ -57,7 +57,7 @@ class FsPlayHandler(BaseHandler):
         ftype = None
         imgs = None
 
-        if suffix in ['mp4']:
+        if suffix in ['mp4', "mov"]:
             # print(realpath)
             return self.render("play.html", type=ftype, uri=filename, vsrc=realpath, iwidth=width, iheight=height)
             # return self.redirect(realpath)
@@ -86,7 +86,7 @@ class AppPlayHandler(BaseHandler):
 
         suffix = realpath.split('.')[-1].lower()
 
-        if suffix.lower() in ['mp4']:
+        if suffix.lower() in ['mp4', "mov"]:
             return self.write(json.dumps({"vsrc": realpath, "error_code": 0, "type": "video"}))
         elif suffix.lower() in IMAGE_SUFFIX:
             base64_data, beishu = get_img_base64(realpath, suffix)

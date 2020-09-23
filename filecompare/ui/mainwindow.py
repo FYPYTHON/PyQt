@@ -451,7 +451,7 @@ class MainWindow:
         if '.' in self.leftFile and '.' in self.rightFile:
             pass
         else:
-            msb.showerror('Error','one or more file error!')
+            msb.showerror('Error', 'one or more file error!')
             return
 
         self.__output(self.leftFile,self.rightFile)

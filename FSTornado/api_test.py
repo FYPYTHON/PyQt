@@ -7,7 +7,7 @@
 
 import requests
 
-jid = ["001717", "161810"]
+jid = ["001717", "161810", "290011"]
 user = "admin1"
 pwd = "admin#_@0831"
 
@@ -127,7 +127,7 @@ def get_version_(url):
 def put_version(url):
     url = 'http://{}/appversion'.format(url)
 
-    parmas = {"loginname": user, "token": TOKEN, "version": "1.1.1"}
+    parmas = {"loginname": user, "token": TOKEN, "version": "1.1.4"}
     headers = {'User-Agent': "Mobile"}
     result = requests.put(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -278,7 +278,7 @@ def get_userlist(url="139.224.231.14:9016"):
 def post_value(url):
     url = 'http://{}/app/view'.format(url)
 
-    parmas = {"jid": jid[0], "jdate": "2020-09-11", "jvalue": "3.3140", "token": TOKEN, "loginname": user}
+    parmas = {"jid": jid[2], "jdate": "2020-09-01", "jvalue": "3.2290", "token": TOKEN, "loginname": user}
     headers = {'User-Agent': "Mobile"}
     result = requests.post(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -291,7 +291,7 @@ def post_value(url):
 def get_value(url):
     url = 'http://{}/app/view'.format(url)
 
-    parmas = {"jid": jid[1], "token": TOKEN, "loginname": user, "all": "all"}
+    parmas = {"jid": jid[2], "token": TOKEN, "loginname": user, "all": "all"}
     headers = {'User-Agent': "Mobile"}
     result = requests.get(url, headers=headers, params=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -506,8 +506,8 @@ def mutilpool(url):
 
 
 # url = "127.0.0.1:807"
-url = "127.0.0.1:9080"
-# url = "139.196.197.13:9016"
+# url = "127.0.0.1:9080"
+url = "139.196.197.13:9016"
 # url = "139.224.231.14:9016"
 # TOKEN = "a4561a1e506ea980a772edf72db9cfc8"
 TOKEN = get_token(url)

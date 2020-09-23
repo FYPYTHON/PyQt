@@ -1,6 +1,33 @@
 # coding=utf-8
 import hashlib
-
+"""
+    #from database.tbl_account import TblAccount
+    #engine.execute("ALTER TABLE tbl_account ADD token char(100);")
+    #engine.execute("select * from tbl_account;")
+    from database.tbl_poetry import TblPoetry
+    from database.tbl_alticle import TblAlticle
+    
+    # group by
+    # res = db_session.query(func.count(TblAlticle.id), TblAlticle.agg).group_by(TblAlticle.agg).all()
+    # print(len(res), 'agg')
+    # for r in sorted(res):
+    #     print(r)
+    
+    # like
+    # te = db_session.query(TblPoetry.content, TblPoetry.id).filter(TblPoetry.content.like(u"北国风光%")).all()
+    # te = db_session.query(TblPoetry).filter(TblPoetry.content.like(u"北国风光%")).all()
+    # print(len(te))
+    # for t in te:
+    #     print(t.tojson())
+    #     print(len(t.content))
+    
+    # func.min func.max func.avg
+    from sqlalchemy import func
+    from database.tbl_jijin import TblJijin
+    tj = db_session.query(TblJijin.jid, TblJijin.jdate, func.min(TblJijin.jvalue)).filter(TblJijin.jid == '1717')
+    for t in tj.all():
+        print(t)
+"""
 from database.db_config import db_session, engine
 from method.data_encode import MD5
 def init_admin():
@@ -72,35 +99,10 @@ if __name__ == "__main__":
     # init_setting()
     # init_version()
     from sqlalchemy import func
-    #from database.tbl_account import TblAccount
-    #engine.execute("ALTER TABLE tbl_account ADD token char(100);")
-    #engine.execute("select * from tbl_account;")
-    from database.tbl_poetry import TblPoetry
-    from database.tbl_alticle import TblAlticle
-    #
-    # res = db_session.query(func.count(TblAlticle.id), TblAlticle.agg).group_by(TblAlticle.agg).all()
-    # print(len(res), 'agg')
-    # for r in sorted(res):
-    #     print(r)
-    # res = db_session.query(func.count(TblAlticle.id), TblAlticle.category).group_by(TblAlticle.category).all()
-    # print(len(res), "category")
-    # for r in res:
-    #     print(r)
-
-    # title = db_session.query(TblAlticle.id, TblAlticle.title).filter(TblAlticle.title == u"生命泉").first()
-    # print(title)
-
-    # te = db_session.query(TblPoetry.content, TblPoetry.id).filter(TblPoetry.content.like(u"北国风光%")).all()
-    # te = db_session.query(TblPoetry).filter(TblPoetry.content.like(u"北国风光%")).all()
-    # print(len(te))
-    # for t in te:
-    #     print(t.tojson())
-    #     print(len(t.content))
-
     from database.tbl_jijin import TblJijin
-    tj = db_session.query(TblJijin).filter(TblJijin.jid == "")
+    tj = db_session.query(TblJijin.jid, TblJijin.jdate, func.min(TblJijin.jvalue)).filter(TblJijin.jid == '1717')
     for t in tj.all():
-        print(t.id)
+        print(t)
     # te = tj.delete()
     # db_session.commit()
 

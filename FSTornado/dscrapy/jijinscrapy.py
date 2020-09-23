@@ -30,6 +30,7 @@ def get_other():
     soup.p.encode("utf-8")
     print(soup.prettify())
 
+
 if __name__ == '__main__':
     # get_jijin_by_id("001717")
     get_other()
