@@ -17,6 +17,8 @@ class TblWord(ModelBase, table_base.TableBase):
     word = Column(String(20), nullable=False, unique=True)
     chn = Column(String(20), default="")
     picture = deferred(Column(Text))
+    suffix = Column(String(5), default="png")
+    agg = Column(String(20), default=u"常用")
     describe = deferred(Column(Text))
 
     def __repr__(self):

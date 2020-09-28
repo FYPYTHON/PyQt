@@ -41,6 +41,17 @@ def create_table():
     print ("done!")
 
 
+def get_table_propery(name=None):
+    from database.db_config import engine, ModelBase
+    ModelBase.metadata.reflect(engine)
+    tables = ModelBase.metadata.tables
+    for tbl, value in tables.items():
+        if name is None:
+            print(tbl, value.__repr__())
+        else:
+            if name == tbl:
+                print(tbl, value.__repr__())
+
 def create_single_table():
     # from database import tbl_bug_list
     # from database import tbl_bug_track
@@ -105,7 +116,8 @@ if __name__ == '__main__':
     # create_table()
     # init_account()
     # init_data()
-    create_single_table()
+    # create_single_table()
+    get_table_propery("tbl_word")
     # init_account()
 
 

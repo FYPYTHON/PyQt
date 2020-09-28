@@ -41,6 +41,7 @@ def fmtprint(jres):
     # jsone = json.dumps(jres, sort_keys=True, indent=4, separators=(',', ':'))
     print(jsonf)
     # print(jsone)
+    return jres
 
 
 def db():
@@ -215,6 +216,7 @@ def get_videoshortcut_base64(realpath, suffix):
     import os
     import base64
     img = Image.fromarray(frame)
+
     if ret:
         # cv2.imwrite("E:\\test1.jpg", frame)
         img = img.resize((20, 20), Image.ANTIALIAS)
@@ -487,7 +489,24 @@ def get_next(id):
     b = eval(a.content.decode())
     return b
 
+def get_tess(url):
+    from PIL import Image
+    import requests
+    file_name = r"E:\opt\midware\pcut\main\cutpicture\124.jpeg"
+    img = Image.open(file_name)
+    size = img.size
+    mode = img.mode
 
+    imgstr = img.tobytes()
+    print(size, img.mode, len(imgstr))
+    params = {"size": str(size), "mode": mode}
+    a = requests.get("http://{}/tesseract".format(url), params=params, files={"files": open(file_name, 'rb')})
+    # a = requests.get("http://{}/tesseract".format(url), params=params, files={"files": imgstr}, timeout=60)
+    fjson = fmtprint(a.content)
+    msg = fjson['msg']
+    msg = msg.strip(" ").strip("\n").split("\n")
+    print(msg)
+    return a
 
 def mutilpool(url):
     from threadpool import ThreadPool, makeRequests
@@ -507,8 +526,8 @@ def mutilpool(url):
 
 # url = "127.0.0.1:807"
 # url = "127.0.0.1:9080"
-url = "139.196.197.13:9016"
-# url = "139.224.231.14:9016"
+# url = "139.196.197.13:9016"
+url = "139.224.231.14:9016"
 # TOKEN = "a4561a1e506ea980a772edf72db9cfc8"
 TOKEN = get_token(url)
 
@@ -571,7 +590,7 @@ if __name__ == "__main__":
 
     # jijin data
     # post_value(url)
-    get_value(url)
+    # get_value(url)
 
     # post_dir(url)
     # play(url)
@@ -582,6 +601,8 @@ if __name__ == "__main__":
     # post_poem(url)
 
     # get_dbinfo(url)
+
+    get_tess(url)
     te = time.time()
     print(te - ts)
     # get_version_(url_remote)

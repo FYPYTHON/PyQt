@@ -4,13 +4,48 @@
 # @Author  : 1823218990@qq.com
 # @File    : tbl_word.py
 # @Software: PyCharm
-
+import time
+import pytesseract
+import os
+import tornado.web
+from PIL import Image
 from handlers.basehd import BaseHandler, check_token
 from tornado.log import app_log as weblog
 from database.tbl_word import TblWord
 import json
 
 from handlers.show.hd_play import get_img_base64
+
+
+class PyTesseractHandler(tornado.web.RequestHandler):
+    def get(self):
+        # imgstr = self.get_argument("imgstr", "")
+        imgstr = self.request.files['files'][0]
+        size = self.get_argument("size", "(0,0)")
+        mode = self.get_argument("mode", "P")
+        weblog.info("{}".format(self.request.arguments))
+        tempname = "/opt/temp/{}".format(str(time.time()) + imgstr['filename'])
+        try:
+            imgb = imgstr['body']
+            size = eval(size)
+            # mode = P RGB
+            weblog.info("{} {} {}".format(size, len(imgb), tempname))
+            # from io import BytesIO
+            # imgb = BytesIO(imgb)
+            # img = Image.frombytes(mode, size, f)
+            with open(tempname, "wb") as f:
+                f.write(imgb)
+            img = Image.open(tempname)
+            # # img.save("/opt/temp/test.gif", format='gif')
+            result = pytesseract.image_to_string(img)
+            if os.path.exists(tempname):
+                os.system("rm -f {}".format(tempname))
+
+            return self.write(json.dumps({"error_code": 0, "msg": result}))
+        except Exception as e:
+            if os.path.exists(tempname):
+                os.system("rm -f {}".format(tempname))
+            return self.write(json.dumps({"error_code": 1, "msg": "{}".format(e)}))
 
 
 class WordHandler(BaseHandler):
@@ -45,21 +80,26 @@ class WordHandler(BaseHandler):
     def post(self):
         word = self.get_argument("word", None)
         chn = self.get_argument("chn", None)
+        agg = self.get_argument("agg", None)
+        suffix = self.get_argument("suffix", None)
         picture = self.get_argument("picture", None)
-        describe = self.get_argument("describe", None)
+        describe = self.get_argument("describe", "")
 
         tblword = TblWord()
         tblword.word = word
         tblword.chn = chn
-        base64Picture = get_img_base64(picture, "jpg")
-        tblword.picture = base64Picture
+        tblword.agg = agg
+        tblword.suffix = suffix
+
+        # base64Picture = get_img_base64(picture, suffix)
+        tblword.picture = picture
         tblword.describe = describe
 
         self.mysqldb().add(tblword)
 
         try:
             self.mysqldb().commit()
-            return self.write(json.dumps({"error_code": 0, "msg": ""}))
+            return self.write(json.dumps({"error_code": 0, "msg": u"添加成功"}))
         except Exception as e:
             weblog.error("{}".format(e))
             return self.write(json.dumps({"error_code": 1, "msg": u"添加失败"}))

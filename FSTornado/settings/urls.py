@@ -3,7 +3,7 @@ from handlers.adminhd import verifyCode, AppVersionHandler, UserinfoHandler, Sta
 from handlers.author import hd_login, hd_main, hd_manage
 from handlers.show import hd_show, hd_play, hd_history, hd_dbinfo
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
-from handlers.study import hd_poetry, hd_alticle
+from handlers.study import hd_poetry, hd_alticle, hd_word
 from handlers.view import hd_jijin as hd_jijin
 # from handlers.view import hd_predict
 from tornado.web import StaticFileHandler
@@ -44,6 +44,7 @@ url = [                            #
         (r'/alticles', hd_alticle.AlticlesHandler),
         (r'/alticle', hd_alticle.AlticleHandler),
         (r'/poemlike', hd_poetry.PoemLikeHandler),
+        (r'/word', hd_word.WordHandler),
 
         # -------- APP -------
         (r'/app/dbinfo', hd_dbinfo.DbinfoHandler),
@@ -58,5 +59,6 @@ url = [                            #
         (r'/appversion', AppVersionHandler),
         (r'/appuserinfo', UserinfoHandler),
 
+        (r'/tesseract', hd_word.PyTesseractHandler),
 
 ]
