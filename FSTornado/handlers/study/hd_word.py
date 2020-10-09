@@ -9,6 +9,8 @@ import pytesseract
 import os
 import tornado.web
 from PIL import Image
+
+from common.global_func import get_action_word
 from handlers.basehd import BaseHandler, check_token
 from tornado.log import app_log as weblog
 from database.tbl_word import TblWord
@@ -62,10 +64,10 @@ class WordHandler(BaseHandler):
         pass
 
     def get_all_word(self):
-        words = self.mysqldb().query(TblWord.id, TblWord.word, TblWord.chn).order_by(TblWord.word).all()
+        words = self.mysqldb().query(TblWord.id, TblWord.word, TblWord.chn).order_by(TblWord.id).all()
         datas = list()
         for word in words:
-            datas.append([word.id, word.word, word.chn])
+            datas.append(" ".join([str(word.id), word.word, word.chn]))
 
         return datas
 
@@ -74,7 +76,7 @@ class WordHandler(BaseHandler):
         if word is None:
             return None
         else:
-            return word.tojson
+            return word.tojson()
 
     @check_token
     def post(self):
@@ -84,8 +86,11 @@ class WordHandler(BaseHandler):
         suffix = self.get_argument("suffix", None)
         picture = self.get_argument("picture", None)
         describe = self.get_argument("describe", "")
-
-        tblword = TblWord()
+        tblword = self.mysqldb().query(TblWord).filter(TblWord.word == word).first()
+        first_add = False
+        if tblword is None:
+            tblword = TblWord()
+            first_add = True
         tblword.word = word
         tblword.chn = chn
         tblword.agg = agg
@@ -94,8 +99,8 @@ class WordHandler(BaseHandler):
         # base64Picture = get_img_base64(picture, suffix)
         tblword.picture = picture
         tblword.describe = describe
-
-        self.mysqldb().add(tblword)
+        if first_add:
+            self.mysqldb().add(tblword)
 
         try:
             self.mysqldb().commit()
@@ -111,7 +116,6 @@ class WordHandler(BaseHandler):
         tblword = self.mysqldb().query(TblWord).filter(TblWord.id == wid).first()
 
         if tblword is None:
-            self.mysqldb().commit()
             return self.write(json.dumps({"error_code": 1, "msg": u"word不存在，无法删除"}))
         else:
             self.mysqldb().query(TblWord).filter(TblWord.id == wid).delete()
@@ -121,3 +125,22 @@ class WordHandler(BaseHandler):
             except Exception as e:
                 weblog.error("{}".format(e))
                 return self.write(json.dumps({"error_code": 1, "msg": u"删除失败"}))
+
+
+class WordActionHandler(BaseHandler):
+    @check_token
+    def post(self):
+        pid = int(self.get_argument("wid", "-1"))
+        action = self.get_argument("action", None)
+
+        if action is None:
+            return self.write(json.dumps({"error_code": 1, "msg": u"参数错误", "word": ""}))
+
+        word = get_action_word(self, TblWord, pid, action)
+        if word is None:
+            if word == "next":
+                return self.write(json.dumps({"error_code": 1, "msg": u"最后一个词", "word": ""}))
+            else:
+                return self.write(json.dumps({"error_code": 1, "msg": u"第一个词", "word": ""}))
+        else:
+            return self.write(json.dumps({"word": word.tojson(), "error_code": 0}))

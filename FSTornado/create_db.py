@@ -116,7 +116,10 @@ if __name__ == '__main__':
     # create_table()
     # init_account()
     # init_data()
-    # create_single_table()
+    create_single_table()
+    from database.db_config import db_session
+    db_session.commit()
+
     get_table_propery("tbl_word")
     # init_account()
 

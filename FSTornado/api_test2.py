@@ -56,13 +56,14 @@ def add_all(url):
     for file in files:
         imgpath = os.path.join(root_dir, file)
         print(imgpath)
-        # add_word(url, imgpath)
+        add_word(url, imgpath)
         time.sleep(1)
 
 
 def add_word(url, imgpath=None):
     import os
-    imgpath = "E:/motorcycle_racing_摩托车比赛.gif"
+    if imgpath is None:
+        imgpath = "E:/motorcycle_racing_摩托车比赛.gif"
     pictrue, suffix = getVerifyImage(imgpath)
     filename = os.path.basename(imgpath)
     temp = filename.split(".")[0].split("_")
@@ -82,7 +83,28 @@ def add_word(url, imgpath=None):
     print(word, res.text)
 
 
+def get_holiday():
+    import json
+    import requests
+    date = "20201001"
+    server_url = "http://api.goseek.cn/Tools/holiday?date="
+
+    vop_response = requests.get(server_url + date)
+
+    vop_data = vop_response.json()
+
+    if vop_data[date] == '0':
+        print("this day is weekday")
+    elif vop_data[date] == '1':
+        print('This day is weekend')
+    elif vop_data[date] == '2':
+        print('This day is holiday')
+    else:
+        print('Error')
+
+
 if __name__ == '__main__':
     url = "127.0.0.1:9080"
     # add_word(url)
-    add_all(url)
+    # add_all(url)
+    get_holiday()

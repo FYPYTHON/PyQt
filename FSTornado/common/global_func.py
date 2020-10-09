@@ -122,6 +122,17 @@ def get_action_tbl(self, TblAlticle, pid, action):
         alticle = alticle.filter(TblAlticle.id < pid).order_by(TblAlticle.id.desc()).limit(1).first()
     return alticle
 
+
+def get_action_word(self, TblWord, pid, action):
+    word_now = self.mysqldb().query(TblWord).filter(TblWord.id == pid).first()
+    word = self.mysqldb().query(TblWord).filter(TblWord.agg == word_now.agg)
+    if action == "next":
+        alticle = word.filter(TblWord.id > pid).limit(1).first()
+    else:
+        alticle = word.filter(TblWord.id < pid).order_by(TblWord.id.desc()).limit(1).first()
+    return alticle
+
+
 if __name__ == "__main__":
     pass
     print(get_week_datetime(-1))

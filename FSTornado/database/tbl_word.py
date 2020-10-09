@@ -31,6 +31,8 @@ class TblWord(ModelBase, table_base.TableBase):
     def tojson(self):
         return {
             "id": self.id,
+            "agg": self.agg,
+            "suffix": self.suffix,
             "word": self.word,
             "chn": self.chn,
             "picture": self.picture,
