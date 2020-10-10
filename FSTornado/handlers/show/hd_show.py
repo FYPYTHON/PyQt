@@ -11,7 +11,7 @@ from urllib import parse
 import json
 from handlers.basehd import BaseHandler, check_authenticated
 from tornado.log import app_log as weblog
-from common.global_func import get_user_info
+from common.global_func import get_user_info, resizekeepwh
 import platform
 TXT_FIX = ['txt', 'log', 'py']
 
@@ -35,8 +35,10 @@ class FsShowHandler(BaseHandler):
         # else:
         i_width, i_height = img.size
 
-        if i_width > 600 or i_height > 600:
-            img = img.resize((600, 600))
+        # if i_width > 600 or i_height > 600:
+        #     img = img.resize((600, 600))
+        newSize = resizekeepwh(i_width, i_height)
+        img = img.resize(newSize)
         # if img.size[0] < 400 or img.size[1] < 400:
         #     img = img.resize((400, 400))
         i_width, i_height = img.size

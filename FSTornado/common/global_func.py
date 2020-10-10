@@ -133,6 +133,20 @@ def get_action_word(self, TblWord, pid, action):
     return alticle
 
 
+def resizekeepwh(imgw, imgh, width=600, height=600):
+    ratio_w = width / imgw
+    ratio_h = height / imgh
+    if ratio_w < ratio_h:
+        # It must be fixed by width
+        resize_width = width
+        resize_height = round(ratio_w * imgh)
+    else:
+        # Fixed by height
+        resize_width = round(ratio_h * imgw)
+        resize_height = height
+    return resize_width, resize_height
+
+
 if __name__ == "__main__":
     pass
     print(get_week_datetime(-1))
