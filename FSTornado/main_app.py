@@ -46,7 +46,7 @@ class Application(tornado.web.Application):
             upload_path=os.path.join("/opt/data", "public"),
             top_path="/opt/data",
             login_url="/login",
-            debug=False,
+            debug=True,
             autoescape=None,
             xheaders=True,
             # xsrf_cookies=True,
@@ -57,14 +57,14 @@ class Application(tornado.web.Application):
 
 
 if __name__ == "__main__":
-    import setproctitle
     try:
+        import setproctitle
         setproctitle.setproctitle("tornadofs")     # set process name in linux environment
     except:
         pass
     check_path_exist()
     # gene_jijin_data()
-    # tornado.options.parse_command_line()
+    tornado.options.parse_command_line()
     app = Application()
     http_server = tornado.httpserver.HTTPServer(app, max_buffer_size=4 * MAX_STREAMED_SIZE)
     http_server.listen(options.port)

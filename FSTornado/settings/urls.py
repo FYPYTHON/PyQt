@@ -1,6 +1,6 @@
 # coding=utf-8
 from handlers.adminhd import verifyCode, AppVersionHandler, UserinfoHandler, StatusHandler, DecodeSelfHandler
-from handlers.author import hd_login, hd_main, hd_manage
+from handlers.author import hd_login, hd_main, hd_manage, hd_mail
 from handlers.show import hd_show, hd_play, hd_history, hd_dbinfo
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
 from handlers.study import hd_poetry, hd_alticle, hd_word
@@ -8,6 +8,7 @@ from handlers.study.hd_word import WordActionHandler
 from handlers.view import hd_jijin as hd_jijin
 # from handlers.view import hd_predict
 from tornado.web import StaticFileHandler
+path_regex = r"(?P<path>(?:(?:/[^/]+)+|/?))"
 url = [                            #
         # vue.js get resource
         # (r'^home/js/(?P<filename>.*\.js)$', myjs, name='myjs'),  # 与html中引入的href src一致
@@ -37,6 +38,7 @@ url = [                            #
         (r'/user/([0-9]+)', hd_manage.UserInfoHandler),
         (r'/avator', hd_avator.FsAvatorHandler),
         (r'/history', hd_history.HistoryHandler),
+        (r'/sendmail', hd_mail.EmainHandler),
 
         # view
         (r'/view', hd_jijin.JiJinHandler),
@@ -46,6 +48,7 @@ url = [                            #
         (r'/alticle', hd_alticle.AlticleHandler),
         (r'/poemlike', hd_poetry.PoemLikeHandler),
         (r'/word', hd_word.WordHandler),
+        # (r'/notebook%s' % path_regex, hd_notebook.NoteBookHandler),
 
         # -------- APP -------
         (r'/app/dbinfo', hd_dbinfo.DbinfoHandler),
@@ -63,5 +66,6 @@ url = [                            #
         (r'/app/word', WordActionHandler),
 
         (r'/tesseract', hd_word.PyTesseractHandler),
+
 
 ]

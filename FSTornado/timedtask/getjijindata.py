@@ -84,7 +84,6 @@ def gene_jijin_data():
     jjd.start()
 
 
-
 if __name__ == '__main__':
     gene_jijin_data()
     # get_date()

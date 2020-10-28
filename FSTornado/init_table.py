@@ -30,6 +30,7 @@ import hashlib
 """
 from database.db_config import db_session, engine
 from method.data_encode import MD5
+
 def init_admin():
     from database.tbl_admin import TblAdmin
     user = TblAdmin()
@@ -93,6 +94,7 @@ def init_jijin():
     db_session.add(dis)
     db_session.commit()
 
+
 if __name__ == "__main__":
     # init_admin()
     # init_user()
@@ -103,6 +105,7 @@ if __name__ == "__main__":
     tj = db_session.query(TblJijin.jid, TblJijin.jdate, func.min(TblJijin.jvalue)).filter(TblJijin.jid == '1717')
     for t in tj.all():
         print(t)
+
     # te = tj.delete()
     # db_session.commit()
 

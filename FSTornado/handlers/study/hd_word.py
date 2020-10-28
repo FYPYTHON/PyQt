@@ -5,7 +5,7 @@
 # @File    : tbl_word.py
 # @Software: PyCharm
 import time
-import pytesseract
+
 import os
 import tornado.web
 from PIL import Image
@@ -21,6 +21,7 @@ from handlers.show.hd_play import get_img_base64
 
 class PyTesseractHandler(tornado.web.RequestHandler):
     def get(self):
+        import pytesseract
         # imgstr = self.get_argument("imgstr", "")
         imgstr = self.request.files['files'][0]
         size = self.get_argument("size", "(0,0)")

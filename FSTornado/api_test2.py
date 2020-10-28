@@ -6,8 +6,8 @@
 # @Software: PyCharm
 
 import requests
-user = "admin1"
-pwd = "admin#_@0831"
+user = "Tornado"
+pwd = "dgj_039103"
 
 
 def get_token(url):
@@ -102,9 +102,26 @@ def get_holiday():
     else:
         print('Error')
 
+def sendEmail(url):
+    token = get_token(url)
+    url = 'http://{}/sendmail'.format(url)
+    headers = {'User-Agent': "Mobile"}
+    parmas = {"loginname": user, "inputCode": "APP", "code": 1234, "token": token}
+    result = requests.post(url, data=parmas, headers=headers)
+    # result = requests.post(url, headers=headers, files={"FILE": None})
+    # print(result.text)
+    # print(result.content)
+    res = result.content.decode('utf-8')
+    print(res)
+    jres = eval(res)
+    # fmtprint(jres)
+    # print(jres)
+    return result.text
+
 
 if __name__ == '__main__':
     url = "127.0.0.1:9080"
     # add_word(url)
     # add_all(url)
-    get_holiday()
+    # get_holiday()
+    sendEmail(url)

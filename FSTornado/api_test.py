@@ -293,7 +293,7 @@ def post_value(url):
 def get_value(url):
     url = 'http://{}/app/view'.format(url)
 
-    parmas = {"jid": jid[2], "token": TOKEN, "loginname": user, "all": "all"}
+    parmas = {"jid": jid[0], "token": TOKEN, "loginname": user, "all": "all"}
     headers = {'User-Agent': "Mobile"}
     result = requests.get(url, headers=headers, params=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -526,8 +526,8 @@ def mutilpool(url):
 
 # url = "127.0.0.1:807"
 # url = "127.0.0.1:9080"
-# url = "139.196.197.13:9016"
-url = "139.224.231.14:9016"
+url = "139.196.197.13:9016"
+# url = "139.224.231.14:9016"
 # TOKEN = "a4561a1e506ea980a772edf72db9cfc8"
 TOKEN = get_token(url)
 
@@ -590,7 +590,7 @@ if __name__ == "__main__":
 
     # jijin data
     # post_value(url)
-    # get_value(url)
+    get_value(url)
 
     # post_dir(url)
     # play(url)
@@ -602,7 +602,7 @@ if __name__ == "__main__":
 
     # get_dbinfo(url)
 
-    get_tess(url)
+    # get_tess(url)
     te = time.time()
     print(te - ts)
     # get_version_(url_remote)

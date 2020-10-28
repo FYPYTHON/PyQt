@@ -64,8 +64,16 @@ def get_user_info(self):
     else:
         current_user = self.current_user
     # print(current_user)
-    user = self.mysqldb().query(TblAccount.id, TblAccount.nickname, TblAccount.userrole).filter(
+    user = self.mysqldb().query(TblAccount.id, TblAccount.nickname, TblAccount.userrole, TblAccount.email).filter(
         TblAccount.loginname == current_user).first()
+    return user
+
+
+def get_user_info_app(self, loginname):
+    # current_user = self.current_user
+    # print(current_user)
+    user = self.mysqldb().query(TblAccount.id, TblAccount.nickname, TblAccount.userrole, TblAccount.email).filter(
+        TblAccount.loginname == loginname).first()
     return user
 
 
