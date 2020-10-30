@@ -5,7 +5,7 @@ from handlers.show import hd_show, hd_play, hd_history, hd_dbinfo
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
 from handlers.study import hd_poetry, hd_alticle, hd_word
 from handlers.study.hd_word import WordActionHandler
-from handlers.view import hd_jijin as hd_jijin
+from handlers.view import hd_jijin as hd_jijin, hd_image
 # from handlers.view import hd_predict
 from tornado.web import StaticFileHandler
 path_regex = r"(?P<path>(?:(?:/[^/]+)+|/?))"
@@ -39,6 +39,7 @@ url = [                            #
         (r'/avator', hd_avator.FsAvatorHandler),
         (r'/history', hd_history.HistoryHandler),
         (r'/sendmail', hd_mail.EmainHandler),
+        (r'/image', hd_image.ShowImageHandler),
 
         # view
         (r'/view', hd_jijin.JiJinHandler),

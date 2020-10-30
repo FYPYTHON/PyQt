@@ -1,0 +1,7 @@
+TK Option
+anchor:  "n","ne","e","sw","nw","center"...    n=north ,e=east,w=west,s=south
+bitmap:  option='error','gray25','hourglass','info','warning','question'...  file="@/*/***.bit"
+distance: i=inches,m=millimetres,p=points, eg: "3.5i"
+font: {courier 10 bold}
+geometry: eg: fred['geometry']="200x100"
+justify : "left","center","right","fill"

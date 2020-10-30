@@ -435,7 +435,7 @@ class PictureCut(object):
 
 if __name__ == "__main__":
     # C:\softDev\python35\Lib\site-packages\PyInstaller
-    # pyinstaller picturecut.py -w -F --upx-dir ../upx-3.95-win64/upx.exe
+    # pyinstaller kafka_client.py -w -F --icon="kafka.ico" --upx-dir ../upx-3.95-win64/upx.exe
     demo = PictureCut()
     demo.ui.mainloop()
     logger.info("picture cut main loop start ...")
