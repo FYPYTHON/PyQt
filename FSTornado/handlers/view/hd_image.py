@@ -8,7 +8,7 @@
 from handlers.basehd import BaseHandler
 import requests
 
-from handlers.view.hd_jijin import get_gid_all_data
+from handlers.view.hd_jijin import get_gid_all_data, get_gid_range_data
 
 
 class ShowImageHandler(BaseHandler):
@@ -16,6 +16,7 @@ class ShowImageHandler(BaseHandler):
         # imgs = "data:image/{};base64,".format(suffix) + ims
         # xdata = range(1, 6)
         # ydata = range(11, 16)
+        jid = self.get_argument("jid", None)
         jdata = get_gid_all_data(self, '1717')
         xdata = jdata.get("jdate")
         ydata = jdata.get("jvalue")

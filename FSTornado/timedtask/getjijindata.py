@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 from database.db_config import db_session
 from database.tbl_jijin import TblJijin
 from tornado.log import app_log as weblog
-jids = ['001717', '161810', '340009', '290011']
+jids = ['001717', '161810', '340009', '290011', '290004', '290007', '001718', "001725", "161826"]
 FDATE = "%Y-%m-%d"
 
 
@@ -47,6 +47,7 @@ def get_date():
         weekday = today.weekday()
     # print(today, weekday)
     strdata = today.strftime(FDATE)
+    # strdata = "2020-11-06"
     # print(strdata)
     return strdata
 
@@ -78,7 +79,12 @@ def get_one(jid):
 def gene_jijin_data():
     weblog.info("gene_jijin_data start")
     for jid in jids:
-        get_one(jid)
+        try:
+            if datetime.today().hour > 16:
+                continue
+            get_one(jid)
+        except Exception as e:
+            weblog.error("{} {}".format(jid, e))
 
     jjd = Timer(12 * 60 * 60, gene_jijin_data)
     jjd.start()

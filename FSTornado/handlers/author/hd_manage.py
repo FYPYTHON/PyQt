@@ -6,6 +6,7 @@ from tornado.web import authenticated
 import time
 from datetime import datetime
 from database.tbl_account import TblAccount
+from database.tbl_code import TblCode
 from handlers.author.hd_main import get_disk_usage
 from handlers.basehd import BaseHandler, check_authenticated, check_token
 from json import dumps as json_dumps
@@ -14,6 +15,7 @@ from method.data_encode import MD5
 # from handlers.common_handler import get_expires_datetime
 from common.global_func import get_expires_datetime, get_user_all, get_user_info, get_user_by_id
 from common.msg_def import SESSION_ID, USER_IS_NONE, USER_OR_PASSWORD_ERROR, VER_CODE_ERROR
+from method.my_decode import self_encode, self_decode
 
 
 class ManageHandler(BaseHandler):
@@ -107,3 +109,51 @@ class RestartHandler(BaseHandler):
                 return self.write(json_dumps({"error_code": 1, "msg": u"服务重启失败"}))
         else:
             return self.write(json_dumps({"error_code": 1, "msg": u"没有操作权限"}))
+
+
+class AppCodeHandler(BaseHandler):
+    @check_token
+    def get(self):
+        pass
+        loginname = self.get_argument("loginname")
+        all_code = self.mysqldb().query(TblCode).filter(TblCode.key == loginname).all()
+        code_list = []
+        for codeinfo in all_code:
+            code_list.append(codeinfo)
+        return self.write(json_dumps({"codelist": code_list, "error_code": 0}))
+
+    @check_token
+    def put(self):
+        enstr = self.get_argument("enstr", "")
+        bstr = enstr.encode('utf-8')
+
+        # print(bstr)
+        weblog.info("enstr:{}".format(bstr))
+        error_code = 0
+        if len(bstr) > 20:
+            error_code = 1
+            return self.write(json_dumps({"decode": u"字符长度需小于20", "error_code": error_code}))
+        try:
+            result = self_encode(bstr)
+            if isinstance(result, bytes):
+                result = result.decode()
+        except Exception as e:
+            weblog.error("{}".format(e))
+            result = u"加密失败"
+            error_code = 1
+        return self.write(json_dumps({"decode": result, "error_code": error_code}))
+
+    @check_token
+    def post(self):
+        destr = self.get_argument("destr", "")
+        bstr = destr.encode('utf-8')
+        # print(bstr)
+        error_code = 0
+        weblog.info("destr:{}".format(bstr))
+        try:
+            result = self_decode(bstr)
+        except Exception as e:
+            weblog.error("{}".format(e))
+            result = u"解密失败"
+            error_code = 1
+        return self.write(json_dumps({"decode": result, "error_code": error_code}))

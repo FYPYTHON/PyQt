@@ -62,6 +62,8 @@ def ord_decode_cn(encoded_str):
 
 def self_encode(ori_str):
     result = ''
+    if isinstance(ori_str, bytes):
+        ori_str = ori_str.decode()
     for i in ori_str:
         temp = func_x(int(ord(i)))
         # print(i, temp)

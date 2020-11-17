@@ -1,6 +1,7 @@
 # coding=utf-8
 from handlers.adminhd import verifyCode, AppVersionHandler, UserinfoHandler, StatusHandler, DecodeSelfHandler
 from handlers.author import hd_login, hd_main, hd_manage, hd_mail
+from handlers.author.hd_manage import AppCodeHandler
 from handlers.show import hd_show, hd_play, hd_history, hd_dbinfo
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
 from handlers.study import hd_poetry, hd_alticle, hd_word
@@ -16,6 +17,7 @@ url = [                            #
         #
         (r'/status', StatusHandler),
         (r'/decode', DecodeSelfHandler),
+        (r'/decode/([0-9]+)', DecodeSelfHandler),
         # (r'/', signin_handler.SigninHandler),
         (r'/login', hd_login.LoginHandler),
         (r'/logout', hd_login.LogoutHandler),
@@ -65,6 +67,7 @@ url = [                            #
         (r'/appuserinfo', UserinfoHandler),
 
         (r'/app/word', WordActionHandler),
+        (r'/app/code', AppCodeHandler),
 
         (r'/tesseract', hd_word.PyTesseractHandler),
 

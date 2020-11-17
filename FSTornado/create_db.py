@@ -5,6 +5,9 @@ import hashlib
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from database.tbl_code import TblCode
+
+
 def clear_db():
 
     engine = create_engine('sqlite:///wfs.db?check_same_thread=False', echo=True)
@@ -63,7 +66,8 @@ def create_single_table():
     # from database import tbl_jijin
     # from database import tbl_admin
     # from database import tbl_poetry
-    from database import tbl_word
+    # from database import tbl_word
+    from database import tbl_code
     from database import db_config
     print("create table....")
     db_config.ModelBase.metadata.create_all(db_config.engine)
@@ -122,6 +126,12 @@ if __name__ == '__main__':
 
     get_table_propery("tbl_word")
     # init_account()
+
+    db_session.add(TblCode(key="admin1", msg=1, code='4K6h3JXgrLXgu43jkKPjiZnjjL', user="admin1"))
+    db_session.commit()
+    all_code = db_session.query(TblCode).filter(TblCode.user == "admin1").all()
+    for i in all_code:
+        print(i.tojson())
 
 
 

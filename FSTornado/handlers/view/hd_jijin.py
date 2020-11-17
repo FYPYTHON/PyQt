@@ -100,7 +100,7 @@ class JiJinHandler(BaseHandler):
         jdata = get_gid_all_data(self, gid)
         current_week_data = get_gid_range_data(self, gid, 0)
         last_week_data = get_gid_range_data(self, gid, 1)
-        return self.render("view.html", jdata=jdata, jids=gids, jdata0=current_week_data, jdata1=last_week_data)
+        return self.render("view.html", jdata=jdata, jids=gids, jid=gid, jdata0=current_week_data, jdata1=last_week_data)
 
     # @authenticated
     @check_authenticated

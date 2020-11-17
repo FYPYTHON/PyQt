@@ -7,15 +7,20 @@
     <link rel="stylesheet" href="{{static_url('css/bootstrap.min.css')}}">
     <script src="{{static_url('js/jquery.min.js')}}"></script>
     <script src="{{static_url('js/bootstrap.min.js')}}"></script>
+    <link rel="stylesheet" href="{{static_url('css/fscss/mycss.css')}}">
 </head>
 <body>
     <div class="col-sm-12" style="margin-top: 50px;">
         <div class="col-sm-4">
             <div class="col-sm-12">
                 <label class="col-sm-5">选择类型：</label>
-                <select class="col-sm-4" id="curjid">
+                <select class="col-sm-4 myjid" id="curjid">
                     {% for vd in jids %}
-                    <option>{{vd}}</option>
+                        {% if str(jid) == str(vd) %}
+                            <option selected="selected">{{vd}}</option>
+                        {% else %}
+                            <option>{{vd}}</option>
+                        {% end %}
                     {% end %}
                 </select>
                 <button onclick="getjijin()" style="margin-left: 2px;">确定</button>

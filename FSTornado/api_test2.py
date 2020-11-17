@@ -83,6 +83,21 @@ def add_word(url, imgpath=None):
     print(word, res.text)
 
 
+def get_code(url):
+    headers = {'User-Agent': 'Mobile'}
+    token = get_token(url)
+    parmas = {'loginname': user, 'destr': '4K6h3JXgrLXgu43jkKPjiZnjjL3jlIvZr+Cpo+Ckt9uB',
+              'token': token}
+    url = 'http://{}/app/code'.format(url)
+    res = requests.post(url, headers=headers, data=parmas).text
+    print(res)
+
+    p1 = {'loginname': user, 'enstr': '6*5=sqrt(30)',
+              'token': token}
+    res = requests.put(url, headers=headers, params=p1).text
+    print(res)
+
+
 def get_holiday():
     import json
     import requests
@@ -124,4 +139,5 @@ if __name__ == '__main__':
     # add_word(url)
     # add_all(url)
     # get_holiday()
-    sendEmail(url)
+    # sendEmail(url)
+    get_code(url)

@@ -1,11 +1,12 @@
 # coding=utf-8
 from database.tbl_account import TblAccount
 from database.tbl_admin import TblAdmin
+from database.tbl_code import TblCode
 from handlers.basehd import BaseHandler, check_token, check_authenticated
 from json import dumps as json_dumps
 from common.global_func import get_expires_datetime
 from method.generate_verify_image import generate_verify_image
-from method.my_decode import self_decode
+from method.my_decode import self_decode, self_encode
 import base64
 import random
 from tornado.log import app_log as weblog
@@ -44,11 +45,16 @@ class StatusHandler(tornado.web.RequestHandler):
 
 
 class DecodeSelfHandler(BaseHandler):
-    @check_authenticated
+    # @check_authenticated
     def get(self):
-        return self.render("decode.html")
+        cursuer = self.current_user if self.current_user is not None else ""
+        all_code = self.mysqldb().query(TblCode).filter(TblCode.user == cursuer).all()
+        code_list = []
+        for codeinfo in all_code:
+            code_list.append(codeinfo)
+        return self.render("decode.html", codelist=code_list)
 
-    @check_authenticated
+    # @check_authenticated
     def post(self):
         destr = self.get_argument("destr", "")
         bstr = destr.encode('utf-8')
@@ -59,6 +65,9 @@ class DecodeSelfHandler(BaseHandler):
             weblog.error("{}".format(e))
             result = u"解密失败"
         return self.write(json_dumps({"decode": result}))
+
+
+
 
 
 class AppVersionHandler(BaseHandler):
