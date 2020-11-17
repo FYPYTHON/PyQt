@@ -1,0 +1,8 @@
+ls  /
+create /zkPro myData
+
+get /zkPro
+
+set /zkPro myData123
+
+delete /zkPro
