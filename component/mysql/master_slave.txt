@@ -32,7 +32,20 @@ master_port=3306,
 master_user='repl',
 master_password='123456', 
 master_log_file='master-bin.000001',
-master_log_pos=0;
+master_log_pos=4;
+###### -------------
+https://www.cnblogs.com/zyxnhr/p/11154959.html
+[mysqld]
+master_info_repository=TABLE
+relay_log_info_repository=TABLE
+
+change master to master_host='172.16.83.87',
+master_port=3306,
+master_user='repl',
+master_password='123456', 
+master_log_file='master-bin.000225',
+master_log_pos=1973 for channel 'fy';
+start slave for channel 'fy';
 £¨3£©Æô¶¯Slave
 start slave;
 

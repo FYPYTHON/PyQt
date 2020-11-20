@@ -1,8 +1,17 @@
+https://blog.csdn.net/dandandeshangni/article/details/80558383
+
 ls  /
 create /zkPro myData
-
+create -e 临时节点
+create -s 顺序节点
+create -e -s 
 get /zkPro
 
 set /zkPro myData123
 
 delete /zkPro
+
+
+getAcl:获取某个节点的acl权限信息
+setAcl 设置权限
+setAcl /merryyou/test world:anyone:crwa # crwa 不允许删除

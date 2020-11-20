@@ -35,6 +35,9 @@ chkconfig --add mysqld      # 开机启动
 cat /root/.mysql_secret   # 初始密码 
 :yUer1+/oztg
 
+启动：
+./mysqld --user=root
+
 修改密码：
 alter user 'root'@'localhost' identified with mysql_native_password by 'Faye0808';
 flush privileges;
