@@ -33,6 +33,7 @@ class HistoryHandler(BaseHandler):
         historylist, count = get_history_all(self, offset)
         weblog.info("history page:{} total:{}".format(len(historylist), count))
         pages = cal_page_from_total(count)
+        if curpage > pages: curpage = pages
         userinfo = get_user_info(self)
         self.render("history.html", historys=historylist, userinfo=userinfo, curpath=curpath,
                     useage=get_disk_usage(self, curpath), page=curpage, total=pages)

@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 from database.db_config import db_session
 from database.tbl_jijin import TblJijin
 from tornado.log import app_log as weblog
-jids = ['001717', '161810', '340009', '290011', '290004', '290007', '001718', "001725", "161826"]
+jids = ['001717', '161810', '340009', '290011', '290004', '290007', '001718', "001725", "161826", "001668"]
 FDATE = "%Y-%m-%d"
 
 

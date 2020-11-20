@@ -6,6 +6,7 @@
 # @Software: PyCharm
 
 import requests
+
 user = "Tornado"
 pwd = "dgj_039103"
 
@@ -133,6 +134,53 @@ def sendEmail(url):
     # print(jres)
     return result.text
 
+# -------------------------------------
+from sqlalchemy import Column, String, Integer
+from sqlalchemy.ext.declarative import declarative_base
+ModelBase = declarative_base()
+
+
+class TblAdmin(ModelBase):
+    __tablename__ = 'tbl_admin'
+
+    id = Column(Integer, unique=True, primary_key=True)
+    name = Column(String(60), unique=True, comment=u"变量名")
+    value = Column(String(60))
+    type = Column(Integer)
+
+    def __repr__(self):
+        return "%s<id=%s, name=%s,value=%s>" % (self.__class__.__name__, self.id, self.name, self.value)
+
+
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
+import pymysql
+pymysql.install_as_MySQLdb()
+
+ModelBase = declarative_base()
+engine = create_engine('mysql+pymysql://root:Faye0808@localhost:3306/faye_dream?charset=utf8', pool_size=100,
+                       echo=False)
+session_factory = sessionmaker(bind=engine)
+db_session = scoped_session(session_factory)
+
+def add_data():
+    from datetime import datetime
+    from time import sleep
+    aa = db_session.query(TblAdmin).all()
+    for i in aa:
+        print(i)
+
+    for i in range(1000):
+        t1 = TblAdmin()
+        t1.name = str(datetime.now().timestamp())
+        t1.value = str(datetime.now())
+        t1.type = datetime.now().microsecond % 2
+        # sleep(1)
+        print(t1)
+        db_session.add(t1)
+        db_session.commit()
 
 if __name__ == '__main__':
     url = "127.0.0.1:9080"
@@ -140,4 +188,5 @@ if __name__ == '__main__':
     # add_all(url)
     # get_holiday()
     # sendEmail(url)
-    get_code(url)
+    # get_code(url)
+    add_data()
