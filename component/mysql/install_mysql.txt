@@ -36,6 +36,7 @@ cat /root/.mysql_secret   # ³õÊ¼ÃÜÂë
 :yUer1+/oztg
 
 Æô¶¯£º
+ln -s /var/lib/mysql/mysql.sock /tmp/mysql.sock
 ./mysqld --user=root
 
 ĞŞ¸ÄÃÜÂë£º
