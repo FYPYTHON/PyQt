@@ -15,3 +15,10 @@ delete /zkPro
 getAcl:获取某个节点的acl权限信息
 setAcl 设置权限
 setAcl /merryyou/test world:anyone:crwa # crwa 不允许删除
+
+class A
+{
+    private:
+           classs B;
+}
+
