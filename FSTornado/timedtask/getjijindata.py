@@ -40,6 +40,8 @@ def get_date():
     today = datetime.today().date()
     # today = datetime.strptime("2020-09-19", FDATE)
     weekday = today.weekday()
+    if weekday == 0:
+        today = today - timedelta(days=3)
     if 0 < weekday <= 4:
         today = today - timedelta(days=1)
     while weekday > 4:

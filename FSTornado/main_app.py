@@ -11,6 +11,7 @@ from tornado.log import app_log as weblog
 from settings.logConfig import logConfig
 import warnings
 
+from timedtask.getcurrentjj import gene_jijin_current
 from timedtask.timedget import clear_history
 from timedtask.getjijindata import gene_jijin_data
 
@@ -64,6 +65,7 @@ if __name__ == "__main__":
         pass
     check_path_exist()
     # gene_jijin_data()
+    gene_jijin_current()
     tornado.options.parse_command_line()
     app = Application()
     http_server = tornado.httpserver.HTTPServer(app, max_buffer_size=4 * MAX_STREAMED_SIZE)
