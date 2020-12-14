@@ -38,6 +38,7 @@ url = [                            #
         (r'/createdir', hd_create.FsCreateHandler),
         (r'/restart', hd_manage.RestartHandler),
         (r'/user/([0-9]+)', hd_manage.UserInfoHandler),
+        (r'/user/delete/([0-9]+)', hd_manage.ManageHandler),
         (r'/avator', hd_avator.FsAvatorHandler),
         (r'/history', hd_history.HistoryHandler),
         (r'/sendmail', hd_mail.EmainHandler),

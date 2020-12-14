@@ -8,7 +8,7 @@ from datetime import datetime
 from database.tbl_account import TblAccount
 from database.tbl_code import TblCode
 from handlers.author.hd_main import get_disk_usage
-from handlers.basehd import BaseHandler, check_authenticated, check_token
+from handlers.basehd import BaseHandler, check_authenticated, check_token, check_role
 from json import dumps as json_dumps
 from tornado.log import access_log as weblog
 from method.data_encode import MD5
@@ -19,7 +19,7 @@ from method.my_decode import self_encode, self_decode
 
 
 class ManageHandler(BaseHandler):
-    # @check_authenticated
+    @check_authenticated
     def get(self):
         curpath = self.get_argument('curpath', None)
         if curpath is None:
@@ -31,13 +31,19 @@ class ManageHandler(BaseHandler):
         self.render("manage.html", users=userlist, userinfo=userinfo, curpath=curpath,
                     useage=get_disk_usage(self, curpath))
 
-    # @check_authenticated
+    @check_authenticated
+    @check_role
     def post(self):
         loginname = self.get_argument("loginname", None)
         nickname = self.get_argument('nickname', None)
         password = self.get_argument('password', None)
         email = self.get_argument("email", None)
         userrole = self.get_argument("userrole", "2")
+
+        if loginname == "": loginname = None
+        if nickname == "": nickname = None
+        if password == "": password = None
+        if email == "": email = None
 
         user = self.mysqldb().query(TblAccount).filter(TblAccount.loginname == loginname).first()
         if user is None:
@@ -66,6 +72,18 @@ class ManageHandler(BaseHandler):
                 return self.write(json_dumps({"error_code": 1, "msg": u"添加失败"}))
         else:
             return self.write(json_dumps({"error_code": 1, "msg": u"信息不完整"}))
+
+    @authenticated
+    def delete(self, uid):
+        weblog.info("uid={}".format(uid))
+        try:
+            self.mysqldb().query(TblAccount).filter(TblAccount.id == uid).delete()
+            self.mysqldb().commit()
+            return self.write(json_dumps({"error_code": 0, "msg": u"删除成功"}))
+        except Exception as e:
+            weblog.error("{}".format(e))
+            return self.write(json_dumps({"error_code": 1, "msg": u"删除失败。{}".format(e)}))
+
 
 
 class UserInfoHandler(BaseHandler):

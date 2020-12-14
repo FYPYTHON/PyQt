@@ -234,7 +234,7 @@ def check_role(func):
         if user:
             role = user.userrole
             if role > 1:
-                return self.write(json.dumps({"error_code": FAIL, "msg": u"该操作没有权限"}))
+                return self.write(json.dumps({"error_code": FAIL, "msg": u"不是超级管理员，该操作没有权限"}))
 
         func(self, *args, **kwargs)
 
