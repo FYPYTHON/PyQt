@@ -16,8 +16,9 @@ class ImageHandler(tornado.web.RequestHandler):
         # print(f"{xdata} {ydata}")
         # print(xdata)
         # print(ydata)
+        ydata = [float(i) for i in ydata]
         plt.plot(xdata, ydata, marker='o')
-        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.rcParams['font.sans-serif'] = ['WenQuanYi Zen Hei Mono']
         plt.gcf().subplots_adjust(bottom=0.2)
         plt.xticks(rotation=75, fontsize=12)
         if len(xdata) < 5:
@@ -26,6 +27,7 @@ class ImageHandler(tornado.web.RequestHandler):
         # filename = "xy_{}.png".format(self.request.request_time())
         # print(filename)
         plt.savefig(figfile, dpi=600, format="png")
+        plt.savefig("./test.png")
         figdata_png = base64.b64encode(figfile.getvalue()).decode()
         # figfile.close()
         # print(len(figdata_png))

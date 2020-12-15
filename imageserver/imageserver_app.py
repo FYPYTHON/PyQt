@@ -53,7 +53,7 @@ if __name__ == "__main__":
     except:
         pass
     check_path_exist()
-    tornado.options.parse_command_line()
+    # tornado.options.parse_command_line()
     app = Application()
     http_server = tornado.httpserver.HTTPServer(app, max_buffer_size=4 * MAX_STREAMED_SIZE)
     http_server.listen(options.port)

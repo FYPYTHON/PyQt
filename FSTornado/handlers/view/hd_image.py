@@ -17,11 +17,12 @@ class ShowImageHandler(BaseHandler):
         # xdata = range(1, 6)
         # ydata = range(11, 16)
         jid = self.get_argument("jid", None)
-        jdata = get_gid_all_data(self, '1717')
+        if jid is None: jid = '1717'
+        jdata = get_gid_all_data(self, jid)
         xdata = jdata.get("jdate")
         ydata = jdata.get("jvalue")
-        print(xdata)
-        print(ydata)
+        # print(xdata)
+        # print(ydata)
         params = {"xdata": list(xdata), "ydata": list(ydata)}
         uri = "xy_{}.png".format(self.request.request_time())
         try:

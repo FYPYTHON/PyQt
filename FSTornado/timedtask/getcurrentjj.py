@@ -89,8 +89,7 @@ def gene_jijin_current():
     weblog.info("gene_jijin_current start")
     for jid in jids:
         try:
-            if datetime.today().hour > 15 or (datetime.today().hour < 10 and
-                                              datetime.today().minute > 30):
+            if datetime.today().hour > 15 or (datetime.today().hour < 9):
                 continue
             # get_current_num(jid)
             get_current_data(jid)

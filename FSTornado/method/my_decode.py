@@ -75,6 +75,9 @@ def self_encode(ori_str):
 def self_decode(encoded_str):
     if isinstance(encoded_str, bytes):
         encoded_str = b64decode(encoded_str).decode()
+    elif isinstance(encoded_str, str):
+        bstr = encoded_str.encode()
+        encoded_str = b64decode(bstr).decode()
     result = ''
     for i in encoded_str:
 
