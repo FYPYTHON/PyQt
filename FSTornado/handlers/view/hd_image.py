@@ -8,7 +8,7 @@
 from handlers.basehd import BaseHandler
 import requests
 
-from handlers.view.hd_jijin import get_gid_all_data, get_gid_range_data
+from handlers.view.hd_jijin import get_gid_all_data, get_gid_range_data, get_gid
 
 
 class ShowImageHandler(BaseHandler):
@@ -37,7 +37,7 @@ class ShowImageHandler(BaseHandler):
         # print(res.content)
         if code != 404:
             img = "data:image/{};base64,".format('png') + img
-        return self.render("image.html", img=img, uri=uri)
+        return self.render("image.html", img=img, uri=uri, jids=get_gid(self))
 
     def tt(self):
         import matplotlib.pyplot as plt

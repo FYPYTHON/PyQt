@@ -5,6 +5,14 @@
     <title>Title</title>
 </head>
 <body>
-<img id="srcimg" src="{{img}}" alt="{{uri}}" style="width:500px;height:500px;">
+<img id="srcimg" src="{{img}}" alt="{{uri}}" style="width:400px;height:400px;">
+<div>
+    <ul class="dropdown-menu">
+        {% for jid in jids %}
+        <li style="list-style:none;"><a href="/image?jid={{jid}}">{{jid}}</a></li>
+        {% end %}
+    </ul>
+
+</div>
 </body>
 </html>

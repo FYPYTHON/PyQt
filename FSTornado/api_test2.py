@@ -45,7 +45,7 @@ def getVerifyImage(imgpath):
     # res = requests.post(url, data=data)
     return base64_data, suffix
 
-import notebook
+
 def add_all(url):
     import os
     import time
