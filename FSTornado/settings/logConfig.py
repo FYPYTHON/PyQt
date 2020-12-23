@@ -21,6 +21,11 @@ logConfig = {
         'level': 'INFO',
         'handlers': ['log'],
         'propagate': 'no'
+      },
+      'tornado.jj': {
+        'level': 'INFO',
+        'handlers': ['jj'],
+        'propagate': 'no'
       }
     },
     'formatters': {
@@ -53,6 +58,17 @@ logConfig = {
         'level': 'INFO',
         'formatter': 'timedRotating',
         'filename': '/opt/log/fs/log.log',
+        # 'when': 'midnight',
+        # 'interval': 1,
+        'backupCount': 2,    # 日志文件的保留个数
+        'maxBytes': 50 * 1024 * 1024,  # 文件最大50M
+        'encoding': 'utf-8'
+        },
+      'jj': {
+        'class': 'logging.handlers.RotatingFileHandler',    # size
+        'level': 'INFO',
+        'formatter': 'timedRotating',
+        'filename': '/opt/log/fs/jj.log',
         # 'when': 'midnight',
         # 'interval': 1,
         'backupCount': 2,    # 日志文件的保留个数

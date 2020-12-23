@@ -5,12 +5,14 @@
 # @File    : getcurrentjj
 # @Software: Pycharm
 from threading import Timer
-
+import logging
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-from tornado.log import app_log as weblog
+
+# from tornado.log import app_log as weblog
 from timedtask.getjijindata import FDATE, add_data, jids
+weblog = logging.getLogger("tornado.jj")
 
 
 def get_current_data(jid):
@@ -28,6 +30,12 @@ def get_current_data(jid):
     if jvalue == '' or len(jvalue) < 1:
         weblog.error("{} is not invalid. not to add db".format(jvalue))
         return
+
+    today = datetime.today().date()
+
+    if today.strftime(FDATE) != jdate:
+        weblog.error("{} {} {} is not the same".format(jid, today, jdate))
+        return None
     add_data(jid, jdate, jvalue)
 
 
@@ -60,7 +68,7 @@ def get_current_num(jid):
     else:
         value = None
     weblog.info("{} {} {} current to add db".format(jid, sdate[0], value))
-    print(jid, sdate[0], value)
+    # print(jid, sdate[0], value)
     add_current_data(jid, sdate[0], value)
     return jid, sdate[0], value
 
