@@ -65,7 +65,7 @@ if __name__ == "__main__":
         pass
     check_path_exist()
     # gene_jijin_data()
-    gene_jijin_current()
+    # gene_jijin_current()
     tornado.options.parse_command_line()
     app = Application()
     http_server = tornado.httpserver.HTTPServer(app, max_buffer_size=4 * MAX_STREAMED_SIZE)

@@ -11,7 +11,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 # from tornado.log import app_log as weblog
-from timedtask.getjijindata import FDATE, add_data, jids
+from timedtask.getjijindata import FDATE, add_data, jids, add_sum
+
 weblog = logging.getLogger("tornado.jj")
 
 
@@ -37,6 +38,7 @@ def get_current_data(jid):
         weblog.error("{} {} {} is not the same".format(jid, today, jdate))
         return None
     add_data(jid, jdate, jvalue)
+    add_sum(jid, jdate, jvalue)
 
 
 def get_current_num(jid):

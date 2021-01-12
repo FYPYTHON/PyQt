@@ -6,7 +6,7 @@ from handlers.show import hd_show, hd_play, hd_history, hd_dbinfo
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
 from handlers.study import hd_poetry, hd_alticle, hd_word
 from handlers.study.hd_word import WordActionHandler
-from handlers.view import hd_jijin as hd_jijin, hd_image
+from handlers.view import hd_jijin as hd_jijin, hd_image, hd_jsum
 # from handlers.view import hd_predict
 from tornado.web import StaticFileHandler
 path_regex = r"(?P<path>(?:(?:/[^/]+)+|/?))"
@@ -46,6 +46,7 @@ url = [                            #
 
         # view
         (r'/view', hd_jijin.JiJinHandler),
+        (r'/sum', hd_jsum.JSumHandler),
         (r'/study', hd_poetry.PoetryHandler),
         (r'/poem', hd_poetry.PoemHandler),
         (r'/alticles', hd_alticle.AlticlesHandler),

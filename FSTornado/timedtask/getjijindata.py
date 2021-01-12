@@ -13,9 +13,52 @@ from database.db_config import db_session
 from database.tbl_jijin import TblJijin
 # from tornado.log import app_log as weblog
 import logging
+
+from database.tbl_sum import TblSum
+
 weblog = logging.getLogger("tornado.jj")
-jids = ['001717', '161810', '340009', '290011', '290004', '290007', '001718', "001725", "161826", "001668", "161725"]
+jids = ['001717', '161810', '340009', '290011', '290004', '290007', '001718', "001725", "161826", "001668", "161725"
+    , "000961"]
 FDATE = "%Y-%m-%d"
+
+
+def add_sum(jid, jdate, jvalue):
+    tsum = db_session.query(TblJijin).filter(TblJijin.jid == jid, TblJijin.jdate <= jdate).order_by(
+        TblJijin.jdate.desc()).limit(2)
+    count = tsum.count()
+    if count != 2:
+        return None
+    inc = 0
+    try:
+        per = (float(tsum[0].jvalue) - float(tsum[1].jvalue)) / float(tsum[1].jvalue)
+        if per > 0: inc = 1
+        if per < 0: inc = -1
+        per = round(per * 100, 3)
+        per = str(per)
+    except Exception as e:
+        per = "--"
+    tas = db_session.query(TblSum).filter(TblSum.jid == jid, TblSum.jdate == jdate).first()
+    if tas is None:
+        tas = TblSum()
+        tas.jdate = jdate
+        tas.jid = jid
+        tas.jper = per
+        tas.jinc = inc
+        db_session.add(tas)
+        weblog.info("sum: {} {} {} add db.".format(jid, jdate, per))
+    else:
+        tas.jdate = jdate
+        tas.jid = jid
+        tas.jper = per
+        tas.jinc = inc
+        weblog.info("sum: {} {} {} exist then update.".format(jid, jdate, per))
+    try:
+        db_session.commit()
+    except Exception as e:
+        weblog.error("sum: {} {} {} add fail. {}".format(jid, jdate, per, e))
+
+
+
 
 
 def add_data(jid, jdate, jvalue):
@@ -78,6 +121,7 @@ def get_one(jid):
     # print(jid, jdate, jvalue)
     # add data to db
     add_data(jid, jdate, jvalue)
+    add_sum(jid, jdate, jvalue)
 
 
 def gene_jijin_data():
