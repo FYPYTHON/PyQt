@@ -22,6 +22,13 @@ def get_datetime(stime):
     return dtime
 
 
+def str2hex(s):
+    return ''.join([hex(ord(c)).replace('0x', '') for c in s])
+
+
+def hex2str(s):
+    return bytes.fromhex(s).decode('utf-8')
+
 def get_week_datetime(flag=0):
     """
     flag > 0, x week ago

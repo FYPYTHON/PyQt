@@ -4,30 +4,7 @@
 # @Author  : 1823218990qq.com
 # @File    : erasecover.py
 # @Software: PyCharm
-"""
-public int intervalSchedule(int[][] intvs) {
-    if (intvs.length == 0) return 0;
-    // 按 end 升序排序
-    Arrays.sort(intvs, new Comparator<int[]>() {
-        public int compare(int[] a, int[] b) {
-            return a[1] - b[1];
-        }
-    });
-    // 至少有一个区间不相交
-    int count = 1;
-    // 排序后，第一个区间就是 x
-    int x_end = intvs[0][1];
-    for (int[] interval : intvs) {
-        int start = interval[0];
-        if (start >= x_end) {
-            // 找到下一个选择的区间了
-            count++;
-            x_end = interval[1];
-        }
-    }
-    return count;
-}
-"""
+from kazoo import client
 
 
 class Solution:
@@ -383,20 +360,29 @@ def rotate2(self, nums: List[int], k: int) -> None:
     print(nums)
     pass
 
+
+def twoSum(self, nums: List[int], target: int) -> List[int]:
+    """
+    nums = [2,7,11,15]
+    target = 9
+    nums1 = [3, 2, 4]
+    target1 = 6
+    twoSum("", nums, target)
+    """
+    for i in range(len(nums)):
+        for j in range(i, len(nums)):
+            if i == j:
+                continue
+            if nums[i] + nums[j] == target:
+                return [i, j]
+
+
+    pass
 if __name__ == '__main__':
     pass
     # n1 = [1,3]
     # n2 = [1,2]
     # mid = findMedianSortedArrays("", n1, n2)
     # print(mid)
-    nums = [[1, 1, 0], [1, 1, 0], [0, 0, 1]]
-    nums1 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]]
-    nums2 = [[1, 1, 0, 0], [1,1,0,0],[0,0,1,1],[0,0,1,1]]
-    nums3 = [[1, 0, 0, 1], [0, 1, 1, 0], [0, 1, 1, 1], [1, 0, 1, 1]]
-    uf = UnionFind()
-    uf.findCircleNum(nums3)
-    # aa = rotate("", [1,2,3,4,5,6,7,8],8)
-    # print(aa)
-    aa = rotate2("", [1, 2, 3, 4, 5, 6, 7, 8], 2)
-    print(aa)
+
 

@@ -21,8 +21,10 @@ from tornado.options import define, options
 define("port", default=9080, help="run on the given port", type=int)
 logging.config.dictConfig(logConfig)
 MAX_STREAMED_SIZE = 1024 * 1024 * 1024
-
-
+SSL_OPTIONS = {
+    "certfile": os.path.join("/opt/data/tornadofs", "server.crt"),
+    "keyfile": os.path.join("/opt/data/tornadofs", "server.key.unsecure"),
+}
 def check_path_exist():
     if not os.path.exists("/opt/data"):
         os.makedirs('/opt/data/public')
