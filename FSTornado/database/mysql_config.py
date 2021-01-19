@@ -18,7 +18,7 @@ host = "172.16.83.226"
 port = 3306
 
 # postgresql+psycopg2://user:password@hostname:port/database_name
-engine = create_engine('mysql://root:fy123456@{}:{}/testonly?charset=utf8'.format(host, port), echo=True)
+engine = create_engine('mysql://root:fy123456@{}:{}/testonly?charset=utf8'.format(host, port), echo=False)
 session_factory = sessionmaker(bind=engine)
 db_session = scoped_session(session_factory)
 
@@ -31,7 +31,7 @@ class TblAdmin(ModelBase):
     type = Column(Integer)
 
     def __repr__(self):
-        return "%s<id=%s, name=%s,value=%s>" % (self.__class__.__name__, self.id, self.name, self.value)
+        return "%s<id=%s, name=%s,value=%s,type=%s>" % (self.__class__.__name__, self.id, self.name, self.value, self.type)
 ModelBase.metadata.create_all(engine)
 
 def get_randstr(num):
@@ -43,14 +43,25 @@ def get_randstr(num):
 
 def add_data():
     from datetime import datetime
-    for i in range(10):
+    for i in range(2000):
         dd = TblAdmin()
         dd.name = get_randstr(10)
         dd.value = get_randstr(5)
         dd.type = i % 5
+        print(dd)
         db_session.add(dd)
         db_session.commit()
+        import time
+        time.sleep(0.1)
+
+
+def search():
+    a = db_session.query(TblAdmin).order_by(TblAdmin.id.desc()).limit(2).all()
+    for i in a:
+        print(i)
+
 
 if __name__ == '__main__':
     add_data()
+    # search()
 

@@ -27,12 +27,12 @@ relay-log=slave-relay-bin
 //Master 服务器Ip
 //Master服务器产生的日志
 mysql>
-change master to master_host='172.16.83.87',
+change master to master_host='172.16.83.226',
 master_port=3306,
-master_user='repl',
-master_password='123456', 
-master_log_file='master-bin.000001',
-master_log_pos=4;
+master_user='root',
+master_password='fy123456', 
+master_log_file='mysql-bin.000003',
+master_log_pos=11592;
 ###### -------------
 https://www.cnblogs.com/zyxnhr/p/11154959.html
 [mysqld]
@@ -68,6 +68,17 @@ mysql>stop slave ;
 mysql> create database cmdb default charset utf8;
 3、导入数据
 [root@ops-dev ~]# mysql -uroot -ptest123 cmdb<cmdb.sql 
+
+
+
+从库变主库 
+RESET MASTER;STOP SLAVE;RESET SLAVE; 
+show master status; #记录FILE Position 
+
+主库变从库 
+RESET MASTER;STOP SLAVE;RESET SLAVE; 
+CHANGE MASTER TO master_host='localhost',master_port=3308, master_user='repl',master_password='pwd', master_log_file='mysql-bin.xxxxx',master_log_pos=xxxxx; 
+START SLAVE;SELECT SLEEP(1);SHOW SLAVE STATUS\G;
 
 
 
