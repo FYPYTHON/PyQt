@@ -1,28 +1,32 @@
-1¡¢fatal: Could not read from remote repository
-hostsÎÄ¼şÖĞÔö¼Ó£º
+1ã€fatal: Could not read from remote repository
+hostsæ–‡ä»¶ä¸­å¢åŠ ï¼š
 13.229.188.59 github.com
 13.229.188.59 git@github.com
 
-2¡¢global
+2ã€global
 git config --global user.name "bryan sun"
 git config --global user.email "hitsjt@gmail.com"
-git config -l # ²é¿´
+git config -l # æŸ¥çœ‹
 ssh-keygen
-cat /c/Users/{username}/.ssh/id_rsa.pub     #»ñÈ¡¹«Ô¿
+cat /c/Users/{username}/.ssh/id_rsa.pub     #è·å–å…¬é’¥
 
 git rebase --continue
-git rebase --abort  # »ØÍËrebaseÇ°
-git reset HEAD~2   # »ØÍËÁ½¸öÌá½»
-git revert HEAD~2 # ³·ÏúÒ»¸öÌá½»µÄÍ¬Ê±»á´´½¨Ò»¸öĞÂµÄÌá½», ÕÒ³öµ¹ÊıµÚ¶ş¸öÌá½»£»´´½¨Ò»¸öĞÂµÄÌá½»À´³·ÏúÕâĞ©¸ü¸Ä£¬È»ºó°ÑÕâ¸öÌá½»¼ÓÈëÏîÄ¿ÖĞ¡£
+git rebase --abort  # å›é€€rebaseå‰
+git reset HEAD~2   # å›é€€ä¸¤ä¸ªæäº¤
+git revert HEAD~2 # æ’¤é”€ä¸€ä¸ªæäº¤çš„åŒæ—¶ä¼šåˆ›å»ºä¸€ä¸ªæ–°çš„æäº¤, æ‰¾å‡ºå€’æ•°ç¬¬äºŒä¸ªæäº¤ï¼›åˆ›å»ºä¸€ä¸ªæ–°çš„æäº¤æ¥æ’¤é”€è¿™äº›æ›´æ”¹ï¼Œç„¶åæŠŠè¿™ä¸ªæäº¤åŠ å…¥é¡¹ç›®ä¸­ã€‚
 
-3¡¢git ÎÄµµ 
-https://git-scm.com/book/zh/v1/×Ô¶¨Òå-Git-ÅäÖÃ-Git
+3ã€git æ–‡æ¡£ 
+https://git-scm.com/book/zh/v1/è‡ªå®šä¹‰-Git-é…ç½®-Git
 
-4¡¢Connection reset by 52.74.223.119
-/c/Users/{username}/.ssh/known_hosts ½«id_rsa.pub Ğ´Èë£¿
-²é¿´ÍøÒ³ÉÏµÄ£ºhttps://github.com/FYPYTHON/PyQt.git   Óë git remote -v ÊÇ·ñÒ»ÖÂ¡£
+4ã€Connection reset by 52.74.223.119
+/c/Users/{username}/.ssh/known_hosts å°†id_rsa.pub å†™å…¥ï¼Ÿ
+æŸ¥çœ‹ç½‘é¡µä¸Šçš„ï¼šhttps://github.com/FYPYTHON/PyQt.git   ä¸ git remote -v æ˜¯å¦ä¸€è‡´ã€‚
 git remote set-url origin https://github.com/FYPYTHON/PyQt.git
 git push -u origin master -f
 
-5¡¢Çå¿Õ»º´æ
+5ã€æ¸…ç©ºç¼“å­˜
 git rm -r --cached .
+
+
+6ã€è®°ä½å¯†ç 
+git config --global credential.helper store
