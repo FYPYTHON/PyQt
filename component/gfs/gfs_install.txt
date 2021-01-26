@@ -19,6 +19,9 @@ systemctl start glusterd.service
 systemctl enable glusterd.service   # 开机启动
 3、创建peer node
 gluster peer probe 172.16.186.133   # 创建peer
+
+删除peer
+gluser peer detach 172.16.83.222
 # 分布式复制卷
 4、创建卷
 gluster volume create gvol replica 2 172.16.83.223:/opt/data/region/Aidata/hd1/ 172.16.83.222:/opt/data/region/Aidata/hd1/ 172.16.83.223:/opt/data/region/Aidata/hd2/ 172.16.83.222:/opt/data/region/Aidata/hd2/

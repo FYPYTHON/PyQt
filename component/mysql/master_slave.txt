@@ -22,6 +22,10 @@ binlog-ignore-db = mysql     #不同步mysql库和test库
 binlog-ignore-db = test
 relay-log-index=slave-relay-bin.index
 relay-log=slave-relay-bin 
+
+# to have multiple channels, repository cannot be of type FILE; Please check the repository configuration and convert them to TABLE.
+master_info_repository  =table
+relay_log_info_repository =table
 重启MySQL服务
 （2）连接Master
 //Master 服务器Ip
@@ -29,10 +33,10 @@ relay-log=slave-relay-bin
 mysql>
 change master to master_host='172.16.83.226',
 master_port=3306,
-master_user='root',
+master_user='repl',
 master_password='fy123456', 
-master_log_file='mysql-bin.000003',
-master_log_pos=11592;
+master_log_file='master-bin.000001',
+master_log_pos=154 for channel 'fy';
 ###### -------------
 https://www.cnblogs.com/zyxnhr/p/11154959.html
 [mysqld]
@@ -79,6 +83,9 @@ show master status; #记录FILE Position
 RESET MASTER;STOP SLAVE;RESET SLAVE; 
 CHANGE MASTER TO master_host='localhost',master_port=3308, master_user='repl',master_password='pwd', master_log_file='mysql-bin.xxxxx',master_log_pos=xxxxx; 
 START SLAVE;SELECT SLEEP(1);SHOW SLAVE STATUS\G;
+
+
+reset slave all；
 
 
 
