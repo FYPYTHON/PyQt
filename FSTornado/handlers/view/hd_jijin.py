@@ -181,3 +181,16 @@ class AppJiJinHandler(BaseHandler):
         except Exception as e:
             weblog.error("{}".format(e))
             return self.write(json.dumps({"msg": "jdata添加失败", "error_code": 1}))
+
+    @check_token
+    def delete(self):
+        jid = self.get_argument("jid", None)
+        if jid is None:
+            return self.write(json.dumps({"error_code": 1, "msg": u"参数错误"}))
+        try:
+            self.mysqldb().query(TblJijin).filter(TblJijin.jid == jid).delete()
+            self.mysqldb().commit()
+            return self.write(json.dumps({"error_code": 0, "msg": u"删除成功"}))
+        except Exception as e:
+            weblog.error("{}".format(e))
+            return self.write(json.dumps({"error_code": 1, "msg": u"删除失败"}))

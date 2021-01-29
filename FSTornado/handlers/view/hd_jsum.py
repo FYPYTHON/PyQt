@@ -29,7 +29,7 @@ def getDailyUpDownInfo(self, cdate):
     up = len([i.jper for i in sumdata if i.jper != '--' and float(i.jper) > 0])
     down = len([i.jper for i in sumdata if i.jper != '--' and float(i.jper) < 0])
     mid = totol - up - down
-    print(totol, up, down, mid)
+    # weblog.info("{} {} {} {}".format(totol, up, down, mid))
     return cdate, totol, up, down, mid
 
 
@@ -40,6 +40,7 @@ def getRangeUpDownInfo(self, days):
         onedata = getDailyUpDownInfo(self, cdate)
         if onedata:
             data.append(onedata)
+    data.reverse()
     return data
 
 
@@ -56,4 +57,36 @@ class JSumHandler(BaseHandler):
         else:
             cdate = (datetime.now() - timedelta(days=cday)).strftime(DATE_FORMAT)
             data = getDailyUpDownInfo(self, cdate)
-        return self.write(json.dumps({"error_code":0, "msg":"", "data": data}))
+        return self.write(json.dumps({"error_code": 0, "msg": "", "data": data}))
+
+
+class SumShowHandler(BaseHandler):
+    def gene_echart_data(self, data):
+        sdate = []
+        sup = []
+        sdown = []
+        max = 0
+        if data is None:
+            weblog.info("sum data is None.")
+            return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max}
+        for i in data:
+            sdate.append(i[0])
+            sup.append(round(i[2]/i[1], 2))
+            sdown.append(round(i[3]/i[1], 2))
+            # max = i[1] if i[1] > max else max
+            max = 1
+        weblog.info("{} {} up:{}".format(len(sup), max, sup))
+        return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max}
+
+    # @check_authenticated
+    def get(self):
+        pass
+        # cdate = (datetime.now() - timedelta(days=30)).strftime(DATE_FORMAT)
+        days = self.get_argument("days", '30')
+        if days.isdigit():
+            days = int(days)
+        else:
+            weblog.error("days: {}".format(days))
+            days = 30
+        data = getRangeUpDownInfo(self, days)
+        return self.render("sum.html", data=self.gene_echart_data(data))

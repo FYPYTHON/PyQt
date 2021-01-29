@@ -46,7 +46,7 @@ url = [                            #
 
         # view
         (r'/view', hd_jijin.JiJinHandler),
-        (r'/sum', hd_jsum.JSumHandler),
+        (r'/sum', hd_jsum.SumShowHandler),
         (r'/study', hd_poetry.PoetryHandler),
         (r'/poem', hd_poetry.PoemHandler),
         (r'/alticles', hd_alticle.AlticlesHandler),
@@ -70,6 +70,9 @@ url = [                            #
 
         (r'/app/word', WordActionHandler),
         (r'/app/code', AppCodeHandler),
+
+        (r'/app/image', hd_image.AppImageHandler),
+        (r'/app/sum', hd_jsum.JSumHandler),
 
         (r'/tesseract', hd_word.PyTesseractHandler),
 

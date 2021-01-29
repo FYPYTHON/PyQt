@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sum</title>
+    <script src="{{static_url('js/echarts.min.js')}}"></script>
+    <link rel="stylesheet" href="{{static_url('css/bootstrap.min.css')}}">
+    <script src="{{static_url('js/jquery.min.js')}}"></script>
+    <script src="{{static_url('js/bootstrap.min.js')}}"></script>
+    <link rel="stylesheet" href="{{static_url('css/fscss/mycss.css')}}">
+</head>
+<body>
+    <div class="col-sm-12" style="margin-top: 50px;">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="col-sm-4"><button onclick="getsum(30)">1月</button></div>
+            <div class="col-sm-4"><button onclick="getsum(60)">2月</button></div>
+            <div class="col-sm-4"><button onclick="getsum(90)">3月</button></div>
+            <div class="col-sm-12" id="jijin" style="width: 600px;height:400px;"></div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('jijin'));
+        var option = {
+            title: {
+                text: 'sum'
+            },
+            tooltip: {},
+            legend: {
+                data:['up','down']
+            },
+            xAxis: {
+                data: {{data['sdate']}},
+                axisLabel: {
+                interval:0,
+                rotate:40
+                },
+            },
+            yAxis: {
+                min: 0,
+                max: {{data['smax']}},
+            },
+
+            series: [{
+                        name: 'up',
+                        type: 'line',
+                        data: {{data['sup']}}
+                    },
+                    {
+                        name: 'down',
+                        type: 'line',
+                        data: {{data['sdown']}}
+                    },
+                    ]
+        };
+        myChart.setOption(option);
+
+
+        function getjijin(){
+            var nid = $("#curjid").val()
+            console.log(nid);
+            window.location.href = "/view?jid=" + nid;
+        }
+        function getsum(days){
+            window.location.href = "/sum?days=" + days;
+        }
+    </script>
+</body>
+</html>
