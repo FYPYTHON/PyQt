@@ -14,8 +14,11 @@ pymysql.install_as_MySQLdb()
 
 ModelBase = declarative_base()
 
-host = "172.16.83.226"
-port = 3306
+# host = "172.16.83.226"
+
+# port = 3306
+host = "192.168.0.223"
+port = 3360
 
 # postgresql+psycopg2://user:password@hostname:port/database_name
 engine = create_engine('mysql://root:fy123456@{}:{}/testonly?charset=utf8'.format(host, port), echo=False)

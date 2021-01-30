@@ -45,18 +45,47 @@ def getRangeUpDownInfo(self, days):
 
 
 class JSumHandler(BaseHandler):
+    # def get(self):
+    #     cday = self.get_argument("cday", '0')
+    #     crange = self.get_argument("range", "yes")
+    #     if not cday.isdigit():
+    #         return self.write(json.dumps({"error_code":1, "msg":"cday is str", "data": []}))
+    #     cday = int(cday)
+    #     if crange == "yes":
+    #         data = getRangeUpDownInfo(self, cday)
+    #         pass
+    #     else:
+    #         cdate = (datetime.now() - timedelta(days=cday)).strftime(DATE_FORMAT)
+    #         data = getDailyUpDownInfo(self, cdate)
+    #     return self.write(json.dumps({"error_code": 0, "msg": "", "data": data}))
+    def gene_echart_data(self, data):
+        sdate = []
+        sup = []
+        sdown = []
+        max = 0
+        if data is None:
+            weblog.info("sum data is None.")
+            return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max}
+        for i in data:
+            sdate.append(i[0])
+            sup.append(round(i[2]/i[1], 2))
+            sdown.append(round(i[3]/i[1], 2))
+            # max = i[1] if i[1] > max else max
+            max = 1
+        weblog.info("{} {} up:{}".format(len(sup), max, sup))
+        return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max}
+
+    @check_token
     def get(self):
-        cday = self.get_argument("cday", '0')
-        crange = self.get_argument("range", "yes")
-        if not cday.isdigit():
-            return self.write(json.dumps({"error_code":1, "msg":"cday is str", "data": []}))
-        cday = int(cday)
-        if crange == "yes":
-            data = getRangeUpDownInfo(self, cday)
-            pass
+        pass
+        # cdate = (datetime.now() - timedelta(days=30)).strftime(DATE_FORMAT)
+        days = self.get_argument("days", '30')
+        if days.isdigit():
+            days = int(days)
         else:
-            cdate = (datetime.now() - timedelta(days=cday)).strftime(DATE_FORMAT)
-            data = getDailyUpDownInfo(self, cdate)
+            weblog.error("days: {}".format(days))
+            days = 30
+        data = getRangeUpDownInfo(self, days)
         return self.write(json.dumps({"error_code": 0, "msg": "", "data": data}))
 
 
