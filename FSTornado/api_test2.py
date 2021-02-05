@@ -182,11 +182,28 @@ def add_data():
         db_session.add(t1)
         db_session.commit()
 
+
+def add_code(url):
+    headers = {'User-Agent': 'Mobile'}
+    token = get_token(url)
+    parmas = {'loginname': user, 'code': '1234', "msg": "测试", "key": "test",
+              'token': token}
+    url_p = 'http://{}/app/addcode'.format(url)
+    res = requests.post(url_p, headers=headers, data=parmas).text
+    print(res)
+
+    p1 = {'loginname': user, 'enstr': '6*5=sqrt(30)',
+          'token': token}
+    res = requests.put("http://{}/app/code".format(url), headers=headers, params=p1).text
+    print(res)
+
 if __name__ == '__main__':
     url = "127.0.0.1:9080"
+    url = "139.224.231.14:9016"
     # add_word(url)
     # add_all(url)
     # get_holiday()
     # sendEmail(url)
     # get_code(url)
-    add_data()
+    # add_data()
+    add_code(url)

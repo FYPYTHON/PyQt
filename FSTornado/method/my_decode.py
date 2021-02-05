@@ -101,6 +101,7 @@ if __name__ == "__main__":
     # sn = ord_encode("123456789az_")
     # print(sn)
     s_a = self_encode("1234")
+    print(s_a)
     print(s_a.decode('utf-8'))
     s_b = self_decode(s_a)
 

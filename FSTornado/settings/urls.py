@@ -1,7 +1,7 @@
 # coding=utf-8
 from handlers.adminhd import verifyCode, AppVersionHandler, UserinfoHandler, StatusHandler, DecodeSelfHandler
 from handlers.author import hd_login, hd_main, hd_manage, hd_mail
-from handlers.author.hd_manage import AppCodeHandler
+from handlers.author.hd_manage import AppCodeHandler, CodeAddHandler
 from handlers.show import hd_show, hd_play, hd_history, hd_dbinfo
 from handlers.action import hd_fileload, hd_rename, hd_move, hd_create, hd_delete, hd_avator
 from handlers.study import hd_poetry, hd_alticle, hd_word
@@ -69,7 +69,8 @@ url = [                            #
         (r'/appuserinfo', UserinfoHandler),
 
         (r'/app/word', WordActionHandler),
-        (r'/app/code', AppCodeHandler),
+        (r'/app/code', AppCodeHandler),   # put encode, post decode
+        (r'/app/addcode', CodeAddHandler),
 
         (r'/app/image', hd_image.AppImageHandler),
         (r'/app/sum', hd_jsum.JSumHandler),

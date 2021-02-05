@@ -150,7 +150,7 @@ class AppCodeHandler(BaseHandler):
         error_code = 0
         if len(bstr) > 20:
             error_code = 1
-            return self.write(json_dumps({"decode": u"字符长度需小于20", "error_code": error_code}))
+            return self.write(json_dumps({"encode": u"字符长度需小于20", "error_code": error_code}))
         try:
             result = self_encode(bstr)
             if isinstance(result, bytes):
@@ -159,7 +159,7 @@ class AppCodeHandler(BaseHandler):
             weblog.error("{}".format(e))
             result = u"加密失败"
             error_code = 1
-        return self.write(json_dumps({"decode": result, "error_code": error_code}))
+        return self.write(json_dumps({"encode": result, "error_code": error_code}))
 
     @check_token
     def post(self):
@@ -175,3 +175,48 @@ class AppCodeHandler(BaseHandler):
             result = u"解密失败"
             error_code = 1
         return self.write(json_dumps({"decode": result, "error_code": error_code}))
+
+    @check_token
+    def delete(self):
+        cid = self.get_argument("cid", None)
+        if cid is None:
+            return self.write(json_dumps({"msg": u"id不存在", "error_code": 1}))
+        else:
+            cid = int(cid)
+        try:
+            ccode = self.mysqldb().query(TblCode).filter(TblCode.id == cid).delete()
+            return self.write(json_dumps({"msg": u"删除成功", "error_code": 0}))
+        except Exception as e:
+            weblog.error("delete code error. {}".format(e))
+            return self.write(json_dumps({"msg": u"删除失败", "error_code": 1}))
+
+class CodeAddHandler(BaseHandler):
+    @check_token
+    def post(self):
+        pass
+        code = self.get_argument("code", None)
+        msg = self.get_argument("msg", None)
+        key = self.get_argument("key", None)
+        user = self.get_argument("loginname", None)
+        if code is None or msg is None or key is None:
+            return self.write(json_dumps({"msg": u"参数错误，请检查。明文：{} 描述：{} 关键字：{}".format(code, msg, key),
+                                          "error_code": 1}))
+
+        tblcode = self.mysqldb().query(TblCode).filter(TblCode.msg == msg, TblCode.key == key).first()
+        if tblcode is not None:
+            return self.write(json_dumps({"msg": u"已存在", "error_code": 1}))
+        else:
+            tblcode = TblCode()
+            md_code = self_encode(code)
+            tblcode.code = md_code.decode('utf-8')
+            tblcode.msg = msg
+            tblcode.key = key
+            tblcode.user = user
+
+        try:
+            self.mysqldb().add(tblcode)
+            self.mysqldb().commit()
+            return self.write(json_dumps({"msg": u"添加成功", "error_code": 0}))
+        except Exception as e:
+            weblog.error("add code error. {}".format(e))
+            return self.write(json_dumps({"msg": u"添加失败", "error_code": 1}))
