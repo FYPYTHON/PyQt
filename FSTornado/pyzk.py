@@ -19,7 +19,7 @@ def main():
         print(time.time())
         zk.get("/test", watch=pp)
         msg = "t:{}".format(time.time())
-        zk.create("/test", msg.encode(), makepath=True)
+        zk.create("/Resource/Mxm/Source/Mxm", msg.encode(), makepath=True)
 
         zk.set("/test", msg.encode())
         time.sleep(0.1)
