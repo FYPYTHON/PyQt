@@ -8,8 +8,8 @@
 import requests
 
 jid = ["001717", "161810", "290011"]
-user = "admin1"
-pwd = "admin#_@0831"
+user = "a123456"
+pwd = "123456"
 
 
 def get_token(url):
@@ -128,7 +128,7 @@ def get_version_(url):
 def put_version(url):
     url = 'http://{}/appversion'.format(url)
 
-    parmas = {"loginname": user, "token": TOKEN, "version": "1.1.4"}
+    parmas = {"loginname": user, "token": TOKEN, "version": "1.1.5.4", "msg": "1.1.5.4\n优化曲线坐标显示"}
     headers = {'User-Agent': "Mobile"}
     result = requests.put(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -142,7 +142,7 @@ def put_version(url):
 def get_userinfo():
     url = 'http://139.224.231.14:9016/appuserinfo'
 
-    parmas = {"loginname": "Tornado", "token": TOKEN}
+    parmas = {"loginname": user, "token": TOKEN}
     headers = {'User-Agent': "Mobile"}
     result = requests.get(url, headers=headers, params=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})
@@ -526,29 +526,11 @@ def mutilpool(url):
 
 # url = "127.0.0.1:807"
 # url = "127.0.0.1:9080"
-url = "139.196.197.13:9016"
-# url = "139.224.231.14:9016"
+# url = "139.196.197.13:9016"
+url = "139.224.231.14:9016"
 # TOKEN = "a4561a1e506ea980a772edf72db9cfc8"
 TOKEN = get_token(url)
 
-
-# int hexCharToInt(char c)
-# {
-#         if (c >= '0' && c <= '9') return (c - '0');
-#         if (c >= 'A' && c <= 'F') return (c - 'A' + 10);
-#         if (c >= 'a' && c <= 'f') return (c - 'a' + 10);
-#         return 0;
-# }
-# char* hexstringToBytes(string s)
-# {
-#         int sz = s.length();
-#         char *ret = new char[sz/2];
-#         for (int i=0 ; i <sz ; i+=2) {
-#             ret[i/2] = (char) ((hexCharToInt(s.at(i)) << 4)
-#                                 | hexCharToInt(s.at(i+1)));
-#         }
-#         return ret;
-# }
 
 def hexstringToBytes(s):
     sz = len(s)
@@ -580,9 +562,10 @@ if __name__ == "__main__":
     # img_resize()
 
     # version
-    # put_version(url)
+    put_version(url)
     # get_version(url)
-    # get_userinfo()
+
+    get_userinfo()
     # get_videoshortcut_base64(1, 2)
     # get_fsmain(url_remote)
     # get_users(url)
@@ -590,7 +573,7 @@ if __name__ == "__main__":
 
     # jijin data
     # post_value(url)
-    get_value(url)
+    # get_value(url)
 
     # post_dir(url)
     # play(url)

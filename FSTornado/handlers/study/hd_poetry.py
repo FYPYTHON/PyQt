@@ -113,7 +113,7 @@ class PoetryHandler(BaseHandler):
         if exist_poem is not None:
             # manual update
             weblog.info("poem id: {}".format(exist_poem.id))
-            print(exist_poem.id)
+            # print(exist_poem.id)
             if exist_poem.describe != describe:
                 exist_poem.describe = describe
                 try:
@@ -188,10 +188,10 @@ class PoemLikeHandler(BaseHandler):
     """
     like  %key%
     """
-    @check_authenticated
+    # @check_authenticated
     def get(self):
         key = self.get_argument("key", None)
-        keys = self.get_arguments("keys", strip=True)
+        keys = self.get_arguments("keys[]", strip=True)
         weblog.info("key:{}, keys:{}".format(key, keys))
         if key is not None:
             keyword = "%{}%".format(key)
@@ -216,7 +216,8 @@ class PoemLikeHandler(BaseHandler):
             if not keys:
                 ctt = [item for item in poem.content.split("。") if key in item]
                 single.append(ctt)
-                resp.append(single)
+                if single not in resp:
+                    resp.append(single)
             else:
                 ctt = list()
                 for item in poem.content.split("。"):
@@ -230,6 +231,7 @@ class PoemLikeHandler(BaseHandler):
                         ctt.append(item)
                 if ctt:
                     single.append(ctt)
-                    resp.append(single)
-
-        return self.write(json.dumps({"error_code": 0, "poemlike": resp, "count": count}))
+                    if single not in resp:
+                        resp.append(single)
+        weblog.info("{} {}".format(resp, count))
+        return self.write(json.dumps({"error_code": 0, "poemlike": resp, "count": len(resp)}))

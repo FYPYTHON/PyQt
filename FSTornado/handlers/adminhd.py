@@ -83,24 +83,34 @@ class AppVersionHandler(BaseHandler):
     1.1
     增加导航界面
     增加古诗词界面
+
+    1.1.5.3
+    优化曲线显示
+
+    1.1.5.4
+    优化曲线坐标显示
     """
     @check_token
     def get(self):
         version_info = self.mysqldb().query(TblAdmin.name, TblAdmin.value).filter(TblAdmin.name == "appversion").first()
-        if version_info is None:
+        msg_info = self.mysqldb().query(TblAdmin.name, TblAdmin.value).filter(TblAdmin.name == "appinfo").first()
+        if version_info is None or msg_info is None:
             return self.write(json_dumps({"error_code": 1, "msg": u"暂无版本信息", "version": "unknown"}))
         else:
-            return self.write(json_dumps({"error_code": 0, "version": version_info.value, "msg": self.__doc__}))
+            return self.write(json_dumps({"error_code": 0, "version": version_info.value, "msg": msg_info.value}))
 
     @check_token
     def put(self):
         version = self.get_argument("version", None)
+        msg = self.get_argument("msg", "")
         if version is None:
             return self.write(json_dumps({"error_code": 1, "msg": u"参数错误"}))
 
         version_info = self.mysqldb().query(TblAdmin).filter(TblAdmin.name == "appversion").first()
-        if version:
+        version_msg = self.mysqldb().query(TblAdmin).filter(TblAdmin.name == "appinfo").first()
+        if version and version_msg:
             version_info.value = version
+            version_msg.value = msg
             self.mysqldb().commit()
             return self.write(json_dumps({"error_code": 0, "msg": u"修改成功"}))
         else:
@@ -115,11 +125,17 @@ class UserinfoHandler(BaseHandler):
                                     , TblAccount.last_logintime).filter(TblAccount.loginname == loginname).first()
 
         msg = dict()
+        # msg['version_describe'] = "1.1.5.3\n优化曲线显示"
         version_info = self.mysqldb().query(TblAdmin.value, TblAdmin.name).filter(TblAdmin.name == "appversion").first()
         if version_info is None:
             msg['version'] = "unknown"
         else:
             msg['version'] = version_info.value
+        version_msg = self.mysqldb().query(TblAdmin.value, TblAdmin.name).filter(TblAdmin.name == "appinfo").first()
+        if version_msg is None:
+            msg['version_describe'] = "unknown"
+        else:
+            msg['version_describe'] = version_msg.value
         if user is None:
             msg['error_code'] = 1
             msg['msg'] = u"获取个人信息失败"

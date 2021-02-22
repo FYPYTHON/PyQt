@@ -26,6 +26,8 @@ gluser peer detach 172.16.83.222
 4、创建卷
 gluster volume create gvol replica 2 172.16.83.223:/opt/data/region/Aidata/hd1/ 172.16.83.222:/opt/data/region/Aidata/hd1/ 172.16.83.223:/opt/data/region/Aidata/hd2/ 172.16.83.222:/opt/data/region/Aidata/hd2/
 
+
+
 启动
 gluster volume  start common_app force
 gluster volume status common_app
@@ -45,6 +47,8 @@ gluster volume delete gvol
 mount -t glusterfs 172.16.83 .222:/gvol /home/wgq/gfs
 glusterfs --volfile-id=/common_app --volfile-server=${gfs_id} /mnt/files
 glusterfs --volfile-id=common_app --volfile-server=172.16.83.226 /mnt/files
+
+/usr/local/glusterfsd/sbin/glusterfs --volfile-id=common_app --volfile-server=f637c366-3ba2-11eb-a1e5-000c291f16b2 /mnt/files
 
 6、问题
 peer disconnect:  #删除之前的peer节点

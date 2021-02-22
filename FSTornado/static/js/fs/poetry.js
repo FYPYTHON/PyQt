@@ -124,7 +124,8 @@ let store = {
             })
         },
         getPoemLikeSync(key, keys){
-        	$.getJSON({
+            $.ajax({
+        	// $.getJSON({
                 url: '/poemlike',
                 async : false,
                 type: 'GET',
@@ -133,8 +134,14 @@ let store = {
                     key: key,
                 },
                 dataType: 'json',
+                error: function(xhr, textStatus, errorThrown){
+                    console.log(textStatus, errorThrown);
+                    // alert("服务器环境异常-->"+xhr.status, xhr.responseText);
+                    window.location.href = "/login?msg=登录过期，请重新登录";
+                },
                 success: function (data) {
                 	var result = parseInt(data.error_code);
+                	// console.log(result, data.msg);
                 	if(result != 0){
                         // alert(data.msg);
                         return data.msg
@@ -210,6 +217,7 @@ let searchContent = {
             	}
             }
             // console.log(newkeys);
+            store.poemlike = [];
             if(newkeys.length > 1){
             	store.actions.getPoemLikeSync(null, newkeys);
             } else {
@@ -218,6 +226,7 @@ let searchContent = {
             
             // alertcommon.$refs.myalert.setContent(store.poemlike);
             this.$refs.alertcmpt.setContent(store.poemlike);
+
         }
     }
 }
@@ -424,7 +433,14 @@ let app = {
     template:`
     <div class="container">
         <div class="row">
-            <nav-bar></nav-bar>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                      <ul class="nav navbar-nav">
+                        <li id="pbody" class="active" @click="poemBody">{{home}}</li>
+                        <li id="abody" @click="alticleBody">{{about}}</li>
+                      </ul>
+                </div>
+            </nav>
         </div>
         <div class="row">
             <main-content></main-content>
@@ -439,12 +455,14 @@ let app = {
     `,
     data(){
     	return {
-    		// bodyCmt: store.bodyId,
-    		bodyCmt: 'alticleContent',
+    		 bodyCmt: store.bodyId,
+            home:'Home',
+            about:'About',
+//    		bodyCmt: 'alticleContent',
     	}
     },
     components:{
-        'nav-bar':navBar,
+//        'nav-bar':navBar,
         'main-content':mainContent,
         // 'leftMenu':leftMenu,
         // 'rightContent':rightContent,
@@ -452,9 +470,24 @@ let app = {
         'alticleContent': alticleBody,
     },
     methods: {
+        poemBody(){
+            $("#abody").click().removeClass("active");
+            $("#pbody").click().addClass("active");
+    		console.log(this.home);
+    		store.bodyId = "bodyContent";
+            this.bodyCmt = "bodyContent";
+    	},
+    	alticleBody(){
+    	    $("#pbody").click().removeClass("active");
+    	    $("#abody").click().addClass("active");
+    		console.log(this.about);
+    		store.bodyId = "alticleContent";
+    		this.bodyCmt = "alticleContent";
+    	},
     	bodyChange(){
     		console.log("bodyChange...");
     		this.bodyCmt = store.bodyId;
+
     	},
     },
 }
