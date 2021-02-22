@@ -65,15 +65,17 @@ class JSumHandler(BaseHandler):
         max = 0
         if data is None:
             weblog.info("sum data is None.")
-            return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max}
+            return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max, "curup": 0, "curdate": ""}
         for i in data:
             sdate.append(i[0])
             sup.append(round(i[2]/i[1], 2))
             sdown.append(round(i[3]/i[1], 2))
             # max = i[1] if i[1] > max else max
             max = 1
-        weblog.info("{} {} up:{}".format(len(sup), max, sup))
-        return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max}
+        curup = sup[-1] if len(sup) > 0 else 0
+        curdate = sdate[-1] if len(sdate) > 0 else ""
+        weblog.info("{} {} up:{} : curup:{} {}".format(len(sup), max, sup, curdate, curup))
+        return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max, "curup": curup * 100, "curdate": curdate}
 
     @check_token
     def get(self):
@@ -86,7 +88,7 @@ class JSumHandler(BaseHandler):
             weblog.error("days: {}".format(days))
             days = 30
         data = getRangeUpDownInfo(self, days)
-        return self.write(json.dumps({"error_code": 0, "msg": "", "data": data}))
+        return self.write(json.dumps({"error_code": 0, "msg": "", "data": self.gene_echart_data(data)}))
 
 
 class SumShowHandler(BaseHandler):
@@ -97,15 +99,17 @@ class SumShowHandler(BaseHandler):
         max = 0
         if data is None:
             weblog.info("sum data is None.")
-            return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max}
+            return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max, "curup": 0, "curdate": ""}
         for i in data:
             sdate.append(i[0])
             sup.append(round(i[2]/i[1], 2))
             sdown.append(round(i[3]/i[1], 2))
             # max = i[1] if i[1] > max else max
             max = 1
-        weblog.info("{} {} up:{}".format(len(sup), max, sup))
-        return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max}
+        curup = sup[-1] if len(sup) > 0 else 0
+        curdate = sdate[-1] if len(sdate) > 0 else ""
+        weblog.info("{} {} up:{} : curup:{} {}".format(len(sup), max, sup, curdate, curup))
+        return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max, "curup": curup * 100, "curdate": curdate}
 
     # @check_authenticated
     def get(self):

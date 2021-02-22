@@ -97,6 +97,26 @@ def init_data():
     db_session.close()
 
 
+def init_info():
+    from database.db_config import db_session
+    from database.tbl_admin import TblAdmin
+    user = TblAdmin()
+    user.name = "appinfo"
+    user.value = "1.0"
+    user.type = 1
+    user_exist = db_session.query(TblAdmin.name).filter(TblAdmin.name == user.name).first()
+    if user_exist is None:
+        db_session.add(user)
+
+    user = TblAdmin()
+    user.name = "appversion"
+    user.value = "1.0"
+    user.type = 1
+    mail_exist = db_session.query(TblAdmin.name).filter(TblAdmin.name == user.name).first()
+    if mail_exist is None:
+        db_session.add(user)
+    db_session.commit()
+    db_session.close()
 
 def init_account():
     print('init one account...')
@@ -121,7 +141,8 @@ if __name__ == '__main__':
     # create_table()
     # init_account()
     # init_data()
-    create_single_table()
+    # create_single_table()
+    init_info()
     # from database.db_config import db_session
     # db_session.commit()
     #

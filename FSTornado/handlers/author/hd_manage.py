@@ -199,7 +199,7 @@ class CodeAddHandler(BaseHandler):
         key = self.get_argument("key", None)
         user = self.get_argument("loginname", None)
         if code is None or msg is None or key is None:
-            return self.write(json_dumps({"msg": u"参数错误，请检查。明文：{} 描述：{} 关键字：{}".format(code, msg, key),
+            return self.write(json_dumps({"msg": u"参数错误，请检查。密码：{} 描述：{} 关键字：{}".format(code, msg, key),
                                           "error_code": 1}))
 
         tblcode = self.mysqldb().query(TblCode).filter(TblCode.msg == msg, TblCode.key == key).first()

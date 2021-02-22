@@ -3,6 +3,11 @@ li {
 	margin-top:5px;
 	margin-bottom: 5px;
 }
+li.active {
+    font-weight:bold;
+    background-color: pink;
+    color:#fff;
+}
 label {
 	font-size: 15px;
 }
