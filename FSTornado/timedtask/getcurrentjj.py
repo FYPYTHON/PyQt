@@ -5,6 +5,7 @@
 # @File    : getcurrentjj
 # @Software: Pycharm
 from threading import Timer
+import time
 import logging
 import requests
 from bs4 import BeautifulSoup
@@ -17,13 +18,25 @@ weblog = logging.getLogger("tornado.jj")
 
 
 def get_current_data(jid):
-    jurl = 'http://m.dayfund.cn/fundpre/{}.html#jump=search'.format(jid)
+    jurl = 'https://m.dayfund.cn/fundinfo/{}.html#jump=search'.format(jid)
     html = requests.get(jurl)
     # res = html.text.encode('ISO-8859-1').decode(requests.utils.get_encodings_from_content(html.text)[0])
     res = html.text
     soup = BeautifulSoup(res, 'lxml')
-    span_v = soup.find("span", {"id": "fvr_val"}).text
-    span_d = soup.find("span", {"id": "fvr_dt"}).text
+    try:
+        span_v = soup.find("span", {"id": "fvr_val"}).text
+        span_d = soup.find("span", {"id": "fvr_dt"}).text
+    except Exception as e:
+        time.sleep(0.5)
+        jurl = 'https://m.dayfund.cn/fundinfo/{}.html#jump=search'.format(jid)
+        html = requests.get(jurl)
+        # res = html.text.encode('ISO-8859-1').decode(requests.utils.get_encodings_from_content(html.text)[0])
+        res = html.text
+        soup = BeautifulSoup(res, 'lxml')
+        span_v = soup.find("span", {"id": "fvr_val"})
+        span_d = soup.find("span", {"id": "fvr_dt"})
+        span_v = span_v.text
+        span_d = span_d.text
 
     jvalue = span_v.split(",")[0]
     jdate = span_d.split(" ")[0]
@@ -107,7 +120,7 @@ def gene_jijin_current():
             except Exception as e:
                 weblog.error("{} {}".format(jid, e))
 
-    jjd = Timer(1 * 60 * 30, gene_jijin_current)
+    jjd = Timer(1 * 60 * 20, gene_jijin_current)
     jjd.start()
 
 

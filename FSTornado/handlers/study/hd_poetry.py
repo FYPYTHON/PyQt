@@ -188,7 +188,7 @@ class PoemLikeHandler(BaseHandler):
     """
     like  %key%
     """
-    # @check_authenticated
+    @check_authenticated
     def get(self):
         key = self.get_argument("key", None)
         keys = self.get_arguments("keys[]", strip=True)
