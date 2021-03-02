@@ -49,7 +49,7 @@ class Application(tornado.web.Application):
             upload_path=os.path.join("/opt/data", "public"),
             top_path="/opt/data",
             login_url="/login",
-            debug=True,
+            debug=False,
             autoescape=None,
             xheaders=True,
             # xsrf_cookies=True,
