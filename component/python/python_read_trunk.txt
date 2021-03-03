@@ -1,0 +1,19 @@
+def read_trunk(file_name,trunk_size):    
+	f = open(file_name,'r') #创建一个文件对象，也是一个可迭代对象   
+	 while True:        
+		content = f.read(trunk_size)  #结果为str类型        
+		if not content:            
+			break        
+		#print (type(content))        
+		#print()       
+		#print (content)        
+		yield content        
+		#return content       
+ if __name__=='__main__':    
+	file_name = r'C:\Users\DELL\Desktop\python\words.txt'    
+	#print(read_trunk(file_name,200))    
+	for i in read_trunk(file_name,200):        
+		print(i)        
+		print()
+
+cj95579
