@@ -27,6 +27,7 @@ def get_updown(strdate=None):
         nowdate = strdate
     data = db_session.query(TblSum.jid, TblSum.jper).filter(TblSum.jdate == nowdate).all()
     print("\t", datetime.now())
+<<<<<<< HEAD
     up = 0
     down = 0
     for dt in data:
@@ -35,6 +36,10 @@ def get_updown(strdate=None):
         if float(dt.jper) < 0: down += 1
     print("up: {} down: {} total: {}".format(up, down, len(data)))
     print("up rate: {} %".format(up/len(data)*100))
+=======
+    for dt in data:
+        print(dt.jid, dt.jper)
+>>>>>>> a7b4c6475d675a045a58108db8a231128f293d1c
     print("--" * 10)
     db_session.close()
 

@@ -1,2 +1,0 @@
-pip install opencv-python
-https://github.com/spmallick/learnopencv.git

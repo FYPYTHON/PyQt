@@ -1,9 +1,0 @@
-°üÀ¨c++ c python
-https://github.com/jwasham/practice-python.git
-
-python log:
-https://www.yangyanxing.com/article/python-logging-day-file.html
-
-
-python3 yaml
-pip install pyyaml

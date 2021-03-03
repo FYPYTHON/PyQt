@@ -1,6 +1,0 @@
-mysqld --defaults-file=/etc/my.cnf
-./bin/mysqld --defaults-file=/opt/midware/mysql/my.cnf --initialize
-
-
-root@localhost: Tn.Z7deOG_lm
-./bin/mysqld --defaults-file=/opt/midware/mysql/my.cnf --user=root &

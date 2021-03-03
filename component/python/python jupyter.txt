@@ -1,4 +1,0 @@
-python3 -m pip install jupyter
-jupyter notebook
-http://localhost:8888/?token=6060dfbde29221990263f40f5f43463880da20f8f2ddc34b
-在网页下找打ipynb文件，然后选择file--download as--python file
