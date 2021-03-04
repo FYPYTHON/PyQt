@@ -92,6 +92,22 @@ class JSumHandler(BaseHandler):
 
 
 class SumShowHandler(BaseHandler):
+
+    def get_updown(self):
+        from database.tbl_sum import TblSum
+        nowdate = datetime.now().strftime("%Y-%m-%d")
+        data = self.mysqldb().query(TblSum.jid, TblSum.jper).filter(TblSum.jdate == nowdate).order_by(TblSum.jid.asc()).all()
+        up = 0
+        down = 0
+        jid = []
+        jper = []
+        for dt in data:
+            jid.append(dt.jid)
+            jper.append(dt.jper)
+            if float(dt.jper) > 0: up += 1
+            if float(dt.jper) < 0: down += 1
+        return {"jids": jid, "jpers": jper, "up": up, "down": down}
+
     def gene_echart_data(self, data):
         sdate = []
         sup = []
@@ -122,4 +138,4 @@ class SumShowHandler(BaseHandler):
             weblog.error("days: {}".format(days))
             days = 30
         data = getRangeUpDownInfo(self, days)
-        return self.render("sum.html", data=self.gene_echart_data(data))
+        return self.render("sum.html", data=self.gene_echart_data(data), nowdata=self.get_updown())
