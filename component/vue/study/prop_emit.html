@@ -7,14 +7,14 @@ var TrainCity = {
 	template:`
 	<div class="train-city">
 		<h3>from parent toCity:{{sendData}}</h3> 
-		<br/><button @click="select('大连')">点击此处将 大连 发射给父组件</button>
+		<br/><button @click="select('大连')">click 大连 send to parent</button>
 	</div>
 	`,
 	name:'trainCity',
     props:['sendData'], // get parent data
     methods:{
       select(val) {
-        let data = {
+        var data = {
           cityname: val
         };
         this.$emit('showCityName',data);
