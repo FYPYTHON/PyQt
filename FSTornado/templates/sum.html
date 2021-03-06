@@ -20,6 +20,16 @@
         </div>
         <div class="col-sm-2"></div>
     </div>
+        <div class="col-sm-12" style="margin-top: 50px;">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="col-sm-12" id="updown" style="width: 600px;height:400px;"></div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">up: {{nowdata["up"]}}    down: {{nowdata["down"]}}</div>
+            <div class="col-sm-4"></div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
     <script type="text/javascript">
         var myChart = echarts.init(document.getElementById('jijin'));
         var option = {
@@ -67,4 +77,33 @@
         }
     </script>
 </body>
+<script type="text/javascript">
+        var upDown = echarts.init(document.getElementById('updown'));
+        var optionUpDown = {
+            title: {
+                text: 'updown'
+            },
+            tooltip: {},
+            legend: {
+                data:['per']
+            },
+            xAxis: {
+                data: {{nowdata['jids']}},
+                axisLabel: {
+                interval:0,
+                rotate:40
+                },
+            },
+            yAxis: {
+            },
+
+            series: [{
+                        name: 'per',
+                        type: 'bar',
+                        data: {{nowdata['jpers']}}
+                    },
+                    ]
+        };
+        upDown.setOption(optionUpDown);
+    </script>
 </html>
