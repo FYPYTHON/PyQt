@@ -17,6 +17,7 @@ rpm -qpi ****.rpm  | head
 history 显示时间，ip
 USER_IP=`who -u am i 2>/dev/null| awk '{print $NF}'|sed -e 's/[()]//g'`
 export HISTTIMEFORMAT="%F %T <$USER_IP>:`whoami` "
+# 只看时间
 # export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S  "
 history
 

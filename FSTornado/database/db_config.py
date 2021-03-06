@@ -6,7 +6,7 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 ModelBase = declarative_base()
-engine = create_engine('sqlite:///wfs.db?check_same_thread=False', echo=True)
+engine = create_engine('sqlite:///wfs.db?check_same_thread=False', echo=False)
 session_factory = sessionmaker(bind=engine)
 db_session = scoped_session(session_factory)
 

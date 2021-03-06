@@ -120,7 +120,7 @@ def gene_jijin_current():
             except Exception as e:
                 weblog.error("{} {}".format(jid, e))
 
-    jjd = Timer(1 * 60 * 20, gene_jijin_current)
+    jjd = Timer(1 * 60 * 10, gene_jijin_current)
     jjd.start()
 
 
