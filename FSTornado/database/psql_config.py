@@ -6,12 +6,16 @@ from sqlalchemy.engine.url import URL
 
 
 ModelBase = declarative_base()
-host = '192.168.0.224'
-# host = "172.16.83.227"
-db = 'modb'
-url = URL(drivername='postgresql+psycopg2', username='highgo', password='highgo123',
-          host=host, database=db, port=5866)
-engine = create_engine(url, echo=True)
+# host = '192.168.0.224'
+# db = 'modb'
+# url = URL(drivername='postgresql+psycopg2', username='highgo', password='highgo123',
+#           host=host, database=db, port=5866)
+#
+host = '172.16.83.226'
+db = 'datasync'
+url = URL(drivername='postgresql+psycopg2', username='pgsql', password='postgres',
+          host=host, database=db, port=5432)
+engine = create_engine(url, echo=False)
 
 # postgresql+psycopg2://user:password@hostname:port/database_name
 # engine = create_engine('postgresql+psycopg2://highgo:highgo123@192.168.0.224:5866/ap', echo=True)
@@ -20,7 +24,7 @@ db_session = scoped_session(session_factory)
 
 
 class TblAdmin(ModelBase):
-    __tablename__ = 'tbl_admin_modb'
+    __tablename__ = 'admin'
 
     id = Column(Integer, unique=True, primary_key=True)
     name = Column(String(60), unique=True, comment=u"变量名")
@@ -32,7 +36,7 @@ class TblAdmin(ModelBase):
 ModelBase.metadata.create_all(engine)
 
 class TblBrowsingHistory(ModelBase):
-    __tablename__ = 'tbl_browsing_history_modb'
+    __tablename__ = 'history'
 
     id = Column(Integer, unique=True, primary_key=True)
     user_ip = Column(String(100))         # 访问ip
@@ -49,7 +53,7 @@ class TblBrowsingHistory(ModelBase):
         return "%s<user_account=%s, user_ip=%s>" % (self.__class__.__name__, self.user_account, self.user_ip)
 ModelBase.metadata.create_all(engine)
 class TblWord(ModelBase):
-    __tablename__ = 'tbl_word_modb'
+    __tablename__ = 'word'
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
     word = Column(String(20), nullable=False, unique=True)
     chn = Column(String(20), default="")
@@ -107,7 +111,7 @@ def add_history():
 
 
 if __name__ == '__main__':
-    for i in range(10000):
+    for i in range(2):
         add_data()
         add_history()
         add_word()

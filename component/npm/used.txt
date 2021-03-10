@@ -1,0 +1,32 @@
+latest version
+npm install npm@latest -g
+npm install -g npm
+
+check version
+npm -v
+node -v
+
+
+npm config set registry=http://registry.npm.taobao.org
+
+npm config list
+
+测试获取vue
+npm info vue
+
+
+npm install vue -g
+安装命令     模块  放全局目录
+
+npm install  vue-router -g
+npm install vue-cli -g
+
+vue -v
+
+
+vue init webpack vue01
+cd vue01
+npm install
+npm run dev
+npm run build
+
