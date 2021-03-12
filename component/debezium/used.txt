@@ -1,0 +1,16 @@
+useradd pgsql
+groupadd pgsql
+usermod -g pgsql pgsql
+编译：
+./configure --prefix=/opt/midware/postgresql
+make && make install
+make -p /opt/midware/postgresql/pgbase /opt/midware/postgresql/pgdata
+
+使用
+chown -R pgsql:pgsql /opt/midware/postgresql
+pg_ctl init -D /opt/midware/postgresql/pgbase
+
+
+# psql -U pgsql -d postgres
+
+
