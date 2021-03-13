@@ -34,7 +34,8 @@ def get_updown(strdate=None):
         if float(dt.jper) > 0: up += 1
         if float(dt.jper) < 0: down += 1
     print("up: {} down: {} total: {}".format(up, down, len(data)))
-    print("up rate: {} %".format(up/len(data)*100))
+    rate = 0 if len(data) == 0 else up/len(data)*100
+    print("up rate: {} %".format(rate))
     print("--" * 10)
     db_session.close()
 
