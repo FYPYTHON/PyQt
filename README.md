@@ -15,3 +15,7 @@ some note of component install and settings
 13、redis
 14、shell
 15、vue
+16、debezium
+17、seaweedfs
+18、npm
+19、canal
