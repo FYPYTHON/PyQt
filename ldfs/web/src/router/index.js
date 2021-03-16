@@ -53,7 +53,7 @@ export default new Router({
                 {
                   path: "store/",
                   name: "store",
-                  component:resolve => require(["@/components/LdfsRegionView"], resolve),
+                  component:resolve => require(["@/components/LdfsRegionManage"], resolve),
                 },
               ]
             },
