@@ -1,7 +1,7 @@
 # coding=utf-8
 """
 Time  : 2019/3/9 9:01
-Author: wangguoqiang@kedacom.com
+Author: 1823218990@qq.com
 
 """
 import logging
@@ -480,7 +480,7 @@ def psutil_shell_mount_status(dev_name):
     :param dev_name: /dev/sdc1 or /opt/data/hd/hd1
     :return: 0=no mount, 1=mount
     """
-    cmdstr = "mount -l | grep %s | awk '{print $1}'" % dev_name
+    cmdstr = "mount -l | grep %s | awk 'NR==1{print $1}'" % dev_name
     code, result = psutil_shell(cmdstr, TIMEOUT)
     if code == 0:
         # print(result)

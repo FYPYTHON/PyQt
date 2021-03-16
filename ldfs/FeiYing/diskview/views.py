@@ -1,4 +1,6 @@
 # coding=utf-8
+import os
+import json
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -15,12 +17,36 @@ logger = logging.getLogger('ldfs')
 
 
 class CommonMethodMixin(object):
+    CONFIG_JSON = "/opt/data/ldfs/config.json"
+
     def get_service_ip(self, request):
         if 'HTTP_HOST' in request.META:
             ip = request.META.get('HTTP_HOST').split(":")[0]
         else:
             ip = 'localhost'
         return ip
+
+    def initConfigJson(self):
+        if not os.path.exists(os.path.dirname(self.CONFIG_JSON)):
+            os.makedirs(os.path.dirname(self.CONFIG_JSON))
+        self.config_json = dict()
+        self.config_json['disks'] = {}
+        self.config_json['mounts'] = {}
+        self.config_json['pool'] = []
+        self.save()
+
+    def load(self):
+        if not os.path.exists(self.CONFIG_JSON):
+            self.initConfigJson()
+        with open(self.CONFIG_JSON, 'r') as load_f:
+            config_json = json.load(load_f)
+        return config_json
+
+    def save(self):
+        json_config = json.dumps(self.config_json, indent=4, ensure_ascii=False, sort_keys=True)
+        file_object = open(self.CONFIG_JSON, 'w')
+        file_object.write(json_config)
+        file_object.close()
 
     def get_disk_info(self):
         simple_info = get_lsblk()
@@ -57,6 +83,7 @@ class CommonMethodMixin(object):
             disk_mount = psutil_shell_mount_status(item['device_name'])
             if disk_mount:
                 used_info = get_disk_usage(disk_mount)
+                logger.info("{} uded_info: {}".format(disk_mount, used_info))
                 if used_info is None:
                     disk_dict['free_size'] = "--"
                 else:
@@ -152,6 +179,13 @@ class DiskManageView(APIView, CommonMethodMixin):
             code, result = psutil_shell_add_disk(disk_slot, hd_name)
             if code == 0:
                 resp.msg = u"添加成功"
+                self.config_json = self.load()
+                pool = self.config_json['pool']
+                self.config_json['disks'][disk_slot] = {"disk_slot": disk_slot, "hd_name": hd_name}
+                if hd_name not in pool:
+                    pool.append(hd_name)
+                self.config_json['pool'] = pool
+                self.save()
             else:
                 resp.code = 1
                 resp.msg = u"添加磁盘失败" + result
@@ -178,6 +212,10 @@ class DiskManageView(APIView, CommonMethodMixin):
             code, result = psutil_shell_delete_disk(disk_slot, hd_name)
             print("del", hd_name, disk_size)
             if code == 0:
+                self.config_json = self.load()
+                if hd_name in self.config_json['pool']:
+                    self.config_json['pool'].remove(hd_name)
+                self.save()
                 resp.msg = u"删除成功"
             else:
                 resp.code = 1

@@ -1,7 +1,7 @@
 #!/bin/bash
 :<<!
 Time   :2019/3/11 09:08
-Autohor:wangguoqiang@kedacom.com
+Autohor:1823218990@qq.com
 arg1: /dev/sdb
 arg2: hd1
 !
