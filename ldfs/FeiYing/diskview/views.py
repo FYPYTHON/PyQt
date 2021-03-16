@@ -112,7 +112,7 @@ class DiskManageView(APIView, CommonMethodMixin):
         request_params = request.data
         disk_id = request_params.get("id", None)
         disk_slot = request_params.get("slot", None)
-        print("post params:", disk_id, disk_slot)
+        print("post params: disk_id:", disk_id, "disk_slot: ", disk_slot)
 
         if disk_id:
             return self.add_disk_by_id(disk_id)
@@ -132,8 +132,9 @@ class DiskManageView(APIView, CommonMethodMixin):
     def add_disk_by_id(self, disk_id):
         resp = ResMsg()
         slot = get_slot_from_id(disk_id)
+        logger.info("slot:{}".format(slot))
         if DEBUG:
-            slot = disk_id
+            slot = slot
         if slot:
             return self.add_disk_by_slot(slot)
         else:
@@ -144,8 +145,10 @@ class DiskManageView(APIView, CommonMethodMixin):
     def add_disk_by_slot(self, disk_slot):
         resp = ResMsg()
         disk_size = get_disk_size_by_slot(disk_slot)
+        logger.info("disk_size: {} {}".format(disk_slot, disk_size))
         if disk_size:
             hd_name = generate_hd_name(disk_slot)
+            logger.info("ha name:{}".format(hd_name))
             code, result = psutil_shell_add_disk(disk_slot, hd_name)
             if code == 0:
                 resp.msg = u"添加成功"

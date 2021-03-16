@@ -211,7 +211,7 @@ def get_disk_id(disk_name):
 
 
 def get_disk_size_by_slot(disk_slot):
-    cmd = "lsblk -pbo SIZE,NAME | grep %s | awk '{print $1}'" % disk_slot
+    cmd = "lsblk -pbo SIZE,NAME | grep %s | awk '{print $1}'" % disk_slot.strip("\n")
     code, result = psutil_shell(cmd, TIMEOUT)
     if code == 0:
         if result == '':
@@ -228,7 +228,7 @@ def get_slot_from_id(disk_id):
     :param sn: K7HBUPAL
     :return:
     """
-    cmd = "ls -l /dev/disk/by-id | grep %s | awk '{print $11}'" % disk_id
+    cmd = "ls -l /dev/disk/by-id | grep %s | awk 'NR==1{print $11}'" % disk_id.strip("\n")
     code, result = psutil_shell(cmd, TIMEOUT)
 
     if code == 0:
