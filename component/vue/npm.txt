@@ -3,5 +3,5 @@ vue init webpack yourname
 npm run build
 npm run dev
 
-
+ldfs /  jdb_web must run build:test¡£(use ./*/js path to load static file¡£)
 npm run build:test
