@@ -1,0 +1,15 @@
+wget https://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz/download
+
+
+
+进入boost_XXXXXX目录中
+
+cd boost_XXXXXX
+./bootstrap.sh --with-libraries=all --with-toolset=gcc
+--with-liraries：需要编译的库
+--with-toolset：编译时使用的编译器
+
+安装
+./b2 install --prefix=/opt/midware/poker/boost
+--prefix：boost库的安装目录，不加此参数，默认安装在/usr/local目录下
+

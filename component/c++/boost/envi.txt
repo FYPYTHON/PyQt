@@ -1,0 +1,3 @@
+BOOST_ROOT=/opt/midware/poker/boost
+BOOST_INCLUDE=/opt/midware/poker/boost/include
+BOOST_LIB=/opt/midware/poker/boost/lib
