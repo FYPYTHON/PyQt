@@ -11,9 +11,9 @@
 </head>
 <body>
     <div class="col-sm-12" style="margin-top: 50px;">
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <div class="col-sm-12">
-                <label class="col-sm-5">选择类型：</label>
+                <label class="col-sm-4">选择类型：</label>
                 <select class="col-sm-4 myjid" id="curjid">
                     {% for vd in jids %}
                         {% if str(jid) == str(vd) %}
@@ -23,11 +23,12 @@
                         {% end %}
                     {% end %}
                 </select>
-                <button onclick="getjijin()" style="margin-left: 2px;">确定</button>
+                <button class="col-sm-2" onclick="getjijin()" style="margin-left: 2px;">确定</button>
+                <input class="col-sm-2" id="dayrange" value="30">
             </div>
             <div class="col-sm-12" id="jijin" style="width: 600px;height:400px;"></div>
         </div>
-        <div class="col-sm-4"></div>
+        <div class="col-sm-2"></div>
         <div class="col-sm-4" style="">
             <label class="col-sm-6">类型：</label>
             <input class="col-sm-6" type="text" name="nid" value="" placeholder="10001">
@@ -162,9 +163,10 @@
             })
         }
         function getjijin(){
-            var nid = $("#curjid").val()
+            var nid = $("#curjid").val();
+            var dayrange = $("#dayrange").val();
             console.log(nid);
-            window.location.href = "/view?jid=" + nid;
+            window.location.href = "/view?jid=" + nid +"&dayrange="+dayrange;
         }
     </script>
 </body>

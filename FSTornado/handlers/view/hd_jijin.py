@@ -42,8 +42,8 @@ def get_date_week(jdate):
         return jdate
 
 
-def get_gid_all_data(self, jid):
-    two_weeks_before = datetime.now() + timedelta(days=-30)
+def get_gid_all_data(self, jid, dayrange=-30):
+    two_weeks_before = datetime.now() + timedelta(days=dayrange)
     str_date = two_weeks_before.strftime(DATE_FORMAT)
     result = self.mysqldb().query(TblJijin.jdate, TblJijin.jvalue).filter(TblJijin.jid == jid
                                                                           , TblJijin.jdate >= str_date).order_by(
@@ -90,14 +90,18 @@ class JiJinHandler(BaseHandler):
     @check_authenticated
     def get(self):
         gid = self.get_argument("jid", None)
-
+        dayrange = self.get_argument("dayrange", "30")
+        try:
+            dayrange = -int(dayrange)
+        except:
+            dayrange = -30
         gids = get_gid(self)
         if gid is None:
             if len(gids) > 0:
                 gid = gids[0]
             else:
                 gid = None
-        jdata = get_gid_all_data(self, gid)
+        jdata = get_gid_all_data(self, gid, dayrange)
         current_week_data = get_gid_range_data(self, gid, 0)
         last_week_data = get_gid_range_data(self, gid, 1)
         return self.render("view.html", jdata=jdata, jids=gids, jid=gid, jdata0=current_week_data, jdata1=last_week_data)
