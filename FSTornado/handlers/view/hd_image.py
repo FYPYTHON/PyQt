@@ -66,6 +66,11 @@ class AppImageHandler(BaseHandler):
         # xdata = range(1, 6)
         # ydata = range(11, 16)
         jid = self.get_argument("jid", None)
+        datarange = self.get_argument("datarange", "30")
+        try:
+            datarange = -int(datarange)
+        except:
+            datarange = -30
         if jid is None: jid = '1717'
 
         savefile = "/opt/data/fs/{}_{}.png".format(jid, datetime.now().strftime("%Y-%m-%d"))
@@ -80,7 +85,7 @@ class AppImageHandler(BaseHandler):
             #     img = f.read()
             return self.write(json_dumps({"error_code": 0, 'img': base64_data, "jids": get_gid(self)}))
 
-        jdata = get_gid_all_data(self, jid)
+        jdata = get_gid_all_data(self, jid, datarange)
         xdata = jdata.get("jdate")
         ydata = jdata.get("jvalue")
         # print(xdata)

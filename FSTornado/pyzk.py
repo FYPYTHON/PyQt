@@ -7,8 +7,23 @@
 from kazoo.client import KazooClient
 from datetime import datetime
 import time
-zk = KazooClient(hosts="192.168.0.224:2171")
+# zk = KazooClient(hosts="192.168.0.224:2171")
+zk = KazooClient(hosts="127.0.0.1:2181",
+                 auth_data=[("digest", "wgq:0808")],
+                #  sasl_options = {
+                #     'mechanism': 'DIGEST-MD5',
+                #     'username': 'wgq',
+                #     'password': '0808'
+                # }
+                 )
 zk.start()
+
+
+def test():
+    zk.create("/wgq", "mycontent".encode(), makepath=True)
+    print(zk.get("/wgq", watch=pp))
+    pass
+
 
 def pp(event):
     print("event go", datetime.now())
@@ -27,5 +42,6 @@ def main():
         print(e)
 
 if __name__ == '__main__':
-    while True:
-        main()
+    # while True:
+    #     main()
+    test()
