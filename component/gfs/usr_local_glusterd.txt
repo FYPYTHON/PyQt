@@ -2,3 +2,10 @@ cp /usr/local/bin/python3 /usr/bin/
 "/usr/local/glusterfsd/sbin/glusterd -p /var/run/glusterd.pid --log-level INFO"
 
 /usr/local/glusterfsd/sbin/glusterfs --volfile-id=common_app --volfile-server=gfs-223 /mnt/files
+
+
+查看gfs设置
+/usr/local/glusterfsd/sbin/gluster volume set help
+
+设置属性
+/usr/local/glusterfsd/sbin/gluster volume set <key> <value>
