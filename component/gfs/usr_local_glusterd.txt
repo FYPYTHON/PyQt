@@ -1,2 +1,4 @@
 cp /usr/local/bin/python3 /usr/bin/
 "/usr/local/glusterfsd/sbin/glusterd -p /var/run/glusterd.pid --log-level INFO"
+
+/usr/local/glusterfsd/sbin/glusterfs --volfile-id=common_app --volfile-server=gfs-223 /mnt/files
