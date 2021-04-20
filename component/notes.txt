@@ -39,3 +39,7 @@ https://www.wireshark.org/download/src/all-versions/
 
 10、ps查看进程
 ps -eo pid,args,lstart | grep h323parse
+
+
+11、supervisord
+autorestart = unexpected

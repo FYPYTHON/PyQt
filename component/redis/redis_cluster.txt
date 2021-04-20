@@ -25,3 +25,6 @@ masterauth yourpass
 解除：
 ./redis-cli -h 172.16.83.222 -a fy123456 slaveof no one  
 ./redis-cli -h 172.16.83.222 -a fy123456 slaveof 172.16.83.227 6379
+
+查看主从关系：
+info replication
