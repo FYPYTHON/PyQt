@@ -9,3 +9,14 @@
 
 设置属性
 /usr/local/glusterfsd/sbin/gluster volume set <key> <value>
+
+backupvolfile-server
+mount -t glusterfs -o backupvolfile-server=volfile_server2 ,fetch-attempts=2,log-level=WARNING,log-file=/var/log/gluster.logserver1:/test-volume /mnt/glusterfs
+
+如果backupvolfile-server选项在挂载选项中添加了，在第一个volfileserver 失效的时候，指定的backupvolfile-server选项将作为volfileserver供客户端挂载
+
+# backupvolfile-server=gluster2
+# backup-volfile-servers=gluster2:gluster3:gluster4
+
+
+
