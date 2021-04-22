@@ -10,11 +10,11 @@
 设置属性
 /usr/local/glusterfsd/sbin/gluster volume set <key> <value>
 
-<<<<<<< HEAD
+
 远程查看
 /usr/local/glusterfsd/sbin/gluster --remote-host=gfs-227 --mode=script
 --remote-host 这个命令对读请求可以执行，所有写操作无法执行。
-=======
+
 backupvolfile-server
 mount -t glusterfs -o backupvolfile-server=volfile_server2 ,fetch-attempts=2,log-level=WARNING,log-file=/var/log/gluster.logserver1:/test-volume /mnt/glusterfs
 
@@ -25,4 +25,3 @@ mount -t glusterfs -o backupvolfile-server=volfile_server2 ,fetch-attempts=2,log
 
 
 
->>>>>>> 67119340f79fbb8e4f174e4a77a5b92e9e3704f9
