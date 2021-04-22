@@ -22,4 +22,4 @@
 
 
 ¼¯Èº×´Ì¬
-       ./rabbitmqctl cluster status
+       ./rabbitmqctl cluster_status

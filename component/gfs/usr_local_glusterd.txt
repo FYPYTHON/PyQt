@@ -9,3 +9,7 @@
 
 设置属性
 /usr/local/glusterfsd/sbin/gluster volume set <key> <value>
+
+远程查看
+/usr/local/glusterfsd/sbin/gluster --remote-host=gfs-227 --mode=script
+--remote-host 这个命令对读请求可以执行，所有写操作无法执行。
