@@ -155,6 +155,18 @@ def lengthOfLongestSubstring(self, s: str) -> int:
     maxlen = 0
     curlen = 0
     for i in range(len(s)):
+        """
+        a     b       c      a      b      c
+        pos                  
+                             i
+        s[pos:i] = a b c
+        curlen = 3 - 0 - 0
+        pos = 0 + 0 + 1
+              pos                   i
+        s[pos:i] = b c a
+        curlen = 4 - 1 - 0
+        pos = 1 + 0 + 1
+        """
         # print(s[i], s[pos:i], pos, i)
         if s[i] in s[pos:i] and curlen > 0:
             if curlen > maxlen:
@@ -199,6 +211,12 @@ def convert(self, s: str, numRows: int) -> str:
     #             if numRows-1 + i*step < slen:
     #                 news += s[numRows-1 + i*step]
     # return news
+    """
+    s = 'LEETCODEISHIRING' numRows = 3
+    L   C   I   R
+    E T O E S I I G
+    E   D   H   N
+    """
     if numRows == 1 or numRows >= len(s):
         return s
     index = 0
@@ -211,7 +229,9 @@ def convert(self, s: str, numRows: int) -> str:
         elif index == numRows - 1:
             step = -1
         index += step
+    print(L)
     return ''.join(L)
+
 
 
 # str reverse [::-1]
