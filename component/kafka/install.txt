@@ -79,6 +79,8 @@ kafka 使用内存修改：
 kafka-server-start.sh   
 export KAFKA_HEAP_OPTS="-Xmx500m -Xms500m" 
 
+kafka zk:
+/opt/midware/kafka/bin/zookeeper-shell.sh localhost:2180
 
 kafka tool linux:
 如果没有图像界面需要安装如下：

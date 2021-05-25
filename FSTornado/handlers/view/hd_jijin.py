@@ -142,6 +142,11 @@ class AppJiJinHandler(BaseHandler):
     @check_token
     def get(self):
         gid = self.get_argument("jid", None)
+        dayrange = self.get_argument("dayrange", "60")
+        try:
+            dayrange = -int(dayrange)
+        except:
+            dayrange = -30
 
         gids = get_gid(self)
         if gid is None:
@@ -149,7 +154,7 @@ class AppJiJinHandler(BaseHandler):
                 gid = gids[0]
             else:
                 gid = None
-        jdata = get_gid_all_data(self, gid)
+        jdata = get_gid_all_data(self, gid, dayrange=dayrange)
         current_week_data = get_gid_range_data(self, gid, 0)
         last_week_data = get_gid_range_data(self, gid, 1)
         last_twoweek_data = get_gid_range_data(self, gid, 2)

@@ -109,19 +109,20 @@ def add_current_data(jid, jdate, jvalue):
 
 
 def gene_jijin_current():
-    if datetime.today().hour < 16 and (datetime.today().hour >= 9):
+    weblog.info("gene_jijin_current time: {}".format(datetime.now()))
+    if datetime.today().hour <= 18 and (datetime.today().hour >= 9):
         weblog.info("gene_jijin_current start")
         for jid in jids:
             try:
-                if datetime.today().hour > 15 or (datetime.today().hour < 9):
+                if datetime.today().hour > 18 or (datetime.today().hour < 9):
                     continue
                 # get_current_num(jid)
                 get_current_data(jid)
             except Exception as e:
                 weblog.error("{} {}".format(jid, e))
 
-    jjd = Timer(1 * 60 * 10, gene_jijin_current)
-    jjd.start()
+    jjc = Timer(1 * 60 * 10, gene_jijin_current)
+    jjc.start()
 
 
 if __name__ == '__main__':
