@@ -1,0 +1,15 @@
+key: "${path}",
+key: "%{path}"
+
+
+https://www.elastic.co/guide/en/beats/metricbeat/current/keystore.html
+The syntax for referencing keys is identical to the syntax for environment variables:
+
+${KEY}
+
+Where KEY is the name of the key.
+
+For example, imagine that the keystore contains a key called ES_PWD with the value yourelasticsearchpassword:
+
+In the configuration file, use output.elasticsearch.password: "${ES_PWD}"
+On the command line, use: -E "output.elasticsearch.password=\${ES_PWD}"
