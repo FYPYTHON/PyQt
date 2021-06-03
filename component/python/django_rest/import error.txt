@@ -1,0 +1,18 @@
+site-packages\rest_framework
+
+目录下有：
+目录：views
+文件：views.py
+
+
+from rest_framework.views import APIView
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ImportError: cannot import name 'APIView'
+>>> from rest_framework.views import APIView
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ImportError: cannot import name 'APIView'
+
+
+--解决： 将views目录删除。

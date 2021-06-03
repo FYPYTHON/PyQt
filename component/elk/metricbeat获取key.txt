@@ -13,3 +13,13 @@ For example, imagine that the keystore contains a key called ES_PWD with the val
 
 In the configuration file, use output.elasticsearch.password: "${ES_PWD}"
 On the command line, use: -E "output.elasticsearch.password=\${ES_PWD}"
+
+
+
+output.kafka:
+  # initial brokers for reading cluster metadata
+  hosts: ["127.0.0.1:9092"]
+  # message topic selection + partitioning
+  topic: 'ods.sip.v8.0.0'
+  key: '%{[sip.call-id]}'
+按上面的配置可以获取sip-id 变量。
