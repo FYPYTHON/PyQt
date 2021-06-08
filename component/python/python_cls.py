@@ -13,7 +13,14 @@ class Test(object):
         print(cls.mpp)
         print(cls.df)
 
+    @classmethod
+    def getDf(cls):
+        if cls.df:
+            return cls.df
+        return 2
+
 
 if __name__ == '__main__':
     Test.setMpp(123)
     Test.getMpp()
+    print(Test.getDf())
