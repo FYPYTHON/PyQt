@@ -13,5 +13,3 @@ if [ $nudfile -gt 1 ];then
    echo "mv $filename to ud/"
    mv $filename /opt/log/fs/ud
 fi
-
-
