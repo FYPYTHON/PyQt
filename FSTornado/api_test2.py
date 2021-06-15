@@ -7,8 +7,8 @@
 
 import requests
 
-user = "Tornado"
-pwd = "dgj_039103"
+user = "a123456"
+pwd = "123456"
 
 
 def get_token(url):
