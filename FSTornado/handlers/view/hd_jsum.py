@@ -10,7 +10,7 @@ from tornado.log import app_log as weblog
 from common.global_func import get_user_info, DATE_FORMAT
 from common.common_base import DatetimeManage
 from common.msg_def import WEEK_DAY
-from handlers.basehd import BaseHandler, check_token, check_authenticated
+from handlers.basehd import BaseHandler, check_token, check_authenticated, check_only
 from database.tbl_jijin import TblJijin
 from database.tbl_sum import TblSum
 from datetime import datetime, timedelta
@@ -128,6 +128,7 @@ class SumShowHandler(BaseHandler):
         return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max, "curup": curup * 100, "curdate": curdate}
 
     # @check_authenticated
+    # @check_only
     def get(self):
         pass
         # cdate = (datetime.now() - timedelta(days=30)).strftime(DATE_FORMAT)

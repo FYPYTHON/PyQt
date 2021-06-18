@@ -241,6 +241,15 @@ def check_role(func):
     return inner
 
 
+def check_only(func):
+    def inner(self, *args, **kwargs):
+        sec = self.get_argument("sec", None)
+        if sec != "dgj":
+            return self.write(json.dumps({"error_code": FAIL, "msg": u"没有权限, GET/POST FORBIDEN"}))
+        func(self, *args, **kwargs)
+    return inner
+
+
 def check_token(func):
     def inner(self, *args, **kwargs):
         token = self.get_argument("token", None)

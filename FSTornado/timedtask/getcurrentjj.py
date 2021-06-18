@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 # from tornado.log import app_log as weblog
-from timedtask.getjijindata import FDATE, add_data, jids, add_sum
+from timedtask.getjijindata import FDATE, add_data, jids, add_sum, get_holidy
 
 weblog = logging.getLogger("tornado.jj")
 
@@ -110,6 +110,7 @@ def add_current_data(jid, jdate, jvalue):
 
 def gene_jijin_current():
     weblog.info("gene_jijin_current time: {}".format(datetime.now()))
+    # is_holiday = get_holidy()
     if datetime.today().hour <= 18 and (datetime.today().hour >= 9):
         weblog.info("gene_jijin_current start")
         for jid in jids:

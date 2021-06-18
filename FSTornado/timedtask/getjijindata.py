@@ -99,6 +99,25 @@ def get_date():
     return strdata
 
 
+def get_holidy():
+    # coding=utf-8
+    import json
+    import urllib3
+    date = datetime.now().strftime("%Y%m%d")
+
+    http = urllib3.PoolManager()
+    server_url = "http://www.easybots.cn/api/holiday.php?d="
+
+    vop_response = http.request('GET', server_url + date)
+
+    vop_data = json.loads(vop_response.data)
+
+    if vop_data[date] == '2':
+        return True
+    else:
+        return False
+
+
 def get_one(jid):
     jurl = 'http://fundf10.eastmoney.com/jjjz_{}.html'.format(jid)
     # print(jurl)

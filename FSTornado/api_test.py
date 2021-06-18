@@ -128,7 +128,7 @@ def get_version_(url):
 def put_version(url):
     url = 'http://{}/appversion'.format(url)
 
-    parmas = {"loginname": user, "token": TOKEN, "version": "1.1.5.4", "msg": "1.1.5.4\n优化曲线坐标显示"}
+    parmas = {"loginname": user, "token": TOKEN, "version": "1.1.5.5", "msg": "1.1.5.4\n增加曲线显示"}
     headers = {'User-Agent': "Mobile"}
     result = requests.put(url, headers=headers, data=parmas)
     # result = requests.post(url, headers=headers, files={"FILE": None})

@@ -68,7 +68,8 @@ def create_single_table():
     # from database import tbl_poetry
     # from database import tbl_word
     # from database import tbl_code
-    from database import tbl_sum
+    # from database import tbl_sum
+    from database import tbl_sma
     from database import db_config
     print("create table....")
     db_config.ModelBase.metadata.create_all(db_config.engine)
@@ -141,8 +142,8 @@ if __name__ == '__main__':
     # create_table()
     # init_account()
     # init_data()
-    # create_single_table()
-    init_info()
+    create_single_table()
+    # init_info()
     # from database.db_config import db_session
     # db_session.commit()
     #

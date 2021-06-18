@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>SMA</title>
+    <script src="{{static_url('js/echarts.min.js')}}"></script>
+    <link rel="stylesheet" href="{{static_url('css/bootstrap.min.css')}}">
+    <script src="{{static_url('js/jquery.min.js')}}"></script>
+    <script src="{{static_url('js/bootstrap.min.js')}}"></script>
+    <link rel="stylesheet" href="{{static_url('css/fscss/mycss.css')}}">
+</head>
+<body>
+    <div class="col-sm-12" style="margin-top: 50px;">
+        <div class="col-sm-12">
+            <div class="col-sm-2"></div>
+            <label class="col-sm-2">选择类型：</label>
+            <select class="col-sm-3 myjid" id="curjid">
+                {% for vd in jids %}
+                    {% if str(data['jid']) == str(vd) %}
+                        <option selected="selected">{{vd}}</option>
+                    {% else %}
+                        <option>{{vd}}</option>
+                    {% end %}
+                {% end %}
+            </select>
+            <button class="col-sm-1" onclick="getjid()" style="margin-left: 2px;">确定</button>
+            <div class="col-sm-1"><button onclick="getsma(7,30)">7/30</button></div>
+            <div class="col-sm-1"><button onclick="getsma(14, 60)">14/90</button></div>
+            <div class="col-sm-1"><button onclick="getsma(24, 96)">24/96</button></div>
+            <div class="col-sm-1"></div>
+            </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="col-sm-12" style="margin-top:50px;"></div>
+            <div class="col-sm-12" id="sma" style="width: 100%;height:600px;"></div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</body>
+<script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('sma'));
+        var option = {
+            title: {
+                text: 'sma'
+            },
+            tooltip: {
+                formatter: function(param){
+                    return param.value.toFixed(2)
+                }
+            },
+            legend: {
+                data:['ori','sma1', 'sma2', 'positon']
+            },
+            xAxis: {
+                data: {{data['date']}},
+                type: 'category',
+                axisLabel: {
+                interval:2,
+                rotate:40
+                },
+            },
+            yAxis: [
+                {
+                    min: 0,
+                    max: {{max(data['value'])}},
+                    type: 'value',
+                    axisLabel: {
+                        formatter: function(value){
+                            return value.toFixed(2)
+                        }
+                    }
+                },
+                {
+                min:-1,
+                max:1,
+                }
+            ],
+
+            series: [{
+                        name: 'ori',
+                        type: 'line',
+                        data: {{data['value']}},
+                        yAxisIndex: 0
+                    },
+                    {
+                        name: 'sma1',
+                        type: 'line',
+                        data: {{data['sma1']}},
+                        yAxisIndex: 0
+                    },
+                    {
+                        name: 'sma2',
+                        type: 'line',
+                        data: {{data['sma2']}},
+                        yAxisIndex: 0
+                    },
+                    {
+                        name: 'positon',
+                        type: 'line',
+                        data: {{data['position']}},
+                        yAxisIndex: 1
+                    },
+                    ]
+        };
+        myChart.setOption(option);
+
+
+        function getjid(){
+            var nid = $("#curjid").val()
+            console.log(nid);
+            window.location.href = "/sma?sec=dgj&jid=" + nid;
+        }
+        function getsma(wmin, wmax){
+            window.location.href = "/sma?sec=dgj&wmin=" + wmin + "&wmax=" + wmax + "&jid=" + {{data['jid']}};
+        }
+    </script>
+</html>
