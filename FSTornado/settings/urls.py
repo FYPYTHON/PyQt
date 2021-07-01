@@ -75,6 +75,7 @@ url = [                            #
 
         (r'/app/image', hd_image.AppImageHandler),
         (r'/app/sum', hd_jsum.JSumHandler),
+        (r'/app/sma', hd_image.SmaMatHandler),
 
         (r'/tesseract', hd_word.PyTesseractHandler),
 

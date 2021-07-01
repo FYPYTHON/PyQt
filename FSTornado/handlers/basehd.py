@@ -234,7 +234,7 @@ def check_role(func):
         if user:
             role = user.userrole
             if role > 1:
-                return self.write(json.dumps({"error_code": FAIL, "msg": u"不是超级管理员，该操作没有权限"}))
+                return self.write(json.dumps({"error_code": FAIL, "msg": u"不是超级管理员，该操作没有权限"}, ensure_ascii=False))
 
         func(self, *args, **kwargs)
 
@@ -245,7 +245,7 @@ def check_only(func):
     def inner(self, *args, **kwargs):
         sec = self.get_argument("sec", None)
         if sec != "dgj":
-            return self.write(json.dumps({"error_code": FAIL, "msg": u"没有权限, GET/POST FORBIDEN"}))
+            return self.write(json.dumps({"error_code": FAIL, "msg": u"没有权限, GET/POST FORBIDEN"}, ensure_ascii=False))
         func(self, *args, **kwargs)
     return inner
 
@@ -276,7 +276,7 @@ def check_token(func):
                         accesslog.error("user: {} login at other machine, please check.".format(loginname))
                         return self.write(json.dumps({"error_code": FAIL, "msg": u"账号在其他地方登录，"
                                                                                  u"如不是本人操作，请修改密码!",
-                                                      "token": TOKEN_OUT}))
+                                                      "token": TOKEN_OUT}, ensure_ascii=False))
             else:
                 accesslog.error("user: {} not find".format(loginname))
         else:
@@ -287,6 +287,6 @@ def check_token(func):
             func(self, *args, **kwargs)
         else:
             weblog.info("{} login time out, please login again".format(loginname))
-            return self.write(json.dumps({"error_code": FAIL, "msg": u"登录过期，请重新登录", "token": TOKEN_OUT}))
+            return self.write(json.dumps({"error_code": FAIL, "msg": u"登录过期，请重新登录", "token": TOKEN_OUT}, ensure_ascii=False))
 
     return inner

@@ -96,7 +96,7 @@ class SumShowHandler(BaseHandler):
     def get_updown(self):
         from database.tbl_sum import TblSum
         nowdate = datetime.now().strftime("%Y-%m-%d")
-        data = self.mysqldb().query(TblSum.jid, TblSum.jper).filter(TblSum.jdate == nowdate).order_by(TblSum.jid.asc()).all()
+        data = self.mysqldb().query(TblSum.jid, TblSum.jper).filter(TblSum.jdate == nowdate).order_by(TblSum.jper.desc()).all()
         up = 0
         down = 0
         jid = []
@@ -133,10 +133,14 @@ class SumShowHandler(BaseHandler):
         pass
         # cdate = (datetime.now() - timedelta(days=30)).strftime(DATE_FORMAT)
         days = self.get_argument("days", '30')
+        fmt = self.get_argument("format", "html")
         if days.isdigit():
             days = int(days)
         else:
             weblog.error("days: {}".format(days))
             days = 30
         data = getRangeUpDownInfo(self, days)
+        if fmt == "json":
+            return self.write(json.dumps({"data": self.gene_echart_data(data), "nowdata": self.get_updown()},
+                                         indent=4, ensure_ascii=False))
         return self.render("sum.html", data=self.gene_echart_data(data), nowdata=self.get_updown())

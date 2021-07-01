@@ -21,8 +21,8 @@ class SMAHandler(BaseHandler):
         jid = self.get_argument("jid", "161725")
         if jid is None:
             return self.write(json.dumps({"error_code": 1, "msg": u"未知错误"}))
-        wmin = int(self.get_argument("wmin", "30"))
-        wmax = int(self.get_argument("wmax", "180"))
+        wmin = int(self.get_argument("wmin", "7"))  # 30
+        wmax = int(self.get_argument("wmax", "30")) # 180
         weblog.info("args: {} {} {}".format(jid, wmin, wmax))
         d, v, s1, s2, pos = self.get_data(jid, wmin, wmax)
         jids = get_gid(self)
@@ -31,7 +31,7 @@ class SMAHandler(BaseHandler):
         # return self.write(json.dumps({"date": d, "value": v, "sma1": s1, "sma2": s2, "position": pos}))
 
     def get_data(self, jid, wmin, wmax):
-        data = self.mysqldb().query(TblJijin.jdate, TblJijin.jvalue).filter(TblJijin.jid == jid)
+        data = self.mysqldb().query(TblJijin.jdate, TblJijin.jvalue).filter(TblJijin.jid == jid).order_by(TblJijin.jdate.asc())
         count = data.count()
         weblog.info("data len:{}".format(count))
         data = data.all()
