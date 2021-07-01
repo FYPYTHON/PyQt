@@ -1,0 +1,4 @@
+ ./pip3 install notebook -t /home/xxx/python3.8
+
+python3.8自己的lib没有库：
+ ./pip3 install notebook --prefix=/home/wgq/python3.8/
