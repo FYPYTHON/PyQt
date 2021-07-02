@@ -43,7 +43,7 @@ class Application(tornado.web.Application):
             static_path=(os.path.join(os.path.dirname(__file__), "static")),
             cookie_secret="f6d4f6de102f29b5cd37cd5eQtsdfsfdsdJ5/xJ89E=",
             session_secret="12f29b5c61c118ccd37cd5eQtsdfsfdsdJ5/xJ89E=",
-            session_timeout=300,   # seconds
+            session_timeout=900,   # seconds
             token_timeout=10,   # minutes
             days_clear=7,
             upload_path=os.path.join("/opt/data", "public"),

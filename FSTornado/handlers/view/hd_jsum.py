@@ -127,7 +127,7 @@ class SumShowHandler(BaseHandler):
         weblog.info("{} {} up:{} : curup:{} {}".format(len(sup), max, sup, curdate, curup))
         return {"sdate": sdate, "sup": sup, "sdown": sdown, "smax": max, "curup": curup * 100, "curdate": curdate}
 
-    # @check_authenticated
+    @check_authenticated
     # @check_only
     def get(self):
         pass

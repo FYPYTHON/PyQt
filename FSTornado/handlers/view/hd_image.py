@@ -10,7 +10,7 @@ from PIL import Image
 import json
 
 from database.tbl_jijin import TblJijin
-from handlers.basehd import BaseHandler, check_token
+from handlers.basehd import BaseHandler, check_token, check_authenticated
 import requests
 from datetime import datetime
 from json import dumps as json_dumps
@@ -20,6 +20,7 @@ from handlers.view.hd_jijin import get_gid_all_data, get_gid_range_data, get_gid
 
 
 class ShowImageHandler(BaseHandler):
+    @check_authenticated
     def get(self):
         # imgs = "data:image/{};base64,".format(suffix) + ims
         # xdata = range(1, 6)
@@ -117,7 +118,9 @@ class AppImageHandler(BaseHandler):
         else:
             return self.write(json_dumps({"error_code": 1, 'img': img, "jids": get_gid(self)}))
 
+
 class SmaMatHandler(BaseHandler):
+    @check_token
     def get(self):
         # sec == dgj
         jid = self.get_argument("jid", "161725")
@@ -142,7 +145,7 @@ class SmaMatHandler(BaseHandler):
 
         data = self.mysqldb().query(TblJijin.jdate, TblJijin.jvalue).filter(TblJijin.jid == jid).order_by(TblJijin.jdate.asc())
         count = data.count()
-        weblog.info("data len:{}".format(count))
+        weblog.info("sql data len:{}".format(count))
         data = data.all()
         jdates = []
         jvalues = []

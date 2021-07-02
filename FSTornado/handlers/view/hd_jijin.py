@@ -7,7 +7,7 @@ from tornado.log import app_log as weblog
 from common.global_func import get_user_info, DATE_FORMAT
 from common.common_base import DatetimeManage
 from common.msg_def import WEEK_DAY
-from handlers.basehd import BaseHandler, check_token, check_authenticated
+from handlers.basehd import BaseHandler, check_token, check_authenticated, check_role
 from database.tbl_jijin import TblJijin
 from datetime import datetime, timedelta
 from sqlalchemy import distinct
@@ -108,6 +108,7 @@ class JiJinHandler(BaseHandler):
 
     # @authenticated
     @check_authenticated
+    @check_role
     def post(self):
         jid = self.get_argument("jid")
         jdate = self.get_argument("jdate")

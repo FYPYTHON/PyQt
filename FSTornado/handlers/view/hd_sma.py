@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 from tornado.log import app_log as weblog
-from handlers.basehd import BaseHandler, check_only
+from handlers.basehd import BaseHandler, check_only, check_authenticated
 from database.tbl_jijin import TblJijin
 from handlers.view.hd_jijin import get_gid
 import json
@@ -16,6 +16,7 @@ sys.path.append("/opt/midware/sharelib/lib/python3.5/site-packages")
 
 class SMAHandler(BaseHandler):
     @check_only
+    @check_authenticated
     def get(self):
         # sec == dgj
         jid = self.get_argument("jid", "161725")

@@ -35,7 +35,7 @@ def get_sma(url):
     parmas = {'loginname': user, 'token': token, "jid": "161725", "wmin": 7, "wmax": 30}
     url = 'http://{}/app/sma'.format(url)
     res = requests.get(url, headers=headers, data=parmas).text
-    print(res)
+    print(res[-10:])
 
 
 if __name__ == '__main__':

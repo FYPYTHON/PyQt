@@ -4,16 +4,11 @@ logConfig = {
     'version': 1,
     'loggers': {
       'root': {
-        'level': 'DEBUG',
+        'level': 'INFO',
         'handlers': ['access']
       },
-      # 'tornado': {
-      #   'level': 'DEBUG',
-      #   'handlers': ['access'],
-      #   'propagate': 'no'
-      # },
       'tornado.access': {
-        'level': 'DEBUG',
+        'level': 'INFO',
         'handlers': ['access'],
         'propagate': 'no'
       },
@@ -33,16 +28,11 @@ logConfig = {
       }
     },
     'handlers': {
-      # 'console': {
-      #   'class': 'logging.StreamHandler',
-      #   'level': 'DEBUG',
-      #   'formatter': 'simple',
-      #   },
       'access': {
         'class': 'logging.handlers.TimedRotatingFileHandler',  # time
         'level': 'INFO',
         'formatter': 'simple',
-        'filename': '/opt/log/fs/imageserver.log',
+        'filename': '/opt/log/fs/imageserver_access.log',
         'when': 'midnight',
         'interval': 1,
         'backupCount': 2,    # u"备份数"

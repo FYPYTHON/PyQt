@@ -13,11 +13,13 @@ class ImageHandler(tornado.web.RequestHandler):
         ydata = self.get_arguments("ydata")
         sma1 = self.get_arguments("sma1")
         sma2 = self.get_arguments("sma2")
-        pos = self.get_arguments("position")
-        
-        imagelog.info("{}".format(len(ydata)))
+        pos = self.get_arguments("pos")
+
+        imagelog.info("len(xdata)={}".format(len(xdata)))
+        imagelog.info("len(xdata)={}".format(len(ydata)))
+        imagelog.info("mutli={} type={}".format(len(pos) > 1, len(pos)))
         mutli = False
-        if pos:
+        if len(pos) > 1:
               mutli = True
         if len(xdata) != len(ydata) and not mutli:
             return self.write(json.dumps({"err_code": 1, "msg": "x y length not the same"}))
@@ -26,12 +28,23 @@ class ImageHandler(tornado.web.RequestHandler):
         # print(ydata)
         ydata = [float(i) for i in ydata]
         if mutli:
+            imagelog.info("mutli data len(pos)={}".format(len(pos)))
             sma1 = [float(i) for i in sma1]
             sma2 = [float(i) for i in sma2]
             pos = [int(i) for i in pos]
-            sma_data = [ydata, sma1, sma2, pos]
-            plt.plot(xdata, *sma_data, marker='o')
+            sma_data = [ydata, sma1, sma2]
+            # plt.plot(xdata, *sma_data, marker='o')
+            # plt.plot(xdata, *sma_data, color=["blue", "green", "orange"])
+            plt.plot(xdata, ydata, color='blue')
+            plt.plot(xdata, sma1, color='green')
+            plt.plot(xdata, sma2, color='orange')
+            plt.legend(["ori", "sma1", "sma2"])
+            ax2 = plt.twinx()
+            ax2.set_ylim([-1-0.05, 1+0.05])
+            ax2.plot(xdata, pos, color='red')
+            ax2.legend(['pos'], loc="upper right")
         else:
+            imagelog.info("single data len(ydata)={}".format(len(ydata)))
             plt.plot(xdata, ydata, marker='o')
         plt.rcParams['font.sans-serif'] = ['WenQuanYi Zen Hei Mono']
         plt.gcf().subplots_adjust(bottom=0.2)
@@ -47,5 +60,5 @@ class ImageHandler(tornado.web.RequestHandler):
         plt.cla()
         plt.close()
         # print(len(figdata_png))
-        imagelog.info("{} \n{} \nimgb64 len:{}".format(xdata, ydata, len(figdata_png)))
+        imagelog.info("{} {} \nimgb64 len:{}".format("xdata", "ydata", len(figdata_png)))
         return self.write(json.dumps({"err_code": 0, "img": figdata_png}))
