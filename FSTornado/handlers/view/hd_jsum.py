@@ -95,7 +95,14 @@ class SumShowHandler(BaseHandler):
 
     def get_updown(self):
         from database.tbl_sum import TblSum
-        nowdate = datetime.now().strftime("%Y-%m-%d")
+        # nowdate = datetime.now().strftime("%Y-%m-%d")
+        weekday = datetime.now().weekday()
+        if weekday == 5:
+            nowdate = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+        elif weekday == 6:
+            nowdate = (datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d")
+        else:
+            nowdate = datetime.now().strftime("%Y-%m-%d")
         data = self.mysqldb().query(TblSum.jid, TblSum.jper).filter(TblSum.jdate == nowdate).order_by(TblSum.jper.desc()).all()
         up = 0
         down = 0
