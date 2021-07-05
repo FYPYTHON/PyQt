@@ -40,9 +40,10 @@ class ImageHandler(tornado.web.RequestHandler):
             plt.plot(xdata, sma2, color='orange')
             plt.legend(["ori", "sma1", "sma2"])
             ax2 = plt.twinx()
-            ax2.set_ylim([-1-0.05, 1+0.05])
+            ax2.set_ylim([-1-0.1, 1+0.1])
             ax2.plot(xdata, pos, color='red')
-            ax2.legend(['pos'], loc="upper right")
+            # https://blog.csdn.net/u010440456/article/details/90768681
+            ax2.legend(['pos'], loc="upper center")  # upper right
         else:
             imagelog.info("single data len(ydata)={}".format(len(ydata)))
             plt.plot(xdata, ydata, marker='o')

@@ -17,16 +17,24 @@ db_session = scoped_session(session_factory)
 
 import sys
 sys.path.append("/opt/midware/FSTornado")
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def get_updown(strdate=None):
     from database.tbl_sum import TblSum
     if strdate is None:
-        nowdate = datetime.now().strftime("%Y-%m-%d")
+        weekday = datetime.now().weekday()
+        if weekday == 5:
+            nowdate = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+        elif weekday == 6:
+            nowdate = (datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d")
+        else:
+            nowdate = datetime.now().strftime("%Y-%m-%d")
+
     else:
         nowdate = strdate
     data = db_session.query(TblSum.jid, TblSum.jper).filter(TblSum.jdate == nowdate).order_by(TblSum.jper.desc()).all()
-    print("\t", datetime.now())
+    print("\t", "runtime:", datetime.now())
+    print("\t", nowdate)
     up = 0
     down = 0
     for dt in data:

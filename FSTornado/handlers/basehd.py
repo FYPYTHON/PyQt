@@ -212,7 +212,10 @@ def check_authenticated(func):
     def inner(self, *args, **kwargs):
         user = self.get_current_user()
         # weblog.info("check_authenticated: user={} uri:{}".format(user, self.request.uri))
-        if not user:
+        if self.settings.get("debug"):
+            weblog.info("debug run: {}".format(self._request_summary()))
+            func(self, *args, **kwargs)
+        elif not user:
             url = self.get_login_url()
             next_url = self.request.uri
             url += "?" + urlencode(dict(next=next_url, msg=u"登录过期，请重新登录"))
