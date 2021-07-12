@@ -46,4 +46,4 @@ def add_to_db(jid, jdate, jvalue, jper):
 
 
 if __name__ == '__main__':
-    init_from_selenium("003985")
+    init_from_selenium("001980")
